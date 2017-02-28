@@ -7,22 +7,6 @@ public class Luggage {
     private String type;
     private Price price;
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Price getPrice() {
-        return price;
-    }
-
-    public void setPrice(Price price) {
-        this.price = price;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -45,5 +29,21 @@ public class Luggage {
         int result = type != null ? type.hashCode() : 0;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
