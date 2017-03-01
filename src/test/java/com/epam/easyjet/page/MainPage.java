@@ -1,6 +1,7 @@
 package com.epam.easyjet.page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -57,17 +58,22 @@ public class MainPage extends AbstractPage {
     public void typeDeparturePlace(String placeName) {
         departureInput.clear();
         departureInput.sendKeys(placeName);
+        departureInput.sendKeys(Keys.ENTER);
     }
 
     public void typeDestinationPlace(String placeName) {
         destinationInput.clear();
         destinationInput.sendKeys(placeName);
+        destinationInput.sendKeys(Keys.ENTER);
     }
 
     public void chooseDepartureDate(String date) {
         departureDateButton.click();
         pickDate(date);
     }
+
+
+
 
     public void chooseDestinationDate(String date) {
         destinationDateButton.click();
@@ -90,10 +96,15 @@ public class MainPage extends AbstractPage {
     }
 
     public void submit() {
-        submitButton.click();
 
+        submitButton.click();
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (warningField != null) {
-            infoSubmitButton.click();
+           infoSubmitButton.click();
         }
     }
 
