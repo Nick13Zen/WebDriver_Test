@@ -34,7 +34,7 @@ public class MainPage extends AbstractPage {
     @FindBy(xpath = "//input[contains(@name, 'Children')]")
     private WebElement addChildInput;
 
-    @FindBy(xpath = "//button[contains(text(), '\t\t\t\tOk, continue\n\t\t\t')]")
+    @FindBy(xpath = "//button[contains(text(), 'Ok, continue')]")
     private WebElement infoSubmitButton;
 
     @FindBy(css = "a[ng-if='!IsReturnDate']")
@@ -89,10 +89,11 @@ public class MainPage extends AbstractPage {
         addInfantInput.sendKeys(String.valueOf(count));
     }
 
-    public void submit() {
+    public void submit() throws Exception {
         submitButton.click();
 
-        if (warningField != null) {
+        Thread.sleep(3000);
+        if (warningField.isEnabled()) {
             infoSubmitButton.click();
         }
     }
