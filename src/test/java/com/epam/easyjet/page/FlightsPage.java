@@ -12,19 +12,19 @@ import org.openqa.selenium.support.PageFactory;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class FlightsPage extends AbstractPage {
+
     public FlightsPage(WebDriver driver) {
         super(driver);
+
     }
 
-    private final Logger logger = LogManager.getRootLogger();
-    private final String BASE_URL = "http://www.easyjet.com/EN/Booking.mvc";
-
     //div[@class='OutboundDaySlider']/div[@class='day selected']/ul[@class='middleRow']
-    @FindBy(xpath = "//div[@class='OutboundDaySlider']//ul[@class='middleRow']")
+    //@FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']")
+    @FindBy(css = "li.selectable.alt-lowest")
     private WebElement selectOutBoundDate;
 
     //div[@class='ReturnDaySlider']/div[@class='day selected']/ul[@class='middleRow']
-    @FindBy(xpath = "//div[@class='ReturnDaySlider']//ul[@class='middleRow']")
+    @FindBy(xpath = "//div[@class='ReturnDaySlider']//div[@class='day selected']")
     private WebElement selectReturnDate;
 
     //div[@class='OutboundDaySlider']//ul[@class='middleRow']//span[contains(@class,'priceSmaller')]
@@ -39,11 +39,23 @@ public class FlightsPage extends AbstractPage {
     @FindBy(xpath = "//div[contains(@class,'TotalCost')]//span[@id='price5']")
     private WebElement finalPrice;
 
-    @FindBy(id = "//button[@id='btnContinue']")
+    @FindBy(xpath = "//button[@id='btnContinue']")
     private WebElement continueButton;
 
 
     public void openPage() {
+        PageFactory.initElements(this.driver, this);
+    }
 
+    public void clickDeparturePrice() {
+        selectOutBoundDate.click();
+    }
+
+    public void clickReturnPrice() {
+        selectReturnDate.click();
+    }
+
+    public void submit() {
+        continueButton.click();
     }
 }
