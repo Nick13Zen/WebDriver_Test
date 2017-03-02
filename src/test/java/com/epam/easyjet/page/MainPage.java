@@ -7,6 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
@@ -22,9 +25,6 @@ public class MainPage extends AbstractPage {
 
     @FindBy(xpath = "//input[contains(@aria-label, 'From:')]")
     private WebElement departureInput;
-
-    @FindBy(css = "div.anim-slide-rtl.drawer-section-wrapper")
-    private WebElement warningField;
 
     @FindBy(xpath = "//input[contains(@name, 'Adults')]")
     private WebElement addAdultInput;
@@ -51,8 +51,14 @@ public class MainPage extends AbstractPage {
     public void openPage() {
         driver.get(PAGE_URL);
         PageFactory.initElements(this.driver, this);
-        WebElement closeButton = driver.findElement(By.id("close-drawer-link"));
-        closeButton.click();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+        }
+        if (isWarningPresents()) {
+            WebElement closeButton = driver.findElement(By.id("close-drawer-link"));
+            closeButton.click();
+        }
     }
 
     public void typeDeparturePlace(String placeName) {
@@ -72,9 +78,6 @@ public class MainPage extends AbstractPage {
         pickDate(date);
     }
 
-
-
-
     public void chooseDestinationDate(String date) {
         destinationDateButton.click();
         pickDate(date);
@@ -83,34 +86,49 @@ public class MainPage extends AbstractPage {
     public void setAdultCount(int count) {
         addAdultInput.clear();
         addAdultInput.sendKeys(String.valueOf(count));
+        addAdultInput.sendKeys(Keys.ENTER);
     }
 
     public void setChildCount(int count) {
         addChildInput.clear();
         addChildInput.sendKeys(String.valueOf(count));
+        addChildInput.sendKeys(Keys.ENTER);
     }
 
     public void setInfantCount(int count) {
         addInfantInput.clear();
         addInfantInput.sendKeys(String.valueOf(count));
+        addInfantInput.sendKeys(Keys.ENTER);
     }
 
     public void submit() {
 
         submitButton.click();
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-        if (warningField != null) {
+        if (isWarningPresents()) {
            infoSubmitButton.click();
         }
     }
 
     private void pickDate(String date) {
-        WebElement departureDateValue = driver.findElement(By.cssSelector("div[data-date='" + date + "'")).
+        WebElement departureDateValue = driver.
+                findElement(By.cssSelector("div[data-date='" + date + "'")).
                 findElement(By.cssSelector("a.selectable"));
         departureDateValue.click();
+    }
+
+    public boolean isWarningPresents() {
+        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+        List<WebElement> list = driver.
+                findElements(By.cssSelector("div.anim-slide-rtl.drawer-section-wrapper"));
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        if (list.size() == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

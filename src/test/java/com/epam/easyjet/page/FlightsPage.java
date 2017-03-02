@@ -20,7 +20,7 @@ public class FlightsPage extends AbstractPage {
 
     //div[@class='OutboundDaySlider']/div[@class='day selected']/ul[@class='middleRow']
     //@FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']")
-    @FindBy(css = "li.selectable.alt-lowest")
+    @FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']")
     private WebElement selectOutBoundDate;
 
     //div[@class='ReturnDaySlider']/div[@class='day selected']/ul[@class='middleRow']
