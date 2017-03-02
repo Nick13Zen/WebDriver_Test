@@ -51,10 +51,6 @@ public class MainPage extends AbstractPage {
     public void openPage() {
         driver.get(PAGE_URL);
         PageFactory.initElements(this.driver, this);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
         if (isWarningPresents()) {
             WebElement closeButton = driver.findElement(By.id("close-drawer-link"));
             closeButton.click();
@@ -104,10 +100,6 @@ public class MainPage extends AbstractPage {
     public void submit() {
 
         submitButton.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-        }
         if (isWarningPresents()) {
            infoSubmitButton.click();
         }
