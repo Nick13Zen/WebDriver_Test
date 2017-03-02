@@ -33,7 +33,6 @@ public class AutomationTest {
         mainPage.chooseDestinationDate("2017-03-19");
         mainPage.setInfantCount(1);
         mainPage.setChildCount(1);
-        Thread.sleep(1000);
         mainPage.submit();
         FlightsPage flightsPage = new FlightsPage(driver);
         flightsPage.openPage();
