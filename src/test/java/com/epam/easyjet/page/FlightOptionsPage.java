@@ -8,23 +8,39 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class FlightOptionsPage extends AbstractPage {
 
-    @FindBy(xpath = ".//*[@id='addDefaultHoldBaggage']")
+    @FindBy(xpath = "//button[@id='addDefaultHoldBaggage']")
     private WebElement luggageButton;
 
-    @FindBy(xpath = ".//*[@class=holdScalePrice]")
+    @FindBy(xpath = "//*[@class='holdScalePrice']")
     private WebElement luggagePrice;
 
-    @FindBy(xpath = ".//*[@class=holdScaleDial-value]")
+    @FindBy(xpath = "//*[@class='holdScaleDial-value']")
     private WebElement luggageType;
 
-    @FindBy(xpath = ".//*[@id='bagIndex_1']")
-    private WebElement luggageHoldBag;
+    @FindBy(id = "ChooseSeatsButton")
+    private WebElement chooseSeatsButton;
+
+    @FindBy(xpath = "//*[@class='seat']/div[@class='available']")
+    private WebElement availableSeats;
+
+    @FindBy(id = "addDefaultHoldBaggage")
+    private WebElement addLuggageButton;
+
+    @FindBy(xpath = "//*/button[@data-travelinsurancename='Single Trip Insurance']")
+    private WebElement singleTripInsuranceButton;
+
+    @FindBy(xpath = "//*/button[@data-travelinsurancename='Missed Flight Cover']")
+    private WebElement missedFlightCoverButton;
+
+    @FindBy(css = "button[id^='SeatSelectorNext']")
+    private WebElement saveSeatsButton;
 
     @FindBy(id = "ChooseSeatsButton")
     private WebElement chooseSeatsButton;
@@ -49,7 +65,7 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public void openPage() {
-
+        PageFactory.initElements(this.driver, this);
     }
 
     public void addLuggageButton() {
@@ -61,12 +77,18 @@ public class FlightOptionsPage extends AbstractPage {
         Luggage luggage = new Luggage();
         Price price = new Price();
 
-        String[] fullPrice = luggagePrice.getText().replaceAll("£", "").split(".");
+        String fullPrice = luggagePrice.getText().replaceAll("[^0-9.]", "");
+        String[] parsedPrice = fullPrice.split("\\.");
 
-        price.setFirstPart(Integer.parseInt(fullPrice[0]));
-        price.setSecondPart(Integer.parseInt(fullPrice[1]));
+        System.out.println("fullprice  " + fullPrice);
+        System.out.println(parsedPrice[0]);
+        System.out.println(parsedPrice[1]);
+
+        price.setFirstPart(Integer.parseInt(parsedPrice[0]));
+        price.setSecondPart(Integer.parseInt(parsedPrice[1]));
 
         luggage.setPrice(price);
+        System.out.println(luggageType.getText());
         luggage.setType(luggageType.getText());
 
         return luggage;
