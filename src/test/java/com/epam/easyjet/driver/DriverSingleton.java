@@ -7,9 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Vitali_Shulha on 20-Oct-16.
- */
+
 public class DriverSingleton {
 
     private static WebDriver driver;

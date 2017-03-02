@@ -4,15 +4,13 @@ import com.epam.easyjet.bean.Insurance;
 import com.epam.easyjet.bean.Luggage;
 import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.bean.Seats;
+import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-/**
- * Created by Yauheni_Borbut on 2/28/2017.
- */
 public class FlightOptionsPage extends AbstractPage {
 
     @FindBy(xpath = "//button[@id='addDefaultHoldBaggage']")
@@ -39,26 +37,14 @@ public class FlightOptionsPage extends AbstractPage {
     @FindBy(xpath = "//*/button[@data-travelinsurancename='Missed Flight Cover']")
     private WebElement missedFlightCoverButton;
 
-    @FindBy(css = "button[id^='SeatSelectorNext']")
+    @FindBy(css = "button[id^='SeatSelector']")
     private WebElement saveSeatsButton;
 
-    @FindBy(id = "ChooseSeatsButton")
-    private WebElement chooseSeatsButton;
+    @FindBy(id = "btnContinue")
+    private WebElement continueButton;
 
-    @FindBy(xpath = "//*[@class='seat']/div[@class='available']")
-    private WebElement availableSeats;
-
-    @FindBy(id = "addDefaultHoldBaggage")
-    private WebElement addLuggageButton;
-
-    @FindBy(xpath = "//*/button[@data-travelinsurancename='Single Trip Insurance']")
-    private WebElement singleTripInsuranceButton;
-
-    @FindBy(xpath = "//*/button[@data-travelinsurancename='Missed Flight Cover']")
-    private WebElement missedFlightCoverButton;
-
-    @FindBy(css = "button[id^='SeatSelectorNext']")
-    private WebElement saveSeatsButton;
+    @FindBy(id = "ContinueButton")
+    private WebElement noThancksButton;
 
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
@@ -72,20 +58,13 @@ public class FlightOptionsPage extends AbstractPage {
         luggageButton.click();
     }
 
+    public void getSeat() {
+        chooseSeatsButton.click();
+    }
 
     public Luggage getLuggage() {
         Luggage luggage = new Luggage();
-        Price price = new Price();
-
-        String fullPrice = luggagePrice.getText().replaceAll("[^0-9.]", "");
-        String[] parsedPrice = fullPrice.split("\\.");
-
-        System.out.println("fullprice  " + fullPrice);
-        System.out.println(parsedPrice[0]);
-        System.out.println(parsedPrice[1]);
-
-        price.setFirstPart(Integer.parseInt(parsedPrice[0]));
-        price.setSecondPart(Integer.parseInt(parsedPrice[1]));
+        Price price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
         luggage.setPrice(price);
         System.out.println(luggageType.getText());
@@ -96,12 +75,9 @@ public class FlightOptionsPage extends AbstractPage {
 
     public Seats chooseEconomSeat() {
         WebElement priceBand = driver.findElement(
-                By.xpath(".//*[@id='price_band_3']/div/p[@class='band_price']"));
+                By.xpath("//*[@id='price_band_3']/div/p[@class='band_price']"));
 
-        String[] fullPrice = priceBand.getText().replaceAll("£", "").split(".");
-        Price price = new Price();
-        price.setFirstPart(Integer.parseInt(fullPrice[0]));
-        price.setSecondPart(Integer.parseInt(fullPrice[1]));
+        Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
                 By.xpath("//*[@data-priceband='3']/td/div[@class='available']"));
@@ -115,12 +91,9 @@ public class FlightOptionsPage extends AbstractPage {
 
     public Seats chooseStandardSeat() {
         WebElement priceBand = driver.findElement(
-                By.xpath(".//*[@id='price_band_2']/div/p[@class='band_price']"));
+                By.xpath("//*[@id='price_band_2']/div/p[@class='band_price']"));
 
-        String[] fullPrice = priceBand.getText().replaceAll("£", "").split(".");
-        Price price = new Price();
-        price.setFirstPart(Integer.parseInt(fullPrice[0]));
-        price.setSecondPart(Integer.parseInt(fullPrice[1]));
+        Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
                 By.xpath("//*[@data-priceband='2']/td/div[@class='available']"));
@@ -134,12 +107,9 @@ public class FlightOptionsPage extends AbstractPage {
 
     public Seats chooseXLSeat() {
         WebElement priceBand = driver.findElement(
-                By.xpath(".//*[@id='price_band_1']/div/p[@class='band_price']"));
+                By.xpath("//*[@id='price_band_1']/div/p[@class='band_price']"));
 
-        String[] fullPrice = priceBand.getText().replaceAll("£", "").split(".");
-        Price price = new Price();
-        price.setFirstPart(Integer.parseInt(fullPrice[0]));
-        price.setSecondPart(Integer.parseInt(fullPrice[1]));
+        Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
                 By.xpath("//*[@data-priceband='1']/td/div[@class='available']"));
@@ -152,6 +122,11 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public void saveSeats() {
+        WebElement closeHelpWindow = driver.findElement(By.xpath("//div[@class='cabinbagclose']/a"));
+        if (closeHelpWindow.isDisplayed()) {
+            closeHelpWindow.click();
+        }
+
         saveSeatsButton.click();
     }
 
@@ -168,5 +143,13 @@ public class FlightOptionsPage extends AbstractPage {
     public Insurance takeMissedFlightCoverButton() {
         missedFlightCoverButton.click();
         return null;
+    }
+
+    public void submit() {
+        continueButton.click();
+    }
+
+    public void goNext() {
+        noThancksButton.click();
     }
 }

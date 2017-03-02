@@ -1,13 +1,17 @@
 package com.epam.easyjet.test;
 
 import com.epam.easyjet.driver.DriverSingleton;
+import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.page.FlightsPage;
 import com.epam.easyjet.page.MainPage;
 import com.epam.easyjet.step.Steps;
+import com.epam.easyjet.util.HoldScriptUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
+
+import java.util.Set;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -34,13 +38,51 @@ public class AutomationTest {
         mainPage.setInfantCount(1);
         mainPage.setChildCount(1);
         mainPage.submit();
+
         FlightsPage flightsPage = new FlightsPage(driver);
         flightsPage.openPage();
+        Thread.sleep(1000);
         flightsPage.clickDeparturePrice();
+        Thread.sleep(1000);
         flightsPage.clickReturnPrice();
         Thread.sleep(1000);
         flightsPage.submit();
         System.out.println(driver.getCurrentUrl());
+
+        FlightOptionsPage flightOptionsPage = new FlightOptionsPage(driver);
+        flightOptionsPage.openPage();
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles = driver.getWindowHandles();
+        for (String windowHandle : handles) {
+            if (!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.addLuggageButton();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.getLuggage().toString();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.getSeat();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.chooseEconomSeat();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.chooseStandardSeat();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.saveSeats();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.chooseEconomSeat();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.chooseStandardSeat();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.saveSeats();
+        HoldScriptUtil.waitScriptLoading(driver);
+        Thread.sleep(1000);
+        flightOptionsPage.submit();
+        HoldScriptUtil.waitScriptLoading(driver);
+        flightOptionsPage.goNext();
     }
 
     /*@BeforeTest
