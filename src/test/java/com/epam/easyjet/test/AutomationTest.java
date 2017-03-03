@@ -90,10 +90,12 @@ public class AutomationTest {
 
         CarRentalPage carRentalPage = new CarRentalPage(driver);
         carRentalPage.openPage();
+        carRentalPage.selectCarPrice();
         Thread.sleep(1000);
         carRentalPage.addCarClick();
         Thread.sleep(1000);
         carRentalPage.submit();
+
     }
 
     /*@BeforeTest

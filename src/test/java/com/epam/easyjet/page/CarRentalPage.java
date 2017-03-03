@@ -19,6 +19,9 @@ public class CarRentalPage extends AbstractPage {
     @FindBy(id = "btnContinue")
     private WebElement continueButton;
 
+    @FindBy(xpath = "//div[1][@class='CarContainer']//span[@class='targetPrice']")
+    private WebElement priceOfCar;
+
     public CarRentalPage(WebDriver driver) {
         super(driver);
     }
@@ -34,6 +37,11 @@ public class CarRentalPage extends AbstractPage {
 
     public void submit() {
         continueButton.click();
+    }
+
+    public void selectCarPrice() {
+        String price = priceOfCar.getText();
+        System.out.println(price);
     }
 
 
