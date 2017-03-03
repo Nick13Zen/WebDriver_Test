@@ -1,9 +1,7 @@
 package com.epam.easyjet.test;
 
 import com.epam.easyjet.driver.DriverSingleton;
-import com.epam.easyjet.page.FlightOptionsPage;
-import com.epam.easyjet.page.FlightsPage;
-import com.epam.easyjet.page.MainPage;
+import com.epam.easyjet.page.*;
 import com.epam.easyjet.step.Steps;
 import com.epam.easyjet.util.HoldScriptUtil;
 import org.openqa.selenium.WebDriver;
@@ -73,6 +71,7 @@ public class AutomationTest {
         HoldScriptUtil.waitScriptLoading(driver);
         flightOptionsPage.saveSeats();
         HoldScriptUtil.waitScriptLoading(driver);
+        Thread.sleep(1000);
         flightOptionsPage.chooseEconomSeat();
         HoldScriptUtil.waitScriptLoading(driver);
         flightOptionsPage.chooseStandardSeat();
@@ -83,6 +82,18 @@ public class AutomationTest {
         flightOptionsPage.submit();
         HoldScriptUtil.waitScriptLoading(driver);
         flightOptionsPage.goNext();
+
+        HotelPage hotelPage = new HotelPage(driver);
+        hotelPage.openPage();
+        Thread.sleep(4000);
+        hotelPage.submit();
+
+        CarRentalPage carRentalPage = new CarRentalPage(driver);
+        carRentalPage.openPage();
+        Thread.sleep(1000);
+        carRentalPage.addCarClick();
+        Thread.sleep(1000);
+        carRentalPage.submit();
     }
 
     /*@BeforeTest
