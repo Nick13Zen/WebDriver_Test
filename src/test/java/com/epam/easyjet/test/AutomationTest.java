@@ -135,15 +135,15 @@ public class AutomationTest {
 //        Assert.assertTrue(steps.isWarningDisplayed());
 //    }
 
-    @Test(dataProvider = "valid client count")
-    public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        Flight flight1 = new Flight();
-        flight1.setAdultCount(adultCount);
-        flight1.setChildCount(childCount);
-        flight1.setInfantCount(infantCount);
-        steps.setClientCount(flight1);
-        Assert.assertTrue(!steps.isWarningDisplayed());
-    }
+//    @Test(dataProvider = "valid client count")
+//    public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
+//       Flight flight1 = new Flight();
+//        flight1.setAdultCount(adultCount);
+//        flight1.setChildCount(childCount);
+//        flight1.setInfantCount(infantCount);
+//        steps.setClientCount(flight1);
+//        Assert.assertTrue(!steps.isWarningDisplayed());
+//    }
 
     @Test
     public void testMainPage() throws Exception {
