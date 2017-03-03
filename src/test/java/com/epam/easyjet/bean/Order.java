@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class Order {
-    private List<Race> races;
+    private List<Flight> flights;
     private List<Luggage> luggage;
     private Insurance insurance;
     private Car car;
@@ -28,7 +28,7 @@ public class Order {
 
         Order order = (Order) o;
 
-        if (races != null ? !races.equals(order.races) : order.races != null) {
+        if (flights != null ? !flights.equals(order.flights) : order.flights != null) {
             return false;
         }
         if (luggage != null ? !luggage.equals(order.luggage) : order.luggage != null) {
@@ -49,7 +49,7 @@ public class Order {
 
     @Override
     public int hashCode() {
-        int result = races != null ? races.hashCode() : 0;
+        int result = flights != null ? flights.hashCode() : 0;
         result = 31 * result + (luggage != null ? luggage.hashCode() : 0);
         result = 31 * result + (insurance != null ? insurance.hashCode() : 0);
         result = 31 * result + (car != null ? car.hashCode() : 0);
@@ -58,12 +58,12 @@ public class Order {
         return result;
     }
 
-    public List<Race> getRaces() {
-        return races;
+    public List<Flight> getFlights() {
+        return flights;
     }
 
-    public void setRaces(List<Race> races) {
-        this.races = races;
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
     }
 
     public List<Luggage> getLuggage() {

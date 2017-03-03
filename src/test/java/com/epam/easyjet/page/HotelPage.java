@@ -1,7 +1,5 @@
 package com.epam.easyjet.page;
 
-import com.epam.easyjet.bean.Hotel;
-import org.junit.experimental.theories.Theories;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -25,6 +22,8 @@ public class HotelPage extends AbstractPage {
     @FindBy(id = "bookingp_iframe")
     private WebElement frameElement;
 
+    private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
+
     public HotelPage(WebDriver driver) {
         super(driver);
     }
@@ -39,17 +38,13 @@ public class HotelPage extends AbstractPage {
         addRoomButton.click();
     }
 
-    public void submit() {
+    public void submitPage() {
         driver.switchTo().defaultContent();
         continueButton.click();
     }
 
-    public boolean isHotelAdded() throws Exception {
-        List<WebElement> list = driver.findElements(By.cssSelector("div#bookingDotComHotel"));
-        if (list.size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+    public boolean isHotelAdded() {
+        List<WebElement> list = driver.findElements(By.cssSelector(ADDED_HOTEL_FORM));
+        return list.size() != 0;
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Race {
+public class Flight {
 
     private String destinationPlace;
     private String departurePlace;
@@ -16,7 +16,7 @@ public class Race {
     private Price price;
     private List<Seats> seatsList;
 
-    public Race() {
+    public Flight() {
     }
 
     @Override
@@ -28,36 +28,36 @@ public class Race {
             return false;
         }
 
-        Race race = (Race) o;
+        Flight flight = (Flight) o;
 
-        if (adultCount != race.adultCount) {
+        if (adultCount != flight.adultCount) {
             return false;
         }
 
-        if (childCount != race.childCount) {
+        if (childCount != flight.childCount) {
             return false;
         }
 
-        if (infantCount != race.infantCount) {
+        if (infantCount != flight.infantCount) {
             return false;
         }
 
-        if (destinationPlace != null ? !destinationPlace.equals(race.destinationPlace) : race.destinationPlace != null) {
+        if (destinationPlace != null ? !destinationPlace.equals(flight.destinationPlace) : flight.destinationPlace != null) {
             return false;
         }
 
-        if (departurePlace != null ? !departurePlace.equals(race.departurePlace) : race.departurePlace != null) {
+        if (departurePlace != null ? !departurePlace.equals(flight.departurePlace) : flight.departurePlace != null) {
             return false;
         }
 
-        if (destinationDate != null ? !destinationDate.equals(race.destinationDate) : race.destinationDate != null) {
+        if (destinationDate != null ? !destinationDate.equals(flight.destinationDate) : flight.destinationDate != null) {
             return false;
         }
 
-        if (price != null ? !price.equals(race.price) : race.price != null) {
+        if (price != null ? !price.equals(flight.price) : flight.price != null) {
             return false;
         }
-        return seatsList != null ? seatsList.equals(race.seatsList) : race.seatsList == null;
+        return seatsList != null ? seatsList.equals(flight.seatsList) : flight.seatsList == null;
     }
 
     @Override

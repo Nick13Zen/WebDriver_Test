@@ -44,7 +44,20 @@ public class FlightOptionsPage extends AbstractPage {
     private WebElement continueButton;
 
     @FindBy(id = "ContinueButton")
-    private WebElement noThancksButton;
+    private WebElement noThanksButton;
+
+    private static final String STANDART_TYPE_TEXT = "standard";
+    private static final String ECONOM_TYPE_TEXT = "econom";
+    private static final String XL_TYPE_TEXT = "XL";
+
+    private static final String PRICE_ECONOM_XPATH = "//*[@id='price_band_3']/div/p[@class='band_price']";
+    private static final String PRICE_STANDART_XPATH = "//*[@id='price_band_2']/div/p[@class='band_price']";
+    private static final String PRICE_XL_XPATH = "//*[@id='price_band_1']/div/p[@class='band_price']";
+    private static final String SEAT_ECONOM_BUTTON_XPATH = "//*[@data-priceband='3']/td/div[@class='available']";
+    private static final String SEAT_STANDART_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
+    private static final String SEAT_XL_BUTTON_XPATH = "//*[@data-priceband='1']/td/div[@class='available']";
+
+    private static final String HELP_WINDOW_XPATH = "//div[@class='cabinbagclose']/a";
 
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
@@ -73,56 +86,56 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public Seats chooseEconomSeat() throws Exception {
-        Thread.sleep(3000);
+        Thread.sleep(3000);//TODO
         WebElement priceBand = driver.findElement(
-                By.xpath("//*[@id='price_band_3']/div/p[@class='band_price']"));
+                By.xpath(PRICE_ECONOM_XPATH));
 
         Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
-                By.xpath("//*[@data-priceband='3']/td/div[@class='available']"));
+                By.xpath(SEAT_ECONOM_BUTTON_XPATH));
         seatButton.click();
 
         Seats seats = new Seats();
         seats.setPrice(price);
-        seats.setType("econom");
+        seats.setType(ECONOM_TYPE_TEXT);
         return seats;
     }
 
     public Seats chooseStandardSeat() {
         WebElement priceBand = driver.findElement(
-                By.xpath("//*[@id='price_band_2']/div/p[@class='band_price']"));
+                By.xpath(PRICE_STANDART_XPATH));
 
         Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
-                By.xpath("//*[@data-priceband='2']/td/div[@class='available']"));
+                By.xpath(SEAT_STANDART_BUTTON_XPATH));
         seatButton.click();
 
         Seats seats = new Seats();
         seats.setPrice(price);
-        seats.setType("standard");
+        seats.setType(STANDART_TYPE_TEXT);
         return seats;
     }
 
     public Seats chooseXLSeat() {
         WebElement priceBand = driver.findElement(
-                By.xpath("//*[@id='price_band_1']/div/p[@class='band_price']"));
+                By.xpath(PRICE_XL_XPATH));
 
         Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
         WebElement seatButton = driver.findElement(
-                By.xpath("//*[@data-priceband='1']/td/div[@class='available']"));
+                By.xpath(SEAT_XL_BUTTON_XPATH));
         seatButton.click();
 
         Seats seats = new Seats();
         seats.setPrice(price);
-        seats.setType("XL");
+        seats.setType(XL_TYPE_TEXT);
         return seats;
     }
 
     public void saveSeats() {
-        WebElement closeHelpWindow = driver.findElement(By.xpath("//div[@class='cabinbagclose']/a"));
+        WebElement closeHelpWindow = driver.findElement(By.xpath(HELP_WINDOW_XPATH));
         if (closeHelpWindow.isDisplayed()) {
             closeHelpWindow.click();
         }
@@ -145,11 +158,11 @@ public class FlightOptionsPage extends AbstractPage {
         return null;
     }
 
-    public void submit() {
+    public void submitPage() {
         continueButton.click();
     }
 
     public void goNext() {
-        noThancksButton.click();
+        noThanksButton.click();
     }
 }

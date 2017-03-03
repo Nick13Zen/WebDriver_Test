@@ -1,19 +1,14 @@
 package com.epam.easyjet.test;
 
 import com.epam.easyjet.bean.Order;
-import com.epam.easyjet.bean.Race;
+import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
-import com.epam.easyjet.page.*;
 import com.epam.easyjet.step.Steps;
-import com.epam.easyjet.util.HoldScriptUtil;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -109,7 +104,6 @@ public class AutomationTest {
     @BeforeTest
     public void setUp() {
         steps = new Steps();
-        steps.initDriver();
     }
 
     @DataProvider(name = "invalid client count")
@@ -134,40 +128,44 @@ public class AutomationTest {
         };
     }
 
-    /*@Test(dataProvider = "invalid client count")
-    public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        steps.setClientCount(adultCount, childCount, infantCount);
-        Thread.sleep(1000);
-        Assert.assertTrue(steps.isWarningDisplayed());
-    }*/
+//    @Test(dataProvider = "invalid client count")
+//    public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
+//        steps.setClientCount(adultCount, childCount, infantCount);
+//        Thread.sleep(1000);
+//        Assert.assertTrue(steps.isWarningDisplayed());
+//    }
 
     @Test(dataProvider = "valid client count")
     public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        steps.setClientCount(adultCount, childCount, infantCount);
+        Flight flight1 = new Flight();
+        flight1.setAdultCount(adultCount);
+        flight1.setChildCount(childCount);
+        flight1.setInfantCount(infantCount);
+        steps.setClientCount(flight1);
         Assert.assertTrue(!steps.isWarningDisplayed());
     }
 
     @Test
     public void testMainPage() throws Exception {
-        Race race1 = new Race();
-        race1.setDeparturePlace("Madrid");
-        race1.setDestinationPlace("Lisbon");
-        race1.setDestinationDate("2017-03-19");
-        race1.setAdultCount(1);
-        race1.setChildCount(1);
-        race1.setInfantCount(1);
-        Race race2 = new Race();
-        race2.setDeparturePlace("Lisbon");
-        race2.setDestinationPlace("Madrid");
-        race2.setDestinationDate("2017-03-24");
-        race2.setAdultCount(1);
-        race2.setChildCount(1);
-        race2.setInfantCount(1);
+        Flight flight1 = new Flight();
+        flight1.setDeparturePlace("Madrid");
+        flight1.setDestinationPlace("Lisbon");
+        flight1.setDestinationDate("2017-03-19");
+        flight1.setAdultCount(1);
+        flight1.setChildCount(1);
+        flight1.setInfantCount(1);
+        Flight flight2 = new Flight();
+        flight2.setDeparturePlace("Lisbon");
+        flight2.setDestinationPlace("Madrid");
+        flight2.setDestinationDate("2017-03-24");
+        flight2.setAdultCount(1);
+        flight2.setChildCount(1);
+        flight2.setInfantCount(1);
         Order order = new Order();
-        ArrayList<Race> races = new ArrayList<Race>();
-        races.add(race1);
-        races.add(race2);
-        order.setRaces(races);
+        ArrayList<Flight> flights = new ArrayList<Flight>();
+        flights.add(flight1);
+        flights.add(flight2);
+        order.setFlights(flights);
         steps.fillMainPage(order);
     }
 

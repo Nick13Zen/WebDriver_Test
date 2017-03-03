@@ -44,6 +44,12 @@ public class MainPage extends AbstractPage {
     @FindBy(css = "a[title='Click to choose a return date']")
     private WebElement destinationDateButton;
 
+    private static final String WARNING_FORM_CLOSE_BUTTON_XPATH = "close-drawer-link";
+    private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
+    private static final String SELECTABLE_DAY_BUTTON_XPATH = "a.selectable";
+    private static final String WARNING_FORM_XPATH = "div.anim-slide-rtl.drawer-section-wrapper";
+
+
     public MainPage(WebDriver driver) {
         super(driver);
     }
@@ -52,7 +58,7 @@ public class MainPage extends AbstractPage {
         driver.get(PAGE_URL);
         PageFactory.initElements(this.driver, this);
         if (isWarningPresents()) {
-            WebElement closeButton = driver.findElement(By.id("close-drawer-link"));
+            WebElement closeButton = driver.findElement(By.id(WARNING_FORM_CLOSE_BUTTON_XPATH));
             closeButton.click();
         }
     }
@@ -71,10 +77,12 @@ public class MainPage extends AbstractPage {
 
     public void chooseDepartureDate(String date) {
         departureDateButton.click();
+        pickDate(date);
     }
 
     public void chooseDestinationDate(String date) {
         destinationDateButton.click();
+        pickDate(date);
     }
 
     public void setAdultCount(int count) {
@@ -95,30 +103,25 @@ public class MainPage extends AbstractPage {
         addInfantInput.sendKeys(Keys.ENTER);
     }
 
-    public void submit() {
-
+    public void submitPage() {
         submitButton.click();
         if (isWarningPresents()) {
            infoSubmitButton.click();
         }
     }
 
-    public void pickDate(String date) {
+    private void pickDate(String date) {
         WebElement departureDateValue = driver.
-                findElement(By.cssSelector("div[data-date='" + date + "'")).
-                findElement(By.cssSelector("a.selectable"));
+                findElement(By.cssSelector(CALENDAR_DAY_BUTTON_XPATH + date + "'")).
+                findElement(By.cssSelector(SELECTABLE_DAY_BUTTON_XPATH));
         departureDateValue.click();
     }
 
     public boolean isWarningPresents() {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         List<WebElement> list = driver.
-                findElements(By.cssSelector("div.anim-slide-rtl.drawer-section-wrapper"));
+                findElements(By.cssSelector(WARNING_FORM_XPATH));
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        if (list.size() != 0 && list.get(0).isDisplayed()) {
-            return true;
-        } else {
-            return false;
-        }
+        return list.size() != 0 && list.get(0).isDisplayed();
     }
 }

@@ -1,7 +1,6 @@
 package com.epam.easyjet.page;
 
 import com.epam.easyjet.bean.Car;
-import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,7 +38,7 @@ public class CarRentalPage extends AbstractPage {
         addCar.click();
     }
 
-    public void submit() {
+    public void submitPage() {
         continueButton.click();
     }
 

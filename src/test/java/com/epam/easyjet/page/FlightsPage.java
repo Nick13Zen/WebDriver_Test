@@ -2,16 +2,12 @@ package com.epam.easyjet.page;
 
 import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.util.PriceConverter;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.FindsByXPath;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +43,13 @@ public class FlightsPage extends AbstractPage {
     @FindBy(id = "SelectLowestFlightsTab")
     private WebElement threeWeeksButton;
 
+    private static final String PRICE_DEPARTURE_XPATH_PART1 = "//div[@id='OutboundLowestFlightDetails']//li[";
+    private static final String PRICE_XPATH_PART2 = "][contains(@class,'standard')]";
+
+    private static final String PRICE_RETURN_XPATH_PART1 = "//div[@id='ReturnLowestFlightDetails']//li[";
+
+    private static final int COUNT_OF_LINES_IN_WEEK = 3;
+
 
     public FlightsPage(WebDriver driver) {
         super(driver);
@@ -54,16 +57,16 @@ public class FlightsPage extends AbstractPage {
     }
 
     public void pickOutBoundDate() {
-        for (int i = 0; i <= 2; i++) {
-            List<WebElement> summ = driver.findElements(By.xpath("//div[@id='OutboundLowestFlightDetails']//li[" + i + "][contains(@class,'standard')]"));
+        for (int i = 0; i < COUNT_OF_LINES_IN_WEEK; i++) {
+            List<WebElement> summ = driver.findElements(By.xpath(PRICE_DEPARTURE_XPATH_PART1 + i + PRICE_XPATH_PART2));
             outboundDays.addAll(summ);
         }
         outboundDays.get(1).click();
     }
 
     public void pickReturnDate() {
-        for (int i = 0; i <= 2; i++) {
-            List<WebElement> summ = driver.findElements(By.xpath("//div[@id='ReturnLowestFlightDetails']//li[" + i + "][contains(@class,'standard')]"));
+        for (int i = 0; i < COUNT_OF_LINES_IN_WEEK; i++) {
+            List<WebElement> summ = driver.findElements(By.xpath(PRICE_RETURN_XPATH_PART1 + i + PRICE_XPATH_PART2));
             returnDays.addAll(summ);
         }
         returnDays.get(returnDays.size() - 1).click();
@@ -97,7 +100,7 @@ public class FlightsPage extends AbstractPage {
         selectReturnDate.click();
     }
 
-    public void submit() {
+    public void submitPage() {
         continueButton.click();
     }
 }
