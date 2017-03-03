@@ -1,5 +1,7 @@
 package com.epam.easyjet.page;
 
+import com.epam.easyjet.bean.Price;
+import com.epam.easyjet.util.PriceConverter;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.By;
@@ -21,12 +23,6 @@ public class FlightsPage extends AbstractPage {
     List<WebElement> outboundDays = new ArrayList<WebElement>();
     List<WebElement> returnDays = new ArrayList<WebElement>();
 
-
-    public FlightsPage(WebDriver driver) {
-        super(driver);
-
-    }
-
 //div[@id='OutboundLowestFlightDetails']//li[1][contains(@class,'standard')]
 
     //div[@class='OutboundDaySlider']/div[@class='day selected']/ul[@class='middleRow']
@@ -40,12 +36,14 @@ public class FlightsPage extends AbstractPage {
     private WebElement selectReturnDate;
 
     //div[@class='OutboundDaySlider']//ul[@class='middleRow']//span[contains(@class,'priceSmaller')]
-    @FindBy(xpath = "//div[@class='OutboundDaySlider']//@charge-debit-full")
+    //div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]
+    @FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]")
     //div[@class='OutboundDaySlider']//@charge-debit-full
     private WebElement selectOutBoundPrice;
 
     //div[@class='ReturnDaySlider']//ul[@class='middleRow']//span[contains(@class,'priceSmaller')]
-    @FindBy(xpath = "//div[@class='ReturnDaySlider']//@charge-debit-full")
+    @FindBy(xpath = "//div[@class='ReturnDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]")
+    //div[@class='ReturnDaySlider']//@charge-debit-full"
     private WebElement selectReturnPrice;
 
     @FindBy(xpath = "//div[contains(@class,'TotalCost')]//span[@id='price5']")
@@ -56,6 +54,12 @@ public class FlightsPage extends AbstractPage {
 
     @FindBy(id = "SelectLowestFlightsTab")
     private WebElement threeWeeksButton;
+
+
+    public FlightsPage(WebDriver driver) {
+        super(driver);
+
+    }
 
     public void pickOutBoundDate() {
         for (int i = 0; i <= 2; i++) {
@@ -86,14 +90,19 @@ public class FlightsPage extends AbstractPage {
         selectOutBoundDate.click();
     }
 
-    public void selectOutBoundPrice() {
-       String price = selectOutBoundDate.getAttribute("charge-debit-full");
-       System.out.println(price);
+    public Price selectOutBoundPrice() {
+        Price price = PriceConverter.convertStringPrice(selectOutBoundPrice.getText());
+
+        System.out.print(price.getFirstPart());
+        System.out.println(price.getSecondPart());
+        return price;
     }
 
-    public void selectReturnPrice() {
-        String price = selectOutBoundDate.getAttribute("charge-debit-full");
-        System.out.println(price);
+    public Price selectReturnPrice() {
+        Price price = PriceConverter.convertStringPrice(selectReturnPrice.getText());
+        System.out.print(price.getFirstPart());
+        System.out.println(price.getSecondPart());
+        return price;
     }
 
 
