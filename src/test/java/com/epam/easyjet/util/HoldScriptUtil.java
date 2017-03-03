@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
  */
 public class HoldScriptUtil {
     public static void waitScriptLoading(WebDriver driver) throws InterruptedException {
+
         WebElement loadElem = driver.findElement(By.cssSelector("div.holdOptionBusyIconContainer"));
         boolean flag = loadElem.isEnabled();
         while (flag){

@@ -1,5 +1,7 @@
 package com.epam.easyjet.test;
 
+import com.epam.easyjet.bean.Order;
+import com.epam.easyjet.bean.Race;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.*;
 import com.epam.easyjet.step.Steps;
@@ -9,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,7 +26,7 @@ public class AutomationTest {
     /**
      * Method should be deleted, when all pages will be ready
      */
-    @Test
+   /* @Test
     public void test() throws Exception {
         driver = DriverSingleton.getDriver();
         MainPage mainPage = new MainPage(driver);
@@ -85,20 +89,24 @@ public class AutomationTest {
 
         HotelPage hotelPage = new HotelPage(driver);
         hotelPage.openPage();
-        Thread.sleep(4000);
+        hotelPage.addHotel();
         hotelPage.submit();
 
         CarRentalPage carRentalPage = new CarRentalPage(driver);
         carRentalPage.openPage();
-        carRentalPage.selectCarPrice();
+        carRentalPage.selectCarParameters();
         Thread.sleep(1000);
         carRentalPage.addCarClick();
         Thread.sleep(1000);
         carRentalPage.submit();
 
-    }
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
+        checkoutPage.openPage();
+        Thread.sleep(4000);
+        checkoutPage.getFinalPrice();
+    }*/
 
-    /*@BeforeTest
+    @BeforeTest
     public void setUp() {
         steps = new Steps();
         steps.initDriver();
@@ -111,7 +119,8 @@ public class AutomationTest {
                 {0, 41, 0},
                 {20, 21, 0},
                 {1, 1, 2},
-                {8, 8, 8}
+                {8, 8, 8},
+                {0, 0, 0}
         };
     }
 
@@ -125,15 +134,45 @@ public class AutomationTest {
         };
     }
 
-    @Test(dataProvider = "invalid client count")
+    /*@Test(dataProvider = "invalid client count")
     public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
         steps.setClientCount(adultCount, childCount, infantCount);
+        Thread.sleep(1000);
         Assert.assertTrue(steps.isWarningDisplayed());
-    }
+    }*/
 
     @Test(dataProvider = "valid client count")
     public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
         steps.setClientCount(adultCount, childCount, infantCount);
         Assert.assertTrue(!steps.isWarningDisplayed());
-    }*/
+    }
+
+    @Test
+    public void testMainPage() throws Exception {
+        Race race1 = new Race();
+        race1.setDeparturePlace("Madrid");
+        race1.setDestinationPlace("Lisbon");
+        race1.setDestinationDate("2017-03-19");
+        race1.setAdultCount(1);
+        race1.setChildCount(1);
+        race1.setInfantCount(1);
+        Race race2 = new Race();
+        race2.setDeparturePlace("Lisbon");
+        race2.setDestinationPlace("Madrid");
+        race2.setDestinationDate("2017-03-24");
+        race2.setAdultCount(1);
+        race2.setChildCount(1);
+        race2.setInfantCount(1);
+        Order order = new Order();
+        ArrayList<Race> races = new ArrayList<Race>();
+        races.add(race1);
+        races.add(race2);
+        order.setRaces(races);
+        steps.fillMainPage(order);
+    }
+
+    @AfterClass
+    public void driverRelease() {
+        DriverSingleton.closeDriver();
+    }
 }

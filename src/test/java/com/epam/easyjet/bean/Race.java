@@ -7,13 +7,16 @@ import java.util.List;
  */
 public class Race {
 
-    private String from;
-    private String to;
+    private String destinationPlace;
+    private String departurePlace;
+    private String destinationDate;
+    private int adultCount;
+    private int childCount;
+    private int infantCount;
     private Price price;
     private List<Seats> seatsList;
 
     public Race() {
-
     }
 
     @Override
@@ -27,42 +30,95 @@ public class Race {
 
         Race race = (Race) o;
 
-        if (from != null ? !from.equals(race.from) : race.from != null) {
+        if (adultCount != race.adultCount) {
             return false;
         }
-        if (to != null ? !to.equals(race.to) : race.to != null) {
+
+        if (childCount != race.childCount) {
             return false;
         }
+
+        if (infantCount != race.infantCount) {
+            return false;
+        }
+
+        if (destinationPlace != null ? !destinationPlace.equals(race.destinationPlace) : race.destinationPlace != null) {
+            return false;
+        }
+
+        if (departurePlace != null ? !departurePlace.equals(race.departurePlace) : race.departurePlace != null) {
+            return false;
+        }
+
+        if (destinationDate != null ? !destinationDate.equals(race.destinationDate) : race.destinationDate != null) {
+            return false;
+        }
+
         if (price != null ? !price.equals(race.price) : race.price != null) {
             return false;
         }
         return seatsList != null ? seatsList.equals(race.seatsList) : race.seatsList == null;
-
     }
 
     @Override
     public int hashCode() {
-        int result = from != null ? from.hashCode() : 0;
-        result = 31 * result + (to != null ? to.hashCode() : 0);
+        int result = destinationPlace != null ? destinationPlace.hashCode() : 0;
+        result = 31 * result + (departurePlace != null ? departurePlace.hashCode() : 0);
+        result = 31 * result + (destinationDate != null ? destinationDate.hashCode() : 0);
+        result = 31 * result + adultCount;
+        result = 31 * result + childCount;
+        result = 31 * result + infantCount;
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (seatsList != null ? seatsList.hashCode() : 0);
         return result;
     }
 
-    public String getFrom() {
-        return from;
+    public String getDestinationPlace() {
+        return destinationPlace;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setDestinationPlace(String destinationPlace) {
+        this.destinationPlace = destinationPlace;
     }
 
-    public String getTo() {
-        return to;
+    public String getDeparturePlace() {
+        return departurePlace;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setDeparturePlace(String departurePlace) {
+        this.departurePlace = departurePlace;
+    }
+
+    public String getDestinationDate() {
+        return destinationDate;
+    }
+
+    public void setDestinationDate(String destinationDate) {
+        this.destinationDate = destinationDate;
+    }
+
+    public int getAdultCount() {
+        return adultCount;
+    }
+
+    public void setAdultCount(int adultCount) {
+        this.adultCount = adultCount;
+    }
+
+    public int getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(int childCount) {
+        this.childCount = childCount;
+    }
+
+    public int getInfantCount() {
+        return infantCount;
+    }
+
+    public void setInfantCount(int infantCount) {
+        this.infantCount = infantCount;
     }
 
     public Price getPrice() {

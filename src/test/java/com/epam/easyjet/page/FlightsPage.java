@@ -23,27 +23,19 @@ public class FlightsPage extends AbstractPage {
     List<WebElement> outboundDays = new ArrayList<WebElement>();
     List<WebElement> returnDays = new ArrayList<WebElement>();
 
-//div[@id='OutboundLowestFlightDetails']//li[1][contains(@class,'standard')]
 
-    //div[@class='OutboundDaySlider']/div[@class='day selected']/ul[@class='middleRow']
-    //@FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']")
-    //css = "li.selectable.alt-lowest"
     @FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]")
     private WebElement selectOutBoundDate;
 
-    //div[@class='ReturnDaySlider']/div[@class='day selected']/ul[@class='middleRow']
+
     @FindBy(xpath = "//div[@class='ReturnDaySlider']//div[@class='day selected']//a[1]")
     private WebElement selectReturnDate;
 
-    //div[@class='OutboundDaySlider']//ul[@class='middleRow']//span[contains(@class,'priceSmaller')]
-    //div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]
+
     @FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]")
-    //div[@class='OutboundDaySlider']//@charge-debit-full
     private WebElement selectOutBoundPrice;
 
-    //div[@class='ReturnDaySlider']//ul[@class='middleRow']//span[contains(@class,'priceSmaller')]
     @FindBy(xpath = "//div[@class='ReturnDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]")
-    //div[@class='ReturnDaySlider']//@charge-debit-full"
     private WebElement selectReturnPrice;
 
     @FindBy(xpath = "//div[contains(@class,'TotalCost')]//span[@id='price5']")
@@ -92,16 +84,11 @@ public class FlightsPage extends AbstractPage {
 
     public Price selectOutBoundPrice() {
         Price price = PriceConverter.convertStringPrice(selectOutBoundPrice.getText());
-
-        System.out.print(price.getFirstPart());
-        System.out.println(price.getSecondPart());
         return price;
     }
 
     public Price selectReturnPrice() {
         Price price = PriceConverter.convertStringPrice(selectReturnPrice.getText());
-        System.out.print(price.getFirstPart());
-        System.out.println(price.getSecondPart());
         return price;
     }
 

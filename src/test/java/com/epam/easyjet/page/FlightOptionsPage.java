@@ -67,13 +67,13 @@ public class FlightOptionsPage extends AbstractPage {
         Price price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
         luggage.setPrice(price);
-        System.out.println(luggageType.getText());
         luggage.setType(luggageType.getText());
 
         return luggage;
     }
 
-    public Seats chooseEconomSeat() {
+    public Seats chooseEconomSeat() throws Exception {
+        Thread.sleep(3000);
         WebElement priceBand = driver.findElement(
                 By.xpath("//*[@id='price_band_3']/div/p[@class='band_price']"));
 

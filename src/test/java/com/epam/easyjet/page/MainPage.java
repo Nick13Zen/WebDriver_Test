@@ -71,12 +71,10 @@ public class MainPage extends AbstractPage {
 
     public void chooseDepartureDate(String date) {
         departureDateButton.click();
-        pickDate(date);
     }
 
     public void chooseDestinationDate(String date) {
         destinationDateButton.click();
-        pickDate(date);
     }
 
     public void setAdultCount(int count) {
@@ -105,7 +103,7 @@ public class MainPage extends AbstractPage {
         }
     }
 
-    private void pickDate(String date) {
+    public void pickDate(String date) {
         WebElement departureDateValue = driver.
                 findElement(By.cssSelector("div[data-date='" + date + "'")).
                 findElement(By.cssSelector("a.selectable"));
@@ -117,10 +115,10 @@ public class MainPage extends AbstractPage {
         List<WebElement> list = driver.
                 findElements(By.cssSelector("div.anim-slide-rtl.drawer-section-wrapper"));
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        if (list.size() == 0) {
-            return false;
-        } else {
+        if (list.size() != 0 && list.get(0).isDisplayed()) {
             return true;
+        } else {
+            return false;
         }
     }
 }
