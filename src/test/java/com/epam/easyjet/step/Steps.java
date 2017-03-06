@@ -5,6 +5,7 @@ import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.MainPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -66,6 +67,10 @@ public class Steps {
         setRoutePlace(order.getFlights().get(0));
         setRouteDate(order.getFlights());
         setClientCount(order.getFlights().get(0));
-        mainPage.submitPage();
+        try {
+            mainPage.submitPage();
+        } catch (StaleElementReferenceException e) {
+            System.out.println(e.getMessage()); //TODO
+        }
     }
 }

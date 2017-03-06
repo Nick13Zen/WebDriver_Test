@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,8 @@ public class FlightsPage extends AbstractPage {
 
     }
 
+
+/*
     public void pickOutBoundDate() {
         for (int i = 0; i < COUNT_OF_LINES_IN_WEEK; i++) {
             List<WebElement> summ = driver.findElements(By.xpath(PRICE_DEPARTURE_XPATH_PART1 + i + PRICE_XPATH_PART2));
@@ -72,10 +77,11 @@ public class FlightsPage extends AbstractPage {
         returnDays.get(returnDays.size() - 1).click();
     }
 
+
     public void clickthreeWeeksButton() {
         threeWeeksButton.click();
     }
-
+*/
 
     public void openPage() {
         PageFactory.initElements(this.driver, this);
