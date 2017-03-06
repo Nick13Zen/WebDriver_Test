@@ -38,8 +38,9 @@ public class FlightStep {
     public void setRoutePrice(List<Flight> flights) {
         if (flights.size() == TWO_WAYS_FLIGHTS_COUNT) {
             flights.get(0).setPrice(flightsPage.selectOutBoundPrice());
-        } else if (flights.size() == ONE_WAY_FLIGHTS_COUNT) {
             flights.get(1).setPrice(flightsPage.selectReturnPrice());
+        } else if (flights.size() == ONE_WAY_FLIGHTS_COUNT) {
+            flights.get(0).setPrice(flightsPage.selectOutBoundPrice());
         }
     }
 
