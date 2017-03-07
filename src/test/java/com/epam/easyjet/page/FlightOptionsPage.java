@@ -10,10 +10,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class FlightOptionsPage extends AbstractPage {
 
-    @FindBy(xpath = "//button[@id='addDefaultHoldBaggage']")
+    @FindBy(id = "addDefaultHoldBaggage")
     private WebElement luggageButton;
 
     @FindBy(xpath = "//*[@class='holdScalePrice']")
@@ -46,18 +47,21 @@ public class FlightOptionsPage extends AbstractPage {
     @FindBy(id = "ContinueButton")
     private WebElement noThanksButton;
 
-    private static final String STANDART_TYPE_TEXT = "standard";
+    private static final String STANDARD_TYPE_TEXT = "standard";
     private static final String ECONOM_TYPE_TEXT = "econom";
     private static final String XL_TYPE_TEXT = "XL";
 
     private static final String PRICE_ECONOM_XPATH = "//*[@id='price_band_3']/div/p[@class='band_price']";
-    private static final String PRICE_STANDART_XPATH = "//*[@id='price_band_2']/div/p[@class='band_price']";
+    private static final String PRICE_STANDARD_XPATH = "//*[@id='price_band_2']/div/p[@class='band_price']";
     private static final String PRICE_XL_XPATH = "//*[@id='price_band_1']/div/p[@class='band_price']";
     private static final String SEAT_ECONOM_BUTTON_XPATH = "//*[@data-priceband='3']/td/div[@class='available']";
-    private static final String SEAT_STANDART_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
+    private static final String SEAT_STANDARD_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
     private static final String SEAT_XL_BUTTON_XPATH = "//*[@data-priceband='1']/td/div[@class='available']";
 
     private static final String HELP_WINDOW_XPATH = "//div[@class='cabinbagclose']/a";
+
+    private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
+    private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
 
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
@@ -68,6 +72,8 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public void addLuggageButton() {
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector("div.holdOptionBusyIconContainer")));
         luggageButton.click();
     }
 
@@ -77,6 +83,10 @@ public class FlightOptionsPage extends AbstractPage {
 
     public Luggage getLuggage() {
         Luggage luggage = new Luggage();
+
+        driverWait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("div.holdOptionBusyIconContainer")));
+
         Price price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
         luggage.setPrice(price);
@@ -86,51 +96,31 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public Seats chooseEconomSeat() throws Exception {
-        Thread.sleep(3000);//TODO
-        WebElement priceBand = driver.findElement(
-                By.xpath(PRICE_ECONOM_XPATH));
-
-        Price price = PriceConverter.convertStringPrice(priceBand.getText());
-
-        WebElement seatButton = driver.findElement(
-                By.xpath(SEAT_ECONOM_BUTTON_XPATH));
-        seatButton.click();
-
-        Seats seats = new Seats();
-        seats.setPrice(price);
-        seats.setType(ECONOM_TYPE_TEXT);
-        return seats;
+        return chooseSeats(ECONOM_TYPE_TEXT, SEAT_ECONOM_BUTTON_XPATH, PRICE_ECONOM_XPATH);
     }
 
     public Seats chooseStandardSeat() {
-        WebElement priceBand = driver.findElement(
-                By.xpath(PRICE_STANDART_XPATH));
-
-        Price price = PriceConverter.convertStringPrice(priceBand.getText());
-
-        WebElement seatButton = driver.findElement(
-                By.xpath(SEAT_STANDART_BUTTON_XPATH));
-        seatButton.click();
-
-        Seats seats = new Seats();
-        seats.setPrice(price);
-        seats.setType(STANDART_TYPE_TEXT);
-        return seats;
+        return chooseSeats(STANDARD_TYPE_TEXT, SEAT_STANDARD_BUTTON_XPATH, PRICE_STANDARD_XPATH);
     }
 
     public Seats chooseXLSeat() {
+        return chooseSeats(XL_TYPE_TEXT, SEAT_XL_BUTTON_XPATH, PRICE_XL_XPATH);
+    }
+
+    private Seats chooseSeats(String type, String buttonXpath, String priceXpath) {
         WebElement priceBand = driver.findElement(
-                By.xpath(PRICE_XL_XPATH));
+                By.xpath(priceXpath));
 
         Price price = PriceConverter.convertStringPrice(priceBand.getText());
 
+        driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
         WebElement seatButton = driver.findElement(
-                By.xpath(SEAT_XL_BUTTON_XPATH));
+                By.xpath(buttonXpath));
         seatButton.click();
 
         Seats seats = new Seats();
         seats.setPrice(price);
-        seats.setType(XL_TYPE_TEXT);
+        seats.setType(type);
         return seats;
     }
 
@@ -139,12 +129,10 @@ public class FlightOptionsPage extends AbstractPage {
         if (closeHelpWindow.isDisplayed()) {
             closeHelpWindow.click();
         }
-
         saveSeatsButton.click();
     }
 
     public Insurance takeInsurance() {
-
         return null;
     }
 
@@ -159,6 +147,9 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public void submitPage() {
+        driverWait.until(ExpectedConditions.attributeContains(continueButton,
+                DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON,
+                DISABLER_VALUE_FOR_CONTINUE_BUTTON));
         continueButton.click();
     }
 
