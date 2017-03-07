@@ -24,9 +24,12 @@ public class CarStep {
         driver.close();
     }
 
-    public void fillHotelPage(Order order) {
-
-        order.setCar(carRentalPage.selectCarParameters());
+    private Car setCarInfo() {
+        return carRentalPage.selectCarParameters();
+    }
+    
+    public void fillCarPage(Order order) {
+        order.setCar(setCarInfo());
         carRentalPage.addCarClick();
         try {
             carRentalPage.submitPage();
