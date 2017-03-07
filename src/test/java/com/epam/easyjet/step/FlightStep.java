@@ -3,6 +3,7 @@ package com.epam.easyjet.step;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
+import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.page.FlightsPage;
 import com.epam.easyjet.page.MainPage;
 import org.openqa.selenium.By;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -53,7 +55,18 @@ public class FlightStep {
         } catch (StaleElementReferenceException e) {
             System.out.println(e.getMessage()); //TODO
         }
-
+        closeAllChildWindows();
     }
 
+    private void closeAllChildWindows() {
+        String parentWindow = driver.getWindowHandle();
+        Set<String> handles = driver.getWindowHandles();
+        for (String windowHandle : handles) {
+            if (!windowHandle.equals(parentWindow)) {
+                driver.switchTo().window(windowHandle);
+                driver.close();
+            }
+        }
+        driver.switchTo().window(parentWindow);
+    }
 }

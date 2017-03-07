@@ -77,10 +77,6 @@ public class FlightOptionsPage extends AbstractPage {
         luggageButton.click();
     }
 
-    public void getSeat() {
-        chooseSeatsButton.click();
-    }
-
     public Luggage getLuggage() {
         Luggage luggage = new Luggage();
 
@@ -95,7 +91,11 @@ public class FlightOptionsPage extends AbstractPage {
         return luggage;
     }
 
-    public Seats chooseEconomSeat() throws Exception {
+    public void getSeat() {
+        chooseSeatsButton.click();
+    }
+
+    public Seats chooseEconomSeat() {
         return chooseSeats(ECONOM_TYPE_TEXT, SEAT_ECONOM_BUTTON_XPATH, PRICE_ECONOM_XPATH);
     }
 
@@ -129,19 +129,20 @@ public class FlightOptionsPage extends AbstractPage {
         if (closeHelpWindow.isDisplayed()) {
             closeHelpWindow.click();
         }
+        driverWait.until(ExpectedConditions.visibilityOf(saveSeatsButton));
         saveSeatsButton.click();
     }
 
     public Insurance takeInsurance() {
         return null;
-    }
+    } // TODO: 3/7/2017
 
-    public Insurance takeSingleTripInsuranceButton() {
+    public Insurance takeSingleTripInsuranceButton() { // TODO: 3/7/2017
         singleTripInsuranceButton.click();
         return null;
     }
 
-    public Insurance takeMissedFlightCoverButton() {
+    public Insurance takeMissedFlightCoverButton() { // TODO: 3/7/2017
         missedFlightCoverButton.click();
         return null;
     }

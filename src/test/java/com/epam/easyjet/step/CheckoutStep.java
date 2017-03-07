@@ -24,9 +24,9 @@ public class CheckoutStep {
         driver.close();
     }
 
-    public void fillCheckoutPage(Order order){
+    public Price fillCheckoutPage(Order order){
         Price finalPrice = checkoutPage.getFinalPrice();
-        order.setPrice(finalPrice);
+        return finalPrice;
     }
 
 }

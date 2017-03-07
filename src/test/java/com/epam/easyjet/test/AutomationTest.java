@@ -3,6 +3,8 @@ package com.epam.easyjet.test;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
+import com.epam.easyjet.page.FlightOptionsPage;
+import com.epam.easyjet.step.FlightOptionsPageSteps;
 import com.epam.easyjet.step.FlightStep;
 import com.epam.easyjet.step.MainPageSteps;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +20,7 @@ public class AutomationTest {
     WebDriver driver;
     MainPageSteps mainPageSteps;
     FlightStep flightStep;
+    FlightOptionsPageSteps flightOptionsPageSteps;
 
     /**
      * Method should be deleted, when all pages will be ready
@@ -106,6 +109,7 @@ public class AutomationTest {
     public void setUp() {
         mainPageSteps = new MainPageSteps();
         flightStep = new FlightStep();
+        flightOptionsPageSteps = new FlightOptionsPageSteps();
     }
 
     @DataProvider(name = "invalid client count")
@@ -170,7 +174,7 @@ public class AutomationTest {
         order.setFlights(flights);
         mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
-
+        flightOptionsPageSteps.fillFlightOptions(order.getFlights());
     }
 
     @AfterClass
