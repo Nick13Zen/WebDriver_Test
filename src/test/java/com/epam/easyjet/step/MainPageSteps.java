@@ -4,6 +4,8 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.MainPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -16,12 +18,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Steps {
+public class MainPageSteps {
 
     private WebDriver driver;
     private MainPage mainPage;
 
-    public Steps() {
+    private final Logger logger = LogManager.getRootLogger();
+
+    public MainPageSteps() {
         driver = DriverSingleton.getDriver();
         mainPage = new MainPage(driver);
         mainPage.openPage();
@@ -53,10 +57,10 @@ public class Steps {
     public void setRouteDate(List<Flight> flights) {
         if (flights.size() == TWO_WAYS_FLIGHTS_COUNT) {
             mainPage.chooseDepartureDate(flights.get(0).getDestinationDate());
-            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-            new WebDriverWait(driver,5).until(ExpectedConditions.
-                    invisibilityOfElementLocated(By.cssSelector(CALENDAR_FIELD)));
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+//            new WebDriverWait(driver,5).until(ExpectedConditions.
+//                    invisibilityOfElementLocated(By.cssSelector(CALENDAR_FIELD)));
+//            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             mainPage.chooseDestinationDate(flights.get(1).getDestinationDate());
         } else if (flights.size() == ONE_WAY_FLIGHTS_COUNT) {
             mainPage.chooseDepartureDate(flights.get(0).getDestinationDate());
@@ -70,7 +74,7 @@ public class Steps {
         try {
             mainPage.submitPage();
         } catch (StaleElementReferenceException e) {
-            System.out.println(e.getMessage()); //TODO
+            logger.error(e); //TODO
         }
     }
 }

@@ -4,9 +4,8 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.step.FlightStep;
-import com.epam.easyjet.step.Steps;
+import com.epam.easyjet.step.MainPageSteps;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public class AutomationTest {
 
     WebDriver driver;
-    Steps steps;
+    MainPageSteps mainPageSteps;
     FlightStep flightStep;
 
     /**
@@ -105,7 +104,7 @@ public class AutomationTest {
 
     @BeforeTest
     public void setUp() {
-        steps = new Steps();
+        mainPageSteps = new MainPageSteps();
         flightStep = new FlightStep();
     }
 
@@ -133,9 +132,9 @@ public class AutomationTest {
 
 //    @Test(dataProvider = "invalid client count")
 //    public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-//        steps.setClientCount(adultCount, childCount, infantCount);
+//        mainPageSteps.setClientCount(adultCount, childCount, infantCount);
 //        Thread.sleep(1000);
-//        Assert.assertTrue(steps.isWarningDisplayed());
+//        Assert.assertTrue(mainPageSteps.isWarningDisplayed());
 //    }
 
 //    @Test(dataProvider = "valid client count")
@@ -144,8 +143,8 @@ public class AutomationTest {
 //        flight1.setAdultCount(adultCount);
 //        flight1.setChildCount(childCount);
 //        flight1.setInfantCount(infantCount);
-//        steps.setClientCount(flight1);
-//        Assert.assertTrue(!steps.isWarningDisplayed());
+//        mainPageSteps.setClientCount(flight1);
+//        Assert.assertTrue(!mainPageSteps.isWarningDisplayed());
 //    }
 
     @Test
@@ -169,7 +168,7 @@ public class AutomationTest {
         flights.add(flight1);
         flights.add(flight2);
         order.setFlights(flights);
-        steps.fillMainPage(order);
+        mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
 
     }

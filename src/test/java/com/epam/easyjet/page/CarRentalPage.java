@@ -29,7 +29,6 @@ public class CarRentalPage extends AbstractPage {
         super(driver);
     }
 
-
     public void openPage() {
         PageFactory.initElements(this.driver, this);
     }

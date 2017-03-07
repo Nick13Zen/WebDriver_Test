@@ -1,11 +1,12 @@
 package com.epam.easyjet.page;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainPage extends AbstractPage {
 
-    private final String PAGE_URL = "https://www.easyjet.com/";
+    private final String PAGE_URL = "https://www.easyjet.com/en";
 
     @FindBy(xpath = "//input[contains(@aria-label, 'To:')]")
     private WebElement destinationInput;
@@ -48,7 +49,7 @@ public class MainPage extends AbstractPage {
     private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
     private static final String SELECTABLE_DAY_BUTTON_XPATH = "a.selectable";
     private static final String WARNING_FORM_XPATH = "div.anim-slide-rtl.drawer-section-wrapper";
-
+    private static final String DIALOG_FORM_ID = "drawer-dialog";
 
     public MainPage(WebDriver driver) {
         super(driver);
@@ -76,11 +77,14 @@ public class MainPage extends AbstractPage {
     }
 
     public void chooseDepartureDate(String date) {
+        driverWait.until(ExpectedConditions.elementToBeClickable(departureDateButton));
         departureDateButton.click();
         pickDate(date);
     }
 
     public void chooseDestinationDate(String date) {
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(By.id(DIALOG_FORM_ID)));
+        driverWait.until(ExpectedConditions.elementToBeClickable(destinationDateButton));
         destinationDateButton.click();
         pickDate(date);
     }
@@ -105,12 +109,11 @@ public class MainPage extends AbstractPage {
 
     public void submitPage() {
         submitButton.click();
+
         if (isWarningPresents()) {
             infoSubmitButton.click();
         }
     }
-
-
 
     private void pickDate(String date) {
         WebElement departureDateValue = driver.
@@ -120,10 +123,9 @@ public class MainPage extends AbstractPage {
     }
 
     public boolean isWarningPresents() {
-        driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         List<WebElement> list = driver.
                 findElements(By.cssSelector(WARNING_FORM_XPATH));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         return list.size() != 0 && list.get(0).isDisplayed();
+//         return driver.findElement(By.id(DIALOG_FORM_ID)).isEnabled();
     }
 }
