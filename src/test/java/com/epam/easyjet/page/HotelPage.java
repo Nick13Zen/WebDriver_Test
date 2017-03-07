@@ -22,6 +22,9 @@ public class HotelPage extends AbstractPage {
     @FindBy(id = "bookingp_iframe")
     private WebElement frameElement;
 
+    @FindBy(xpath = "//div[1][@id='bookingDotComHotel']//*[@class='content']//h4")
+    private WebElement hotelName;
+    
     private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
 
     public HotelPage(WebDriver driver) {
@@ -36,6 +39,12 @@ public class HotelPage extends AbstractPage {
     public void addHotel() {
         driver.switchTo().frame(frameElement);
         addRoomButton.click();
+    }
+    
+    public Hotel selectHotelParameters() {
+        Hotel hotel = new Hotel();
+        hotel.setName(hotelName.getText());
+        return hotel;
     }
 
     public void submitPage() {
