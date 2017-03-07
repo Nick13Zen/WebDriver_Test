@@ -27,7 +27,7 @@ public class HotelStep {
     }
 
     private void setHotelInfo(Hotel hotel) {
-        String name = driver.findElement(By.xpath(".//*[@id='bookingDotComHotel']/div[1]/div[2]/h4/text()[3]")).getText(); //getting name of hotel in a form after adding room
+        String name = driver.findElement(By.xpath("//div[1][@id='bookingDotComHotel']//*[@class='content']//h4")).getText(); //getting name of hotel in a form after adding room
         hotel.setName(name);
     }
 
