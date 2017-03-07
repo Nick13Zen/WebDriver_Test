@@ -27,16 +27,13 @@ public class HotelStep {
     }
 
     private void setHotelInfo(Hotel hotel) {
-        String name = driver.findElement(By.xpath("//div[1][@id='bookingDotComHotel']//*[@class='content']//h4")).getText(); //getting name of hotel in a form after adding room
-        hotel.setName(name);
+       return hotelPage.selectHotelParameters();
     }
 
     public void fillHotelPage(Order order) {
         hotelPage.addHotel();
         if(hotelPage.isHotelAdded()) {
-            Hotel hotel = new Hotel();
-            setHotelInfo(hotel);
-            order.setHotel(hotel);
+            order.setHotel(setHotelInfo());
         }
         try {
             hotelPage.submitPage();
