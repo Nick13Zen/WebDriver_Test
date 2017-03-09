@@ -46,8 +46,7 @@ public class FlightsPage extends AbstractPage {
     private WebElement infantsPrice;
 
 
-
-
+    
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
 
@@ -132,7 +131,6 @@ public class FlightsPage extends AbstractPage {
     }
 
     public void submitPage() {
-        driver.switchTo().defaultContent();
         driverWait.until(ExpectedConditions.attributeContains(continueButton,
                 DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON,
                 DISABLER_VALUE_FOR_CONTINUE_BUTTON));
