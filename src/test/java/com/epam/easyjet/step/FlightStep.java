@@ -47,11 +47,13 @@ public class FlightStep {
     }
 
     public void clickOfPrice(List<Flight> flights) {
-        if (flight.isOneWay()) {
-            flightsPage.clickDeparturePrice();
-        } else {
-            flightsPage.clickDeparturePrice();
-            flightsPage.clickReturnPrice();
+        for (Flight flight : flights) {
+            if (flight.isOneWay()) {
+                flightsPage.clickDeparturePrice();
+            } else {
+                flightsPage.clickDeparturePrice();
+                flightsPage.clickReturnPrice();
+            }
         }
     }
 
