@@ -19,6 +19,8 @@ public class FlightOptionsPageSteps {
     private WebDriver driver;
     private FlightOptionsPage flightOptionsPage;
 
+    private static final int TWO_WAYS_COUNT = 2;
+
     public FlightOptionsPageSteps() {
         driver = DriverSingleton.getDriver();
         flightOptionsPage = new FlightOptionsPage(driver);
@@ -70,10 +72,19 @@ public class FlightOptionsPageSteps {
         setSeats();
         for (Flight flight : flights) {
             int allNumberSeats = flight.getChildCount() + flight.getAdultCount();
-            for (int i = 0; i < allNumberSeats; i++) {
-                setEconomSeat(flight);
+            if (flight.isOneWay()) {
+                for (int i = 0; i < allNumberSeats; i++) {
+                    setEconomSeat(flight);
+                }
+                setSaveSeats();
+            } else {
+                for (int i = 0; i < TWO_WAYS_COUNT; i++) {
+                    for (int j = 0; j < allNumberSeats; j++) {
+                        setEconomSeat(flight);
+                    }
+                    setSaveSeats();
+                }
             }
-            setSaveSeats();
         }
         flightOptionsPage.submitPage();
         flightOptionsPage.goNext();

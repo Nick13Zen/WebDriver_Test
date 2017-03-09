@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -38,6 +39,7 @@ public class CarRentalPage extends AbstractPage {
     }
 
     public void submitPage() {
+        driverWait.until(ExpectedConditions.visibilityOf(continueButton));
         continueButton.click();
     }
 

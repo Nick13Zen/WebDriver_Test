@@ -4,6 +4,7 @@ import com.epam.easyjet.bean.Car;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.CarRentalPage;
+import org.apache.xpath.operations.Or;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 
@@ -29,13 +30,12 @@ public class CarStep {
         return carRentalPage.selectCarParameters();
     }
 
-    public void fillCarPage(Order order) {
+    public void addCar(Order order) {
         order.setCar(setCarInfo());
         carRentalPage.addCarClick();
-        try {
-            carRentalPage.submitPage();
-        } catch (StaleElementReferenceException e) {
-            System.out.println(e.getMessage()); //TODO
-        }
+    }
+
+    public void submitCarPage() {
+        carRentalPage.submitPage();
     }
 }

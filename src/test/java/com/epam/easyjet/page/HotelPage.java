@@ -24,10 +24,11 @@ public class HotelPage extends AbstractPage {
     @FindBy(id = "bookingp_iframe")
     private WebElement frameElement;
 
-    @FindBy(xpath = "//div[1][@id='bookingDotComHotel']//*[@class='content']//h4")
+    @FindBy(xpath = "//div[contains(@class, 'detail recentlySelected contain')]/div[contains(@class, 'content')]/h4")
     private WebElement hotelName;
 
     private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
+    private static final String CONTAINER_ELEMENT_XPATH = "//div[contains(@class, 'itinerary inprocess contain clear')][2]";
 
     public HotelPage(WebDriver driver) {
         super(driver);
@@ -44,13 +45,12 @@ public class HotelPage extends AbstractPage {
     }
 
     public void selectHotelParameters(Hotel hotel) {
-        WebElement name = driverWait.until(ExpectedConditions.
-                visibilityOfElementLocated(By.xpath("//div[contains(@class, 'detail recentlySelected contain')]/div[contains(@class, 'content')]/h4")));
-        hotel.setName(name.getText());
+        hotel.setName(hotelName.getText());
     }
 
     public void submitPage() {
         driver.switchTo().defaultContent();
+        driverWait.until(ExpectedConditions.visibilityOf(continueButton));
         continueButton.click();
     }
 

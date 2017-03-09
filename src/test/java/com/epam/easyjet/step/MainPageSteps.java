@@ -32,17 +32,16 @@ public class MainPageSteps {
     }
 
     private static final String CALENDAR_FIELD = "div.drawer-section.routedatepicker";
-    private static final int TWO_WAYS_FLIGHTS_COUNT = 2;
-    private static final int ONE_WAY_FLIGHTS_COUNT = 1;
 
     public void closeDriver() {
         driver.close();
     }
 
     public void setClientCount(Flight flight) {
+        mainPage.setInfantCount(flight.getInfantCount());
         mainPage.setAdultCount(flight.getAdultCount());
         mainPage.setChildCount(flight.getChildCount());
-        mainPage.setInfantCount(flight.getInfantCount());
+
     }
 
     public boolean isWarningDisplayed() {
@@ -55,15 +54,13 @@ public class MainPageSteps {
     }
 
     public void setRouteDate(List<Flight> flights) {
-        if (flights.size() == TWO_WAYS_FLIGHTS_COUNT) {
-            mainPage.chooseDepartureDate(flights.get(0).getDestinationDate());
-//            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-//            new WebDriverWait(driver,5).until(ExpectedConditions.
-//                    invisibilityOfElementLocated(By.cssSelector(CALENDAR_FIELD)));
-//            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            mainPage.chooseDestinationDate(flights.get(1).getDestinationDate());
-        } else if (flights.size() == ONE_WAY_FLIGHTS_COUNT) {
-            mainPage.chooseDepartureDate(flights.get(0).getDestinationDate());
+        for (Flight flight : flights) {
+            if (flight.isOneWay()) {
+                mainPage.chooseDepartureDate(flight.getDepartureDate());
+            } else {
+                mainPage.chooseDepartureDate(flight.getDepartureDate());
+                mainPage.chooseDestinationDate(flight.getReturnDate());
+            }
         }
     }
 

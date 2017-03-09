@@ -25,19 +25,18 @@ public class HotelStep {
         driver.close();
     }
 
-    private void setHotelInfo(Hotel hotel) {
+    private void setHotelInfo(Hotel hotel) throws Exception { //TODO
         hotelPage.selectHotelParameters(hotel);
     }
 
-    public void fillHotelPage(Order order) {
+    public void addHotel(Order order) {
         hotelPage.addHotel();
         Hotel hotel = new Hotel();
-        setHotelInfo(hotel);
+        hotelPage.selectHotelParameters(hotel);
         order.setHotel(hotel);
-        try {
-            hotelPage.submitPage();
-        } catch (StaleElementReferenceException e) {
-            System.out.println(e.getMessage()); //TODO
-        }
+    }
+
+    public void submitHotelPage() throws Exception {
+        hotelPage.submitPage();
     }
 }
