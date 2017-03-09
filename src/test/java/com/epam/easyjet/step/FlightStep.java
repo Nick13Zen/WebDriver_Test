@@ -2,6 +2,7 @@ package com.epam.easyjet.step;
 
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.bean.Order;
+import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.page.FlightsPage;
@@ -45,9 +46,25 @@ public class FlightStep {
         }
     }
 
+    public void clickOfPrice(List<Flight> flights) {
+        if (flight.isOneWay()) {
+            flightsPage.clickDeparturePrice();
+        } else {
+            flightsPage.clickDeparturePrice();
+            flightsPage.clickReturnPrice();
+        }
+    }
+
+    public Price selectInfantsPrice() {
+        try {
+            return flightsPage.selectInfantPrice();
+        } catch (StaleElementReferenceException e) {
+            System.out.println(); //TODO
+        }
+        return null;
+    }
+
     public void fillFlightsPage(Order order) {
-        flightsPage.clickDeparturePrice();
-        flightsPage.clickReturnPrice();
         setRoutePrice(order.getFlights());
         try {
             flightsPage.submitPage();
