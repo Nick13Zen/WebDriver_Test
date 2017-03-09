@@ -6,14 +6,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class CheckoutPage extends AbstractPage {
 
-    @FindBy(xpath = "//*[@id='price0']")
+    @FindBy(xpath = "//*[@class='formatedPrice cellPrice']/strong")
     private WebElement finalPrice;
+    @FindBy(xpath = ".//*[@id='new-signin']")
+    private WebElement pageLoaded;
+
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
@@ -24,6 +28,7 @@ public class CheckoutPage extends AbstractPage {
     }
 
     public Price getFinalPrice() {
+        driverWait.until(ExpectedConditions.visibilityOf(pageLoaded));
         Price price = PriceConverter.convertStringPrice(finalPrice.getText());
         return price;
     }

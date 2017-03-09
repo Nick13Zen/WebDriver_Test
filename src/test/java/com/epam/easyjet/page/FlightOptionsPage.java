@@ -155,6 +155,7 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public void goNext() {
+        driverWait.until(ExpectedConditions.visibilityOf(noThanksButton));
         noThanksButton.click();
     }
 }

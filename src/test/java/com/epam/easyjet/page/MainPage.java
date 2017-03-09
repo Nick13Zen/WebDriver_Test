@@ -123,9 +123,9 @@ public class MainPage extends AbstractPage {
     }
 
     public boolean isWarningPresents() {
-        List<WebElement> list = driver.
-                findElements(By.cssSelector(WARNING_FORM_XPATH));
-        return list.size() != 0 && list.get(0).isDisplayed();
-//         return driver.findElement(By.id(DIALOG_FORM_ID)).isEnabled();
+//        List<WebElement> list = driver.
+//                findElements(By.cssSelector(WARNING_FORM_XPATH));
+//        return list.size() != 0;
+         return driver.findElement(By.id(DIALOG_FORM_ID)).isEnabled();
     }
 }

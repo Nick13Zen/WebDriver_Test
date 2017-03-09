@@ -30,19 +30,18 @@ public class FlightStep {
         flightsPage.openPage();
     }
 
-    private static final int TWO_WAYS_FLIGHTS_COUNT = 2;
-    private static final int ONE_WAY_FLIGHTS_COUNT = 1;
-
     public void closeDriver() {
         driver.close();
     }
 
     public void setRoutePrice(List<Flight> flights) {
-        if (flights.size() == TWO_WAYS_FLIGHTS_COUNT) {
-            flights.get(0).setPrice(flightsPage.selectOutBoundPrice());
-            flights.get(1).setPrice(flightsPage.selectReturnPrice());
-        } else if (flights.size() == ONE_WAY_FLIGHTS_COUNT) {
-            flights.get(0).setPrice(flightsPage.selectOutBoundPrice());
+        for (Flight flight : flights) {
+            if (flight.isOneWay()) {
+                flight.setDeparturePrice(flightsPage.selectOutBoundPrice());
+            } else {
+                flight.setDeparturePrice(flightsPage.selectOutBoundPrice());
+                flight.setReturnPrice(flightsPage.selectReturnPrice());
+            }
         }
     }
 
