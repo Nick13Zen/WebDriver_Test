@@ -42,8 +42,16 @@ public class FlightsPage extends AbstractPage {
     @FindBy(id = "SelectLowestFlightsTab")
     private WebElement threeWeeksButton;
 
+    @FindBy(xpath = "//span[@class='amount ']")
+    private WebElement infantsPrice;
+
+
+
+
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
+
+    private static final String INFANTS = "//div[@id='expandedFlights']//span[contains(text(),'Infant (under 2 years')]";
 
     private static final String PRICE_DEPARTURE_XPATH_PART1 = "//div[@id='OutboundLowestFlightDetails']//li[";
     private static final String PRICE_XPATH_PART2 = "][contains(@class,'standard')]";
@@ -62,7 +70,7 @@ public class FlightsPage extends AbstractPage {
             List<WebElement> summ = driver.findElements(By.xpath(PRICE_DEPARTURE_XPATH_PART1 + i + PRICE_XPATH_PART2));
             outboundDays.addAll(summ);
         }
-    //    driverWait.until(ExpectedConditions.elementToBeClickable(outboundDays.get(1)));
+        //    driverWait.until(ExpectedConditions.elementToBeClickable(outboundDays.get(1)));
         outboundDays.get(1).click();
     }
 
@@ -71,12 +79,12 @@ public class FlightsPage extends AbstractPage {
             List<WebElement> summ = driver.findElements(By.xpath(PRICE_RETURN_XPATH_PART1 + i + PRICE_XPATH_PART2));
             returnDays.addAll(summ);
         }
-    //    driverWait.until(ExpectedConditions.elementToBeClickable(returnDays.get(returnDays.size() - 1)));
+        //    driverWait.until(ExpectedConditions.elementToBeClickable(returnDays.get(returnDays.size() - 1)));
         returnDays.get(returnDays.size() - 1).click();
     }
 
     public void clickthreeWeeksButton() {
-   //     driverWait.until(ExpectedConditions.elementToBeClickable(threeWeeksButton));
+        //     driverWait.until(ExpectedConditions.elementToBeClickable(threeWeeksButton));
         threeWeeksButton.click();
     }
 
@@ -85,8 +93,23 @@ public class FlightsPage extends AbstractPage {
         PageFactory.initElements(this.driver, this);
     }
 
+    public boolean infantsExist() {
+        List<WebElement> list = driver.
+                findElements(By.xpath(INFANTS));
+        return list.size() != 0;
+    }
+
+    public Price selectInfantPrice() {
+        if (infantsExist()) {
+            return PriceConverter.converterStringWithX(infantsPrice.getText());
+
+        }
+        return null;
+    }
+
+
     public void clickDeparturePrice() {
-    //    driverWait.until(ExpectedConditions.elementToBeClickable(selectOutBoundDate));
+        driverWait.until(ExpectedConditions.elementToBeClickable(selectOutBoundDate));
         selectOutBoundDate.click();
     }
 
@@ -109,6 +132,7 @@ public class FlightsPage extends AbstractPage {
     }
 
     public void submitPage() {
+        driver.switchTo().defaultContent();
         driverWait.until(ExpectedConditions.attributeContains(continueButton,
                 DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON,
                 DISABLER_VALUE_FOR_CONTINUE_BUTTON));
