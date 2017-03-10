@@ -27,10 +27,6 @@ public class FlightOptionsPageSteps {
         flightOptionsPage.openPage();
     }
 
-    public void closeDriver() {
-        driver.close();
-    }
-
     public void setLuggage(Order order) {
         if (order.getLuggage() == null) {
             order.setLuggage(new ArrayList<Luggage>());

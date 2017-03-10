@@ -20,9 +20,6 @@ public class CarStep {
         carRentalPage.openPage();
     }
 
-    public void closeDriver() {
-        driver.close();
-    }
 
     private Car setCarInfo() {
         return carRentalPage.selectCarParameters();

@@ -1,6 +1,5 @@
 package com.epam.easyjet.page;
 
-import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -44,8 +43,6 @@ public class FlightsPage extends AbstractPage {
 
     @FindBy(xpath = "//span[@class='amount ']")
     private WebElement infantsPrice;
-
-
 
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
@@ -95,15 +92,14 @@ public class FlightsPage extends AbstractPage {
         return list.size() != 0;
     }
 
-    public Price selectInfantPrice() {
+    public double selectInfantPrice() {
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='amount ']")));
             return PriceConverter.converterStringWithX(infantsPrice.getText());
     }
 
-    public Price selectFinalPrice() {
+    public double selectFinalPrice() {
         driverWait.until(ExpectedConditions.visibilityOf(finalPrice));
-        Price price = PriceConverter.convertStringPrice(finalPrice.getText());
-        return price;
+        return PriceConverter.convertStringPrice(finalPrice.getText());
     }
 
     public void clickDeparturePrice() {
@@ -111,16 +107,14 @@ public class FlightsPage extends AbstractPage {
         selectOutBoundDate.click();
     }
 
-    public Price selectOutBoundPrice() {
+    public double selectOutBoundPrice() {
         driverWait.until(ExpectedConditions.visibilityOf(selectOutBoundPrice));
-        Price price = PriceConverter.convertStringPrice(selectOutBoundPrice.getText());
-        return price;
+        return PriceConverter.convertStringPrice(selectOutBoundPrice.getText());
     }
 
-    public Price selectReturnPrice() {
+    public double selectReturnPrice() {
         driverWait.until(ExpectedConditions.visibilityOf(selectReturnPrice));
-        Price price = PriceConverter.convertStringPrice(selectReturnPrice.getText());
-        return price;
+        return PriceConverter.convertStringPrice(selectReturnPrice.getText());
     }
 
 

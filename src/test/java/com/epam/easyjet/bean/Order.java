@@ -11,51 +11,10 @@ public class Order {
     private Insurance insurance;
     private Car car;
     private Hotel hotel;
-    private Price price;
+    private double price;
 
     public Order() {
 
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Order order = (Order) o;
-
-        if (flights != null ? !flights.equals(order.flights) : order.flights != null) {
-            return false;
-        }
-        if (luggage != null ? !luggage.equals(order.luggage) : order.luggage != null) {
-            return false;
-        }
-        if (insurance != null ? !insurance.equals(order.insurance) : order.insurance != null) {
-            return false;
-        }
-        if (car != null ? !car.equals(order.car) : order.car != null) {
-            return false;
-        }
-        if (hotel != null ? !hotel.equals(order.hotel) : order.hotel != null) {
-            return false;
-        }
-        return price != null ? price.equals(order.price) : order.price == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = flights != null ? flights.hashCode() : 0;
-        result = 31 * result + (luggage != null ? luggage.hashCode() : 0);
-        result = 31 * result + (insurance != null ? insurance.hashCode() : 0);
-        result = 31 * result + (car != null ? car.hashCode() : 0);
-        result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        return result;
     }
 
     public List<Flight> getFlights() {
@@ -98,11 +57,53 @@ public class Order {
         this.hotel = hotel;
     }
 
-    public Price getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Price price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Order order = (Order) o;
+
+        if (Double.compare(order.price, price) != 0) {
+            return false;
+        }
+        if (flights != null ? !flights.equals(order.flights) : order.flights != null) {
+            return false;
+        }
+        if (luggage != null ? !luggage.equals(order.luggage) : order.luggage != null) {
+            return false;
+        }
+        if (insurance != null ? !insurance.equals(order.insurance) : order.insurance != null) {
+            return false;
+        }
+        if (car != null ? !car.equals(order.car) : order.car != null) {
+            return false;
+        }
+
+        return hotel != null ? hotel.equals(order.hotel) : order.hotel == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = flights != null ? flights.hashCode() : 0;
+        result = 31 * result + (luggage != null ? luggage.hashCode() : 0);
+        result = 31 * result + (insurance != null ? insurance.hashCode() : 0);
+        result = 31 * result + (car != null ? car.hashCode() : 0);
+        result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

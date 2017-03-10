@@ -84,7 +84,7 @@ public class FlightOptionsPage extends AbstractPage {
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector(LUGGAGE_CONTAINER_CSS)));
 
-        Price price = PriceConverter.convertStringPrice(luggagePrice.getText());
+        double price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
         ArrayList<Luggage> luggages = new ArrayList<>();
         Flight flight = order.getFlights().get(0);
@@ -118,7 +118,7 @@ public class FlightOptionsPage extends AbstractPage {
         WebElement priceBand = driver.findElement(
                 By.xpath(priceXpath));
 
-        Price price = PriceConverter.convertStringPrice(priceBand.getText());
+        double price = PriceConverter.convertStringPrice(priceBand.getText());
 
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
         WebElement seatButton = driver.findElement(

@@ -2,28 +2,22 @@ package com.epam.easyjet.step;
 
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.bean.Order;
-import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.driver.DriverSingleton;
-import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.page.FlightsPage;
-import com.epam.easyjet.page.MainPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Mark_Harbunou on 3/6/2017.
  */
 public class FlightStep {
     private static final Logger logger = LogManager.getRootLogger();
+    private static final String PRICE_NOT_INITIALIZED = "Price not initialized";
 
     private WebDriver driver;
     private FlightsPage flightsPage;
@@ -32,10 +26,6 @@ public class FlightStep {
         driver = DriverSingleton.getDriver();
         flightsPage = new FlightsPage(driver);
         flightsPage.openPage();
-    }
-
-    public void closeDriver() {
-        driver.close();
     }
 
     public void setRoutePrice(List<Flight> flights) {
@@ -51,7 +41,6 @@ public class FlightStep {
 
     public void setFinalPrice() {
         flightsPage.selectFinalPrice();
-
     }
 
     public void clickOfPrice(List<Flight> flights) {
@@ -65,13 +54,14 @@ public class FlightStep {
         }
     }
 
-    public Price selectInfantsPrice() {
+    public double selectInfantsPrice() throws Exception { //TODO
         try {
             return flightsPage.selectInfantPrice();
         } catch (StaleElementReferenceException e) {
             logger.error(e);
         }
-        return null;
+
+        throw new Exception(PRICE_NOT_INITIALIZED);
     }
 
     public void fillFlightsPage(Order order) {

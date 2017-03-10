@@ -55,7 +55,6 @@ public class CarRentalPage extends AbstractPage {
     }
 
     public boolean isCarAdded() {
-        List<WebElement> list = driver.findElements(By.cssSelector(ADDED_CAR_FORM));
-        return list.size() != 0;
+        return driver.findElements(By.cssSelector(ADDED_CAR_FORM)).size() > 0;
     }
 }
