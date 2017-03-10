@@ -31,12 +31,12 @@ public class FlightOptionsPageSteps {
         driver.close();
     }
 
-    public void setLuggage(Order order ) {
+    public void setLuggage(Order order) {
         if (order.getLuggage() == null) {
             order.setLuggage(new ArrayList<Luggage>());
         }
         flightOptionsPage.addLuggageButton();
-        order.getLuggage().add(flightOptionsPage.getLuggage());
+        flightOptionsPage.setLuggage(order);
     }
 
     public void setSeats() {
@@ -88,5 +88,9 @@ public class FlightOptionsPageSteps {
         }
         flightOptionsPage.submitPage();
         flightOptionsPage.goNext();
+    }
+
+    public boolean isItemAdded() {
+        return flightOptionsPage.isItemAdded();
     }
 }

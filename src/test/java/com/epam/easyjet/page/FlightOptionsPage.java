@@ -1,9 +1,6 @@
 package com.epam.easyjet.page;
 
-import com.epam.easyjet.bean.Insurance;
-import com.epam.easyjet.bean.Luggage;
-import com.epam.easyjet.bean.Price;
-import com.epam.easyjet.bean.Seats;
+import com.epam.easyjet.bean.*;
 import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FlightOptionsPage extends AbstractPage {
 
@@ -63,6 +63,9 @@ public class FlightOptionsPage extends AbstractPage {
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
 
+    private static final String LUGGAGE_CONTAINER_CSS = "div.holdOptionBusyIconContainer";
+    private static final String RECENTLY_ADDED_FORM = "div.detail.recentlySelected.contain";
+
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
     }
@@ -73,22 +76,26 @@ public class FlightOptionsPage extends AbstractPage {
 
     public void addLuggageButton() {
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
-                By.cssSelector("div.holdOptionBusyIconContainer")));
+                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
         luggageButton.click();
     }
 
-    public Luggage getLuggage() {
-        Luggage luggage = new Luggage();
-
+    public void setLuggage(Order order) {
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("div.holdOptionBusyIconContainer")));
+                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
 
         Price price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
-        luggage.setPrice(price);
-        luggage.setType(luggageType.getText());
-
-        return luggage;
+        ArrayList<Luggage> luggages = new ArrayList<>();
+        Flight flight = order.getFlights().get(0);
+        int count = flight.getAdultCount() + flight.getChildCount() + flight.getInfantCount();
+        for (int i = 0; i < count; i++) {
+            Luggage luggage = new Luggage();
+            luggage.setPrice(price);
+            luggage.setType(luggageType.getText());
+            luggages.add(luggage);
+        }
+        order.setLuggage(luggages);
     }
 
     public void getSeat() {
@@ -157,5 +164,10 @@ public class FlightOptionsPage extends AbstractPage {
     public void goNext() {
         driverWait.until(ExpectedConditions.visibilityOf(noThanksButton));
         noThanksButton.click();
+    }
+
+    public boolean isItemAdded() {
+        List<WebElement> list = driver.findElements(By.cssSelector(RECENTLY_ADDED_FORM));
+        return list.size() != 0;
     }
 }

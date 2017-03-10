@@ -9,7 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -148,9 +147,6 @@ public class MainPage extends AbstractPage {
     }
 
     public boolean isWarningPresents() {
-//        List<WebElement> list = driver.
-//                findElements(By.cssSelector(WARNING_FORM_XPATH));
-//        return list.size() != 0;
          return driver.findElement(By.id(DIALOG_FORM_ID)).isDisplayed();
     }
 

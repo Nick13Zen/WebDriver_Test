@@ -6,32 +6,25 @@ import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.MainPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class MainPageSteps {
+    private final Logger logger = LogManager.getRootLogger();
 
     private WebDriver driver;
     private MainPage mainPage;
-
-    private final Logger logger = LogManager.getRootLogger();
 
     public MainPageSteps() {
         driver = DriverSingleton.getDriver();
         mainPage = new MainPage(driver);
         mainPage.openPage();
     }
-
-    private static final String CALENDAR_FIELD = "div.drawer-section.routedatepicker";
 
     public void closeDriver() {
         driver.close();
@@ -60,6 +53,7 @@ public class MainPageSteps {
 
     public void setClientCount(Flight flight) {
         mainPage.setAdultCount(0);
+
         for (int i = 0; i < flight.getAdultCount(); i++) {
             mainPage.addAdult();
         }
@@ -88,9 +82,7 @@ public class MainPageSteps {
         try {
             mainPage.submitPage();
         } catch (StaleElementReferenceException e) {
-            logger.error(e); //TODO
+            logger.error(e);
         }
     }
-
-
 }

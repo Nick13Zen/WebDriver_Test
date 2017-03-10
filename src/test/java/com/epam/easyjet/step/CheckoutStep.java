@@ -1,6 +1,5 @@
 package com.epam.easyjet.step;
 
-import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.CheckoutPage;
@@ -24,9 +23,8 @@ public class CheckoutStep {
         driver.close();
     }
 
-    public Price fillCheckoutPage(){
+    public Price fillCheckoutPage() {
         Price finalPrice = checkoutPage.getFinalPrice();
-        System.out.println(finalPrice.getFirstPart() + "." + finalPrice.getSecondPart());
         return finalPrice;
     }
 

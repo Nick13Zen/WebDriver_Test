@@ -4,7 +4,6 @@ import com.epam.easyjet.bean.Hotel;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.HotelPage;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -25,7 +24,7 @@ public class HotelStep {
         driver.close();
     }
 
-    private void setHotelInfo(Hotel hotel) throws Exception { //TODO
+    private void setHotelInfo(Hotel hotel) {
         hotelPage.selectHotelParameters(hotel);
     }
 
@@ -40,7 +39,7 @@ public class HotelStep {
         return  hotelPage.isHotelAdded();
     }
 
-    public void submitHotelPage() throws Exception {
+    public void submitHotelPage() {
         hotelPage.submitPage();
     }
 }

@@ -15,9 +15,9 @@ public class CheckoutPage extends AbstractPage {
 
     @FindBy(xpath = "//*[@class='formatedPrice cellPrice']/strong")
     private WebElement finalPrice;
+
     @FindBy(xpath = ".//*[@id='new-signin']")
     private WebElement pageLoaded;
-
 
     public CheckoutPage(WebDriver driver) {
         super(driver);
@@ -29,7 +29,6 @@ public class CheckoutPage extends AbstractPage {
 
     public Price getFinalPrice() {
         driverWait.until(ExpectedConditions.visibilityOf(pageLoaded));
-        Price price = PriceConverter.convertStringPrice(finalPrice.getText());
-        return price;
+        return PriceConverter.convertStringPrice(finalPrice.getText());
     }
 }

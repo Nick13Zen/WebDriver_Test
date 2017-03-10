@@ -4,13 +4,10 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.driver.DriverSingleton;
-import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.step.*;
-import org.junit.*;
-import org.openqa.selenium.WebDriver;
+import com.epam.easyjet.util.PriceConverter;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -105,17 +102,6 @@ public class AutomationTest {
     }
 
     @Test
-    public void testMainPage() throws Exception {
-        mainPageSteps.fillMainPage(order);
-        flightStep.fillFlightsPage(order);
-        flightOptionsPageSteps.fillFlightOptions(order.getFlights());
-        hotelStep.submitHotelPage();
-        carStep.submitCarPage();
-        Price price = checkoutStep.fillCheckoutPage();
-        System.out.println(price.getFirstPart() + "." + price.getSecondPart());
-    }
-
-    @Test
     public void testInfantPrice() {
         order.getFlights().get(0).setAdultCount(1);
         order.getFlights().get(0).setChildCount(1);
@@ -136,12 +122,49 @@ public class AutomationTest {
         flightOptionsPageSteps.fillFlightOptions(flights);
         hotelStep.addHotel(order);
         boolean hotel = hotelStep.isHotelAdded();
-        Assert.assertEquals(hotel,true);
+        Assert.assertEquals(hotel, true);
+    }
+
+    @Test
+    public void testIsCarAdded() {
+        order.getFlights().get(0).setAdultCount(1);
+        mainPageSteps.fillMainPage(order);
+        flightStep.clickOfPrice(flights);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.fillFlightOptions(flights);
+        hotelStep.submitHotelPage();
+        carStep.addCar(order);
+        Assert.assertEquals(carStep.isCarAdded(), true);
+    }
+
+    @Test
+    public void testIsLuggageAdded() {
+        order.getFlights().get(0).setAdultCount(1);
+        mainPageSteps.fillMainPage(order);
+        flightStep.clickOfPrice(flights);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.setLuggage(order);
+        Assert.assertEquals(flightOptionsPageSteps.isItemAdded(), true);
+    }
+
+    @Test
+    public void testFinalPrice() throws Exception {
+        order.getFlights().get(0).setAdultCount(1);
+        order.getFlights().get(0).setChildCount(1);
+        order.getFlights().get(0).setInfantCount(1);
+        mainPageSteps.fillMainPage(order);
+        flightStep.clickOfPrice(flights);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.fillFlightOptions(order.getFlights());
+        hotelStep.submitHotelPage();
+        carStep.submitCarPage();
+        Price finalPriceExpexted = checkoutStep.fillCheckoutPage();
+        order.setPrice(PriceConverter.CalculateFinalPriceFromOrder(order));
+        Assert.assertEquals(finalPriceExpexted, order.getPrice());
     }
 
     @AfterMethod
     public void driverRelease() {
-
         DriverSingleton.closeDriver();
     }
 }
