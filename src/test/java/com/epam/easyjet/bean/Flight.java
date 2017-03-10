@@ -17,6 +17,7 @@ public class Flight {
     private Price departurePrice;
     private Price returnPrice;
     private boolean isOneWay;
+    private List<Seats> seatsList;
 
     public Flight() {
     }
@@ -109,7 +110,6 @@ public class Flight {
         this.seatsList = seatsList;
     }
 
-    private List<Seats> seatsList;
 
     @Override
     public boolean equals(Object o) {

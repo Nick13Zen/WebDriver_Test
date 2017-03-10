@@ -69,7 +69,6 @@ public class FlightsPage extends AbstractPage {
             List<WebElement> summ = driver.findElements(By.xpath(PRICE_DEPARTURE_XPATH_PART1 + i + PRICE_XPATH_PART2));
             outboundDays.addAll(summ);
         }
-        //    driverWait.until(ExpectedConditions.elementToBeClickable(outboundDays.get(1)));
         outboundDays.get(1).click();
     }
 
@@ -78,12 +77,10 @@ public class FlightsPage extends AbstractPage {
             List<WebElement> summ = driver.findElements(By.xpath(PRICE_RETURN_XPATH_PART1 + i + PRICE_XPATH_PART2));
             returnDays.addAll(summ);
         }
-        //    driverWait.until(ExpectedConditions.elementToBeClickable(returnDays.get(returnDays.size() - 1)));
         returnDays.get(returnDays.size() - 1).click();
     }
 
     public void clickthreeWeeksButton() {
-        //     driverWait.until(ExpectedConditions.elementToBeClickable(threeWeeksButton));
         threeWeeksButton.click();
     }
 

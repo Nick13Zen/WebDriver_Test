@@ -4,8 +4,6 @@ import com.epam.easyjet.bean.Car;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.CarRentalPage;
-import org.apache.xpath.operations.Or;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -37,5 +35,9 @@ public class CarStep {
 
     public void submitCarPage() {
         carRentalPage.submitPage();
+    }
+
+    public boolean isCarAdded() {
+        return carRentalPage.isCarAdded();
     }
 }

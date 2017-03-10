@@ -7,6 +7,8 @@ import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.FlightOptionsPage;
 import com.epam.easyjet.page.FlightsPage;
 import com.epam.easyjet.page.MainPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -21,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Mark_Harbunou on 3/6/2017.
  */
 public class FlightStep {
+    private static final Logger logger = LogManager.getRootLogger();
 
     private WebDriver driver;
     private FlightsPage flightsPage;
@@ -66,7 +69,7 @@ public class FlightStep {
         try {
             return flightsPage.selectInfantPrice();
         } catch (StaleElementReferenceException e) {
-            System.out.println(e.getMessage()); //TODO
+            logger.error(e);
         }
         return null;
     }
@@ -76,7 +79,7 @@ public class FlightStep {
         try {
             flightsPage.submitPage();
         } catch (StaleElementReferenceException e) {
-            System.out.println(e.getMessage()); //TODO
+            logger.error(e);
         }
         closeAllChildWindows();
     }

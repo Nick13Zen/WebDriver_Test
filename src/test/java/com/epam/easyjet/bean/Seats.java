@@ -8,7 +8,7 @@ public class Seats {
     private String type;
     private Price price;
 
-    public Seats () {
+    public Seats() {
 
     }
 
