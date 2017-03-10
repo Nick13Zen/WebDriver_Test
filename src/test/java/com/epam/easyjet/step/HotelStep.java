@@ -36,6 +36,10 @@ public class HotelStep {
         order.setHotel(hotel);
     }
 
+    public  boolean isHotelAdded() {
+        return  hotelPage.isHotelAdded();
+    }
+
     public void submitHotelPage() throws Exception {
         hotelPage.submitPage();
     }
