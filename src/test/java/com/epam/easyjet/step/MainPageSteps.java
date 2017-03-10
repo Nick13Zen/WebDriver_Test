@@ -37,12 +37,6 @@ public class MainPageSteps {
         driver.close();
     }
 
-    public void setClientCount(Flight flight) {
-        mainPage.setInfantCount(flight.getInfantCount());
-        mainPage.setAdultCount(flight.getAdultCount());
-        mainPage.setChildCount(flight.getChildCount());
-
-    }
 
     public boolean isWarningDisplayed() {
         return mainPage.isWarningPresents();
@@ -64,6 +58,29 @@ public class MainPageSteps {
         }
     }
 
+    public void setClientCount(Flight flight) {
+        mainPage.setAdultCount(0);
+        for (int i = 0; i < flight.getAdultCount(); i++) {
+            mainPage.addAdult();
+        }
+
+        for (int i = 0; i < flight.getInfantCount(); i++) {
+            mainPage.addInfant();
+        }
+
+        for (int i = 0; i < flight.getChildCount(); i++) {
+            mainPage.addChild();
+        }
+    }
+
+    public boolean isWarningMaxPassengersDisplayed() {
+        return mainPage.isWarningMaxPassengersPresents();
+    }
+
+    public boolean isWarningInfantDisplayed() {
+        return mainPage.isWarningInfantsPresents();
+    }
+
     public void fillMainPage(Order order) {
         setRoutePlace(order.getFlights().get(0));
         setRouteDate(order.getFlights());
@@ -74,4 +91,6 @@ public class MainPageSteps {
             logger.error(e); //TODO
         }
     }
+
+
 }

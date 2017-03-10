@@ -99,13 +99,15 @@ public class FlightsPage extends AbstractPage {
     }
 
     public Price selectInfantPrice() {
-        if (infantsExist()) {
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='amount ']")));
             return PriceConverter.converterStringWithX(infantsPrice.getText());
-
-        }
-        return null;
     }
 
+    public Price selectFinalPrice() {
+        driverWait.until(ExpectedConditions.visibilityOf(finalPrice));
+        Price price = PriceConverter.convertStringPrice(finalPrice.getText());
+        return price;
+    }
 
     public void clickDeparturePrice() {
         driverWait.until(ExpectedConditions.elementToBeClickable(selectOutBoundDate));

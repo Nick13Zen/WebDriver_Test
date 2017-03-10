@@ -42,6 +42,7 @@ public class HotelPage extends AbstractPage {
     public void addHotel() {
         driver.switchTo().frame(frameElement);
         addRoomButton.click();
+        driver.switchTo().defaultContent();
     }
 
     public void selectHotelParameters(Hotel hotel) {
@@ -49,7 +50,6 @@ public class HotelPage extends AbstractPage {
     }
 
     public void submitPage() {
-        driver.switchTo().defaultContent();
         driverWait.until(ExpectedConditions.visibilityOf(continueButton));
         continueButton.click();
     }

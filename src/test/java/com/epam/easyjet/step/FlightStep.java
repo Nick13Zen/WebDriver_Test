@@ -46,6 +46,11 @@ public class FlightStep {
         }
     }
 
+    public void setFinalPrice() {
+        flightsPage.selectFinalPrice();
+
+    }
+
     public void clickOfPrice(List<Flight> flights) {
         for (Flight flight : flights) {
             if (flight.isOneWay()) {
@@ -61,7 +66,7 @@ public class FlightStep {
         try {
             return flightsPage.selectInfantPrice();
         } catch (StaleElementReferenceException e) {
-            System.out.println(); //TODO
+            System.out.println(e.getMessage()); //TODO
         }
         return null;
     }
