@@ -14,8 +14,8 @@ public class Flight {
     private int adultCount;
     private int childCount;
     private int infantCount;
-    private Price departurePrice;
-    private Price returnPrice;
+    private double departurePrice;
+    private double returnPrice;
     private boolean isOneWay;
     private List<Seats> seatsList;
 
@@ -78,19 +78,19 @@ public class Flight {
         this.infantCount = infantCount;
     }
 
-    public Price getDeparturePrice() {
+    public double getDeparturePrice() {
         return departurePrice;
     }
 
-    public void setDeparturePrice(Price departurePrice) {
+    public void setDeparturePrice(double departurePrice) {
         this.departurePrice = departurePrice;
     }
 
-    public Price getReturnPrice() {
+    public double getReturnPrice() {
         return returnPrice;
     }
 
-    public void setReturnPrice(Price returnPrice) {
+    public void setReturnPrice(double returnPrice) {
         this.returnPrice = returnPrice;
     }
 
@@ -110,7 +110,6 @@ public class Flight {
         this.seatsList = seatsList;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,6 +120,8 @@ public class Flight {
         if (adultCount != flight.adultCount) return false;
         if (childCount != flight.childCount) return false;
         if (infantCount != flight.infantCount) return false;
+        if (Double.compare(flight.departurePrice, departurePrice) != 0) return false;
+        if (Double.compare(flight.returnPrice, returnPrice) != 0) return false;
         if (isOneWay != flight.isOneWay) return false;
         if (destinationPlace != null ? !destinationPlace.equals(flight.destinationPlace) : flight.destinationPlace != null)
             return false;
@@ -129,23 +130,24 @@ public class Flight {
         if (departureDate != null ? !departureDate.equals(flight.departureDate) : flight.departureDate != null)
             return false;
         if (returnDate != null ? !returnDate.equals(flight.returnDate) : flight.returnDate != null) return false;
-        if (departurePrice != null ? !departurePrice.equals(flight.departurePrice) : flight.departurePrice != null)
-            return false;
-        if (returnPrice != null ? !returnPrice.equals(flight.returnPrice) : flight.returnPrice != null) return false;
         return seatsList != null ? seatsList.equals(flight.seatsList) : flight.seatsList == null;
     }
 
     @Override
     public int hashCode() {
-        int result = destinationPlace != null ? destinationPlace.hashCode() : 0;
+        int result;
+        long temp;
+        result = destinationPlace != null ? destinationPlace.hashCode() : 0;
         result = 31 * result + (departurePlace != null ? departurePlace.hashCode() : 0);
         result = 31 * result + (departureDate != null ? departureDate.hashCode() : 0);
         result = 31 * result + (returnDate != null ? returnDate.hashCode() : 0);
         result = 31 * result + adultCount;
         result = 31 * result + childCount;
         result = 31 * result + infantCount;
-        result = 31 * result + (departurePrice != null ? departurePrice.hashCode() : 0);
-        result = 31 * result + (returnPrice != null ? returnPrice.hashCode() : 0);
+        temp = Double.doubleToLongBits(departurePrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(returnPrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (isOneWay ? 1 : 0);
         result = 31 * result + (seatsList != null ? seatsList.hashCode() : 0);
         return result;

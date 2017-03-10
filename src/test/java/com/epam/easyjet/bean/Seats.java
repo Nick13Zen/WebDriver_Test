@@ -6,35 +6,10 @@ package com.epam.easyjet.bean;
 public class Seats {
 
     private String type;
-    private Price price;
+    private double price;
 
     public Seats() {
 
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Seats seats = (Seats) o;
-
-        if (type != null ? !type.equals(seats.type) : seats.type != null) {
-            return false;
-        }
-        return price != null ? price.equals(seats.price) : seats.price == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        return result;
     }
 
     public String getType() {
@@ -45,11 +20,32 @@ public class Seats {
         this.type = type;
     }
 
-    public Price getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Price price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Seats seats = (Seats) o;
+
+        if (Double.compare(seats.price, price) != 0) return false;
+        return type != null ? type.equals(seats.type) : seats.type == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = type != null ? type.hashCode() : 0;
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

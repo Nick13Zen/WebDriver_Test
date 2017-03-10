@@ -26,15 +26,6 @@ public class MainPageSteps {
         mainPage.openPage();
     }
 
-    public void closeDriver() {
-        driver.close();
-    }
-
-
-    public boolean isWarningDisplayed() {
-        return mainPage.isWarningPresents();
-    }
-
     public void setRoutePlace(Flight flight) {
         mainPage.typeDeparturePlace(flight.getDeparturePlace());
         mainPage.typeDestinationPlace(flight.getDestinationPlace());

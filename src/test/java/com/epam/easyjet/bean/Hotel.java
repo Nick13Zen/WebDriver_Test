@@ -6,31 +6,7 @@ package com.epam.easyjet.bean;
 public class Hotel {
 
     private String name;
-    private Price price;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Hotel hotel = (Hotel) o;
-
-        if (name != null ? !name.equals(hotel.name) : hotel.name != null) {
-            return false;
-        }
-        return price != null ? price.equals(hotel.price) : hotel.price == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        return result;
-    }
+    private double price;
 
     public String getName() {
         return name;
@@ -40,11 +16,32 @@ public class Hotel {
         this.name = name;
     }
 
-    public Price getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Price price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Hotel hotel = (Hotel) o;
+
+        if (Double.compare(hotel.price, price) != 0) return false;
+        return name != null ? name.equals(hotel.name) : hotel.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name != null ? name.hashCode() : 0;
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

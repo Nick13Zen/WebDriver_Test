@@ -20,10 +20,6 @@ public class HotelStep {
         hotelPage.openPage();
     }
 
-    public void closeDriver() {
-        driver.close();
-    }
-
     private void setHotelInfo(Hotel hotel) {
         hotelPage.selectHotelParameters(hotel);
     }

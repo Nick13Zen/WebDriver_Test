@@ -1,6 +1,5 @@
 package com.epam.easyjet.page;
 
-import com.epam.easyjet.bean.Price;
 import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,7 +26,7 @@ public class CheckoutPage extends AbstractPage {
         PageFactory.initElements(this.driver, this);
     }
 
-    public Price getFinalPrice() {
+    public double getFinalPrice() {
         driverWait.until(ExpectedConditions.visibilityOf(pageLoaded));
         return PriceConverter.convertStringPrice(finalPrice.getText());
     }
