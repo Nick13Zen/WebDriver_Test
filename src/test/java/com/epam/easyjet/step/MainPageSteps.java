@@ -7,7 +7,6 @@ import com.epam.easyjet.page.MainPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
 
 import java.util.List;
 
@@ -17,12 +16,10 @@ import java.util.List;
 public class MainPageSteps {
     private final Logger logger = LogManager.getRootLogger();
 
-    private WebDriver driver;
     private MainPage mainPage;
 
     public MainPageSteps() {
-        driver = DriverSingleton.getDriver();
-        mainPage = new MainPage(driver);
+        mainPage = new MainPage(DriverSingleton.getDriver());
         mainPage.openPage();
     }
 
@@ -45,17 +42,9 @@ public class MainPageSteps {
     public void setClientCount(Flight flight) {
         mainPage.setAdultCount(0);
 
-        for (int i = 0; i < flight.getAdultCount(); i++) {
-            mainPage.addAdult();
-        }
-
-        for (int i = 0; i < flight.getInfantCount(); i++) {
-            mainPage.addInfant();
-        }
-
-        for (int i = 0; i < flight.getChildCount(); i++) {
-            mainPage.addChild();
-        }
+        addAdults(flight.getAdultCount());
+        addInfants(flight.getInfantCount());
+        addChildren(flight.getChildCount());
     }
 
     public boolean isWarningMaxPassengersDisplayed() {
@@ -74,6 +63,24 @@ public class MainPageSteps {
             mainPage.submitPage();
         } catch (StaleElementReferenceException e) {
             logger.error(e);
+        }
+    }
+
+    private void addAdults(int count) {
+        for (int i = 0; i < count; i++) {
+            mainPage.addAdult();
+        }
+    }
+
+    private void addInfants(int count) {
+        for (int i = 0; i < count; i++) {
+            mainPage.addInfant();
+        }
+    }
+
+    private void addChildren(int count) {
+        for (int i = 0; i < count; i++) {
+            mainPage.addChild();
         }
     }
 }

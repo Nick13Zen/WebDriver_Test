@@ -28,7 +28,6 @@ public class HotelPage extends AbstractPage {
     private WebElement hotelName;
 
     private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
-    private static final String CONTAINER_ELEMENT_XPATH = "//div[contains(@class, 'itinerary inprocess contain clear')][2]";
 
     public HotelPage(WebDriver driver) {
         super(driver);
@@ -45,7 +44,7 @@ public class HotelPage extends AbstractPage {
         driver.switchTo().defaultContent();
     }
 
-    public void selectHotelParameters(Hotel hotel) {
+    public void setHotelParameters(Hotel hotel) {
         hotel.setName(hotelName.getText());
     }
 
@@ -54,8 +53,8 @@ public class HotelPage extends AbstractPage {
         continueButton.click();
     }
 
-    public boolean isHotelAdded() { //TODO
+    public boolean isHotelAdded() {
         List<WebElement> list = driver.findElements(By.cssSelector(ADDED_HOTEL_FORM));
-        return list.size() != 0;
+        return list.size() > 0;
     }
 }

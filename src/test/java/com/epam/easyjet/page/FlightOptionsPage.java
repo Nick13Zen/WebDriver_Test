@@ -26,18 +26,6 @@ public class FlightOptionsPage extends AbstractPage {
     @FindBy(id = "ChooseSeatsButton")
     private WebElement chooseSeatsButton;
 
-    @FindBy(xpath = "//*[@class='seat']/div[@class='available']")
-    private WebElement availableSeats;
-
-    @FindBy(id = "addDefaultHoldBaggage")
-    private WebElement addLuggageButton;
-
-    @FindBy(xpath = "//*/button[@data-travelinsurancename='Single Trip Insurance']")
-    private WebElement singleTripInsuranceButton;
-
-    @FindBy(xpath = "//*/button[@data-travelinsurancename='Missed Flight Cover']")
-    private WebElement missedFlightCoverButton;
-
     @FindBy(css = "button[id^='SeatSelector']")
     private WebElement saveSeatsButton;
 
@@ -46,6 +34,9 @@ public class FlightOptionsPage extends AbstractPage {
 
     @FindBy(id = "ContinueButton")
     private WebElement noThanksButton;
+
+    @FindBy(css = "button[id^='btnAddTravelInsurance']")
+    private WebElement buttonInsurance;
 
     private static final String STANDARD_TYPE_TEXT = "standard";
     private static final String ECONOM_TYPE_TEXT = "econom";
@@ -57,14 +48,19 @@ public class FlightOptionsPage extends AbstractPage {
     private static final String SEAT_ECONOM_BUTTON_XPATH = "//*[@data-priceband='3']/td/div[@class='available']";
     private static final String SEAT_STANDARD_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
     private static final String SEAT_XL_BUTTON_XPATH = "//*[@data-priceband='1']/td/div[@class='available']";
-
     private static final String HELP_WINDOW_XPATH = "//div[@class='cabinbagclose']/a";
+    private static final String INSURANCE_PRICE_XPATH = "(//div[@class='optionAdd']/p)[1]";
+
+    private static final String INSURANCE_PRICE_ATTRIBUTE = "data-totaldebitcharge";
+    private static final String INSURANCE_TYPE_ATTRIBUTE = "data-travelinsurancename";
 
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
 
     private static final String LUGGAGE_CONTAINER_CSS = "div.holdOptionBusyIconContainer";
     private static final String RECENTLY_ADDED_FORM = "div.detail.recentlySelected.contain";
+
+    private static final String CONTAINER_ADDED_SEATS = "//*[@class='seatsinbasket detail done contain']";
 
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
@@ -74,13 +70,18 @@ public class FlightOptionsPage extends AbstractPage {
         PageFactory.initElements(this.driver, this);
     }
 
+    public boolean isSeatsAdded() {
+        List<WebElement> list = driver.findElements(By.xpath(CONTAINER_ADDED_SEATS));
+        return list.size() > 0;
+    }
+
     public void addLuggageButton() {
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
                 By.cssSelector(LUGGAGE_CONTAINER_CSS)));
         luggageButton.click();
     }
 
-    public ArrayList<Luggage> setLuggage(int count) {
+    public ArrayList<Luggage> getDataLuggage(int count) {
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector(LUGGAGE_CONTAINER_CSS)));
 
@@ -96,7 +97,7 @@ public class FlightOptionsPage extends AbstractPage {
         return luggages;
     }
 
-    public void getSeat() {
+    public void pickSeat() {
         chooseSeatsButton.click();
     }
 
@@ -112,23 +113,6 @@ public class FlightOptionsPage extends AbstractPage {
         return chooseSeats(XL_TYPE_TEXT, SEAT_XL_BUTTON_XPATH, PRICE_XL_XPATH);
     }
 
-    private Seats chooseSeats(String type, String buttonXpath, String priceXpath) {
-        WebElement priceBand = driver.findElement(
-                By.xpath(priceXpath));
-
-        double price = PriceConverter.convertStringPrice(priceBand.getText());
-
-        driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
-        WebElement seatButton = driver.findElement(
-                By.xpath(buttonXpath));
-        seatButton.click();
-
-        Seats seats = new Seats();
-        seats.setPrice(price);
-        seats.setType(type);
-        return seats;
-    }
-
     public void saveSeats() {
         WebElement closeHelpWindow = driver.findElement(By.xpath(HELP_WINDOW_XPATH));
         if (closeHelpWindow.isDisplayed()) {
@@ -139,17 +123,23 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     public Insurance takeInsurance() {
-        return null;
-    } // TODO: 3/7/2017
+        Insurance insurance = new Insurance();
 
-    public Insurance takeSingleTripInsuranceButton() { // TODO: 3/7/2017
-        singleTripInsuranceButton.click();
-        return null;
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
+
+        WebElement insurancePrice = driver.findElement(By.xpath(INSURANCE_PRICE_XPATH));
+
+        double price = PriceConverter.convertStringPrice(insurancePrice.getAttribute(INSURANCE_PRICE_ATTRIBUTE));
+
+        insurance.setPrice(price);
+        insurance.setType(buttonInsurance.getAttribute(INSURANCE_TYPE_ATTRIBUTE));
+
+        return insurance;
     }
 
-    public Insurance takeMissedFlightCoverButton() { // TODO: 3/7/2017
-        missedFlightCoverButton.click();
-        return null;
+    public void pickInsurance() {
+        buttonInsurance.click();
     }
 
     public void submitPage() {
@@ -166,6 +156,21 @@ public class FlightOptionsPage extends AbstractPage {
 
     public boolean isItemAdded() {
         List<WebElement> list = driver.findElements(By.cssSelector(RECENTLY_ADDED_FORM));
-        return list.size() != 0;
+        return list.size() > 0;
+    }
+
+    private Seats chooseSeats(String type, String buttonXpath, String priceXpath) {
+        WebElement priceBand = driver.findElement(
+                By.xpath(priceXpath));
+
+        double price = PriceConverter.convertStringPrice(priceBand.getText());
+
+        WebElement seatButton = driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
+        seatButton.click();
+
+        Seats seats = new Seats();
+        seats.setPrice(price);
+        seats.setType(type);
+        return seats;
     }
 }

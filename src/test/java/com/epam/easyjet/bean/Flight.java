@@ -1,11 +1,13 @@
 package com.epam.easyjet.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Flight {
+public class Flight implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String destinationPlace;
     private String departurePlace;
@@ -113,23 +115,46 @@ public class Flight {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Flight flight = (Flight) o;
 
-        if (adultCount != flight.adultCount) return false;
-        if (childCount != flight.childCount) return false;
-        if (infantCount != flight.infantCount) return false;
-        if (Double.compare(flight.departurePrice, departurePrice) != 0) return false;
-        if (Double.compare(flight.returnPrice, returnPrice) != 0) return false;
-        if (isOneWay != flight.isOneWay) return false;
-        if (destinationPlace != null ? !destinationPlace.equals(flight.destinationPlace) : flight.destinationPlace != null)
+        if (adultCount != flight.adultCount) {
             return false;
-        if (departurePlace != null ? !departurePlace.equals(flight.departurePlace) : flight.departurePlace != null)
+        }
+        if (childCount != flight.childCount) {
             return false;
-        if (departureDate != null ? !departureDate.equals(flight.departureDate) : flight.departureDate != null)
+        }
+        if (infantCount != flight.infantCount) {
             return false;
-        if (returnDate != null ? !returnDate.equals(flight.returnDate) : flight.returnDate != null) return false;
+        }
+        if (Double.compare(flight.departurePrice, departurePrice) != 0) {
+            return false;
+        }
+        if (Double.compare(flight.returnPrice, returnPrice) != 0) {
+            return false;
+        }
+        if (isOneWay != flight.isOneWay) {
+            return false;
+        }
+        if (destinationPlace != null ?
+                !destinationPlace.equals(flight.destinationPlace) : flight.destinationPlace != null) {
+            return false;
+        }
+        if (departurePlace != null ?
+                !departurePlace.equals(flight.departurePlace) : flight.departurePlace != null) {
+            return false;
+        }
+        if (departureDate != null ?
+                !departureDate.equals(flight.departureDate) : flight.departureDate != null) {
+            return false;
+        }
+        if (returnDate != null ?
+                !returnDate.equals(flight.returnDate) : flight.returnDate != null) {
+            return false;
+        }
         return seatsList != null ? seatsList.equals(flight.seatsList) : flight.seatsList == null;
     }
 
@@ -151,5 +176,22 @@ public class Flight {
         result = 31 * result + (isOneWay ? 1 : 0);
         result = 31 * result + (seatsList != null ? seatsList.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "destinationPlace='" + destinationPlace + '\'' +
+                ", departurePlace='" + departurePlace + '\'' +
+                ", departureDate='" + departureDate + '\'' +
+                ", returnDate='" + returnDate + '\'' +
+                ", adultCount=" + adultCount +
+                ", childCount=" + childCount +
+                ", infantCount=" + infantCount +
+                ", departurePrice=" + departurePrice +
+                ", returnPrice=" + returnPrice +
+                ", isOneWay=" + isOneWay +
+                ", seatsList=" + seatsList +
+                '}';
     }
 }

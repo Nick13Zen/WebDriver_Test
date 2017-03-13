@@ -56,7 +56,6 @@ public class MainPage extends AbstractPage {
     private static final String WARNING_FORM_CLOSE_BUTTON_XPATH = "close-drawer-link";
     private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
     private static final String SELECTABLE_DAY_BUTTON_XPATH = "a.selectable";
-    private static final String WARNING_FORM_XPATH = "div.anim-slide-rtl.drawer-section-wrapper";
     private static final String DIALOG_FORM_ID = "drawer-dialog";
     private static final String WARNING_MAX_PASSENGER_FORM_XPATH = "div.drawer-section.max-passengers";
     private static final String WARNING_INFANT_FORM_XPATH = "div.drawer-section.more-infants-than-adults";
@@ -103,7 +102,6 @@ public class MainPage extends AbstractPage {
     public void setAdultCount(int count) {
         addAdultInput.clear();
         addAdultInput.sendKeys(String.valueOf(count));
-        addAdultInput.sendKeys(Keys.ENTER);
     }
 
     public void setChildCount(int count) {
@@ -130,13 +128,13 @@ public class MainPage extends AbstractPage {
     public boolean isWarningMaxPassengersPresents() {
         List<WebElement> list = driver.
                 findElements(By.cssSelector(WARNING_MAX_PASSENGER_FORM_XPATH));
-        return list.size() != 0;
+        return list.size() > 0;
     }
 
     public boolean isWarningInfantsPresents() {
         List<WebElement> list = driver.
                 findElements(By.cssSelector(WARNING_INFANT_FORM_XPATH));
-        return list.size() != 0;
+        return list.size() > 0;
     }
 
     private void pickDate(String date) {
@@ -144,10 +142,6 @@ public class MainPage extends AbstractPage {
                 findElement(By.cssSelector(CALENDAR_DAY_BUTTON_XPATH + date + "'")).
                 findElement(By.cssSelector(SELECTABLE_DAY_BUTTON_XPATH));
         departureDateValue.click();
-    }
-
-    public boolean isWarningPresents() {
-         return driver.findElement(By.id(DIALOG_FORM_ID)).isDisplayed();
     }
 
     public void addAdult() {
@@ -162,5 +156,7 @@ public class MainPage extends AbstractPage {
         addInfantButton.click();
     }
 
-
+    private boolean isWarningPresents() {
+        return driver.findElement(By.id(DIALOG_FORM_ID)).isDisplayed();
+    }
 }

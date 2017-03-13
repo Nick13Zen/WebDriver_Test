@@ -1,11 +1,14 @@
 package com.epam.easyjet.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private List<Flight> flights;
     private List<Luggage> luggage;
     private Insurance insurance;
@@ -67,7 +70,9 @@ public class Order {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
@@ -89,7 +94,6 @@ public class Order {
         if (car != null ? !car.equals(order.car) : order.car != null) {
             return false;
         }
-
         return hotel != null ? hotel.equals(order.hotel) : order.hotel == null;
     }
 
@@ -105,5 +109,17 @@ public class Order {
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "flights=" + flights +
+                ", luggage=" + luggage +
+                ", insurance=" + insurance +
+                ", car=" + car +
+                ", hotel=" + hotel +
+                ", price=" + price +
+                '}';
     }
 }

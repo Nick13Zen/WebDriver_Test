@@ -4,13 +4,13 @@ import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.FlightsPage;
+import com.epam.easyjet.step.exception.StepException;
+import com.epam.easyjet.util.WindowsManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Mark_Harbunou on 3/6/2017.
@@ -19,49 +19,49 @@ public class FlightStep {
     private static final Logger logger = LogManager.getRootLogger();
     private static final String PRICE_NOT_INITIALIZED = "Price not initialized";
 
-    private WebDriver driver;
     private FlightsPage flightsPage;
 
     public FlightStep() {
-        driver = DriverSingleton.getDriver();
-        flightsPage = new FlightsPage(driver);
+        flightsPage = new FlightsPage(DriverSingleton.getDriver());
         flightsPage.openPage();
     }
 
     public void setRoutePrice(List<Flight> flights) {
         for (Flight flight : flights) {
             if (flight.isOneWay()) {
-                flight.setDeparturePrice(flightsPage.selectOutBoundPrice());
+                flight.setDeparturePrice(flightsPage.getOutBoundPrice());
             } else {
-                flight.setDeparturePrice(flightsPage.selectOutBoundPrice());
-                flight.setReturnPrice(flightsPage.selectReturnPrice());
+                flight.setDeparturePrice(flightsPage.getOutBoundPrice());
+                flight.setReturnPrice(flightsPage.getReturnPrice());
             }
         }
     }
 
     public void setFinalPrice(Order order) {
-        order.addPrice(flightsPage.selectFinalPrice());
+        order.addPrice(flightsPage.getFinalPrice());
     }
 
     public void clickOfPrice(List<Flight> flights) {
         for (Flight flight : flights) {
             if (flight.isOneWay()) {
-                flightsPage.clickDeparturePrice();
+                flightsPage.clickDepartureFlight();
             } else {
-                flightsPage.clickDeparturePrice();
-                flightsPage.clickReturnPrice();
+                flightsPage.clickDepartureFlight();
+                flightsPage.clickReturnFlight();
             }
         }
     }
 
-    public double selectInfantsPrice() throws Exception { //TODO
+    public double getInfantsPrice() {
+        double price;
         try {
-            return flightsPage.selectInfantPrice();
+            price = flightsPage.getInfantPrice();
         } catch (StaleElementReferenceException e) {
             logger.error(e);
+            throw new StepException(PRICE_NOT_INITIALIZED, e);
         }
 
-        throw new Exception(PRICE_NOT_INITIALIZED);
+        return price;
     }
 
     public void fillFlightsPage(Order order) {
@@ -73,18 +73,6 @@ public class FlightStep {
         } catch (StaleElementReferenceException e) {
             logger.error(e);
         }
-        closeAllChildWindows();
-    }
-
-    private void closeAllChildWindows() {
-        String parentWindow = driver.getWindowHandle();
-        Set<String> handles = driver.getWindowHandles();
-        for (String windowHandle : handles) {
-            if (!windowHandle.equals(parentWindow)) {
-                driver.switchTo().window(windowHandle);
-                driver.close();
-            }
-        }
-        driver.switchTo().window(parentWindow);
+        WindowsManager.closeAllChildWindows();
     }
 }
