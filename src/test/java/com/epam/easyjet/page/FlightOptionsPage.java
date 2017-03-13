@@ -80,22 +80,20 @@ public class FlightOptionsPage extends AbstractPage {
         luggageButton.click();
     }
 
-    public void setLuggage(Order order) {
+    public ArrayList<Luggage> setLuggage(int count) {
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.cssSelector(LUGGAGE_CONTAINER_CSS)));
 
         double price = PriceConverter.convertStringPrice(luggagePrice.getText());
 
         ArrayList<Luggage> luggages = new ArrayList<>();
-        Flight flight = order.getFlights().get(0);
-        int count = flight.getAdultCount() + flight.getChildCount() + flight.getInfantCount();
         for (int i = 0; i < count; i++) {
             Luggage luggage = new Luggage();
             luggage.setPrice(price);
             luggage.setType(luggageType.getText());
             luggages.add(luggage);
         }
-        order.setLuggage(luggages);
+        return luggages;
     }
 
     public void getSeat() {

@@ -123,7 +123,7 @@ public class AutomationTest {
         mainPageSteps.fillMainPage(order);
         flightStep.clickOfPrice(flights);
         flightStep.fillFlightsPage(order);
-        flightOptionsPageSteps.fillFlightOptions(flights);
+        flightOptionsPageSteps.fillFlightOptions(order);
         hotelStep.addHotel(order);
         Assert.assertTrue(hotelStep.isHotelAdded());
     }
@@ -132,9 +132,8 @@ public class AutomationTest {
     public void testIsCarAdded() {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
-        flightStep.clickOfPrice(flights);
         flightStep.fillFlightsPage(order);
-        flightOptionsPageSteps.fillFlightOptions(flights);
+        flightOptionsPageSteps.fillFlightOptions(order);
         hotelStep.submitHotelPage();
         carStep.addCar(order);
         Assert.assertTrue(carStep.isCarAdded());
@@ -144,27 +143,24 @@ public class AutomationTest {
     public void testIsLuggageAdded() {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
-        flightStep.clickOfPrice(flights);
         flightStep.fillFlightsPage(order);
         flightOptionsPageSteps.setLuggage(order);
         Assert.assertTrue(flightOptionsPageSteps.isItemAdded());
     }
 
-//    @Test
-//    public void testFinalPrice() throws Exception {
-//        order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
-//        order.getFlights().get(FIRST_FLIGHT).setChildCount(DEFAULT_COUNT);
-//        order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
-//        mainPageSteps.fillMainPage(order);
-//        flightStep.clickOfPrice(flights);
-//        flightStep.fillFlightsPage(order);
-//        flightOptionsPageSteps.fillFlightOptions(order.getFlights());
-//        hotelStep.submitHotelPage();
-//        carStep.submitCarPage();
-//        double finalPriceExpexted = checkoutStep.fillCheckoutPage();
-//        order.setPrice(PriceConverter.CalculateFinalPriceFromOrder(order));
-//        Assert.assertEquals(finalPriceExpexted, order.getPrice());
-//    }
+    @Test
+    public void testFinalPrice() {
+        order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
+        order.getFlights().get(FIRST_FLIGHT).setChildCount(DEFAULT_COUNT);
+        order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
+        mainPageSteps.fillMainPage(order);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.fillFlightOptions(order);
+        hotelStep.submitHotelPage();
+        carStep.submitCarPage();
+        double finalPriceExpexted = checkoutStep.fillCheckoutPage();
+        Assert.assertEquals(finalPriceExpexted, order.getPrice());
+    }
 
     @AfterMethod
     public void driverRelease() {

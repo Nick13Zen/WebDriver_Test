@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class FlightsPage extends AbstractPage {
 
+    public static final String SPAN_CLASS_AMOUNT = "//span[@class='amount ']";
     private List<WebElement> outboundDays = new ArrayList<>();
     private List<WebElement> returnDays = new ArrayList<>();
 
@@ -32,7 +33,7 @@ public class FlightsPage extends AbstractPage {
     @FindBy(xpath = "//div[@class='ReturnDaySlider']//div[@class='day selected']//a[1]/span[contains(@class,'targetPrice')]")
     private WebElement selectReturnPrice;
 
-    @FindBy(xpath = "//div[contains(@class,'TotalCost')]//span[@id='price5']")
+    @FindBy(css = "div.detail.done.contain>div.amount.subtotal")
     private WebElement finalPrice;
 
     @FindBy(xpath = "//button[@id='btnContinue']")
@@ -93,7 +94,7 @@ public class FlightsPage extends AbstractPage {
     }
 
     public double selectInfantPrice() {
-        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[@class='amount ']")));
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(SPAN_CLASS_AMOUNT)));
             return PriceConverter.converterStringWithX(infantsPrice.getText());
     }
 

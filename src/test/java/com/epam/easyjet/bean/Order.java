@@ -61,8 +61,8 @@ public class Order {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void addPrice(double price) {
+        this.price += price;
     }
 
     @Override
