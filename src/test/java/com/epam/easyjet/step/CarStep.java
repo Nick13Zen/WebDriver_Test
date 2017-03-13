@@ -26,7 +26,9 @@ public class CarStep {
     }
 
     public void addCar(Order order) {
-        order.setCar(setCarInfo());
+        Car car = setCarInfo();
+        order.setCar(car);
+        order.addPrice(car.getPrice());
         carRentalPage.addCarClick();
     }
 

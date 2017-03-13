@@ -39,8 +39,8 @@ public class FlightStep {
         }
     }
 
-    public void setFinalPrice() {
-        flightsPage.selectFinalPrice();
+    public void setFinalPrice(Order order) {
+        order.addPrice(flightsPage.selectFinalPrice());
     }
 
     public void clickOfPrice(List<Flight> flights) {
@@ -65,7 +65,9 @@ public class FlightStep {
     }
 
     public void fillFlightsPage(Order order) {
+        clickOfPrice(order.getFlights());
         setRoutePrice(order.getFlights());
+        setFinalPrice(order);
         try {
             flightsPage.submitPage();
         } catch (StaleElementReferenceException e) {
