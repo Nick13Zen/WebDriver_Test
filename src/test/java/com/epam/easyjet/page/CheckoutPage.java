@@ -15,7 +15,7 @@ public class CheckoutPage extends AbstractPage {
     @FindBy(xpath = "//*[@class='formatedPrice cellPrice']/strong")
     private WebElement finalPrice;
 
-    @FindBy(xpath = ".//*[@id='new-signin']")
+    @FindBy(id = "new-signin")
     private WebElement pageLoaded;
 
     public CheckoutPage(WebDriver driver) {

@@ -4,7 +4,6 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.step.*;
-import com.epam.easyjet.util.PriceConverter;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.Test;
@@ -18,7 +17,7 @@ public class AutomationTest {
 
     private static final int FIRST_FLIGHT = 0;
     private static final int VALID_INFANT_ADULT_COUNT = 2;
-    private static final int INVALID_INFANT_ADULT_COUNT = 4;
+    private static final int INVALID_INFANT_ADULT_COUNT = 3;
     private static final int DEFAULT_COUNT = 1;
 
     private static final double INFANT_PRICE = 28.0;
@@ -100,10 +99,8 @@ public class AutomationTest {
 
     @Test
     public void testInvalidInfantCount() {
-        Flight flight = new Flight();
-        flight.setAdultCount(VALID_INFANT_ADULT_COUNT);
-        flight.setInfantCount(INVALID_INFANT_ADULT_COUNT);
-        mainPageSteps.setClientCount(flight);
+        order.getFlights().get(FIRST_FLIGHT).setInfantCount(INVALID_INFANT_ADULT_COUNT);
+        mainPageSteps.setClientCount(order.getFlights().get(FIRST_FLIGHT));
         Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
     }
 
@@ -114,7 +111,7 @@ public class AutomationTest {
         order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
         flightStep.clickOfPrice(flights);
-        Assert.assertEquals(flightStep.selectInfantsPrice(), INFANT_PRICE);
+        Assert.assertEquals(flightStep.getInfantsPrice(), INFANT_PRICE);
     }
 
     @Test
@@ -158,7 +155,7 @@ public class AutomationTest {
         flightOptionsPageSteps.fillFlightOptions(order);
         hotelStep.submitHotelPage();
         carStep.submitCarPage();
-        double finalPriceExpexted = checkoutStep.fillCheckoutPage();
+        double finalPriceExpexted = checkoutStep.getFinalPrice();
         Assert.assertEquals(finalPriceExpexted, order.getPrice());
     }
 

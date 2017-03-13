@@ -4,22 +4,17 @@ import com.epam.easyjet.bean.Car;
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.CarRentalPage;
-import org.openqa.selenium.WebDriver;
 
 /**
  * Created by Maria on 06.03.2017.
  */
 public class CarStep {
-
-    private WebDriver driver;
     private CarRentalPage carRentalPage;
 
     public CarStep() {
-        driver = DriverSingleton.getDriver();
-        carRentalPage = new CarRentalPage(driver);
+        carRentalPage = new CarRentalPage(DriverSingleton.getDriver());
         carRentalPage.openPage();
     }
-
 
     private Car setCarInfo() {
         return carRentalPage.selectCarParameters();

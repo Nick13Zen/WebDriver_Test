@@ -6,7 +6,6 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Seats;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.FlightOptionsPage;
-import org.apache.xpath.operations.Or;
 import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
@@ -16,15 +15,13 @@ import java.util.List;
  * Created by Raman_Darasinets on 3/7/2017.
  */
 public class FlightOptionsPageSteps {
-
-    private WebDriver driver;
     private FlightOptionsPage flightOptionsPage;
 
     private static final int TWO_WAYS_COUNT = 2;
     private static final int FIRST_FLIGHT = 0;
 
     public FlightOptionsPageSteps() {
-        driver = DriverSingleton.getDriver();
+        WebDriver driver = DriverSingleton.getDriver();
         flightOptionsPage = new FlightOptionsPage(driver);
         flightOptionsPage.openPage();
     }
@@ -33,14 +30,14 @@ public class FlightOptionsPageSteps {
         flightOptionsPage.addLuggageButton();
         Flight flight = order.getFlights().get(FIRST_FLIGHT);
         int generalCount = flight.getAdultCount() + flight.getChildCount() + flight.getChildCount();
-        order.setLuggage(flightOptionsPage.setLuggage(generalCount));
+        order.setLuggage(flightOptionsPage.getDataLuggage(generalCount));
         for (Luggage luggage : order.getLuggage()) {
             order.addPrice(luggage.getPrice());
         }
     }
 
     public void setSeats() {
-        flightOptionsPage.getSeat();
+        flightOptionsPage.pickSeat();
     }
 
     public void setEconomSeat(Flight flight, Order order) {

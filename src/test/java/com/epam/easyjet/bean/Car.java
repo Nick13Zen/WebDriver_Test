@@ -1,9 +1,12 @@
 package com.epam.easyjet.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Car {
+public class Car implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String name;
     private double price;
@@ -47,5 +50,13 @@ public class Car {
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

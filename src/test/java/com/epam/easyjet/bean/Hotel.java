@@ -1,9 +1,12 @@
 package com.epam.easyjet.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
  */
-public class Hotel {
+public class Hotel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String name;
     private double price;
