@@ -102,6 +102,7 @@ public class MainPage extends AbstractPage {
     public void setAdultCount(int count) {
         addAdultInput.clear();
         addAdultInput.sendKeys(String.valueOf(count));
+        addAdultInput.sendKeys(Keys.ENTER);
     }
 
     public void setChildCount(int count) {
