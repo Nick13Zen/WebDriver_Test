@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.3.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
@@ -45,6 +45,7 @@
             <version>3.6.1</version>
         </dependency>
     </dependencies>
+<<<<<<< HEAD
     <build>
         <plugins>
             <plugin>
@@ -65,4 +66,6 @@
     </build>
 
 
+=======
+>>>>>>> 951dcfc7afa8887cb207b40f5da74ad5c5e6a936
 </project>
