@@ -26,7 +26,7 @@ public class DriverSingleton {
             firefoxCap.setCapability(CapabilityType.PAGE_LOAD_STRATEGY, NORMAL_PARAMETER);
 
             driver = new FirefoxDriver(firefoxCap);
-            driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+            driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.manage().window().maximize();
         }
