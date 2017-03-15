@@ -17,7 +17,6 @@ public class AutomationTest {
 
     private static final int FIRST_FLIGHT = 0;
     private static final int VALID_INFANT_ADULT_COUNT = 2;
-    private static final int INVALID_INFANT_ADULT_COUNT = 3;
     private static final int DEFAULT_COUNT = 1;
 
     private static final double INFANT_PRICE = 28.0;
@@ -62,9 +61,9 @@ public class AutomationTest {
     @DataProvider(name = "valid client count")
     public Object[][] getValidData() throws Exception {
         return new Object[][]{
-                {40, 0, 0},
-                {20, 20, 0},
-                {0, 40, 0}
+                {39, 0, 0},
+                {19, 20, 0},
+                {0, 39, 0}
         };
     }
 
@@ -95,13 +94,6 @@ public class AutomationTest {
         flight.setInfantCount(VALID_INFANT_ADULT_COUNT);
         mainPageSteps.setClientCount(flight);
         Assert.assertTrue(!mainPageSteps.isWarningInfantDisplayed());
-    }
-
-    @Test
-    public void testInvalidInfantCount() {
-        order.getFlights().get(FIRST_FLIGHT).setInfantCount(INVALID_INFANT_ADULT_COUNT);
-        mainPageSteps.setClientCount(order.getFlights().get(FIRST_FLIGHT));
-        Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
     }
 
     @Test

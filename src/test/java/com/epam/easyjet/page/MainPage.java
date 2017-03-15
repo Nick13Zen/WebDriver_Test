@@ -66,7 +66,7 @@ public class MainPage extends AbstractPage {
     }
 
     public void openPage() {
-        driver.get(PAGE_URL);
+        driver.navigate().to(PAGE_URL);
         PageFactory.initElements(this.driver, this);
         if (isWarningPresents()) {
             WebElement closeButton = driver.findElement(By.id(WARNING_FORM_CLOSE_BUTTON_XPATH));

@@ -17,9 +17,8 @@ public class FlightOptionsPage extends AbstractPage {
     @FindBy(id = "addDefaultHoldBaggage")
     private WebElement luggageButton;
 
-    @FindBy(xpath = "//*[@class='holdScalePrice']")
+    @FindBy(css = "div.basketHoldItemSummary>span.itemPrice")
     private WebElement luggagePrice;
-
     @FindBy(xpath = "//*[@class='holdScaleDial-value']")
     private WebElement luggageType;
 
@@ -39,28 +38,31 @@ public class FlightOptionsPage extends AbstractPage {
     private WebElement buttonInsurance;
 
     private static final String STANDARD_TYPE_TEXT = "standard";
-    private static final String ECONOM_TYPE_TEXT = "econom";
-    private static final String XL_TYPE_TEXT = "XL";
 
+    private static final String ECONOM_TYPE_TEXT = "econom";
+
+    private static final String XL_TYPE_TEXT = "XL";
     private static final String PRICE_ECONOM_XPATH = "//*[@id='price_band_3']/div/p[@class='band_price']";
     private static final String PRICE_STANDARD_XPATH = "//*[@id='price_band_2']/div/p[@class='band_price']";
+
     private static final String PRICE_XL_XPATH = "//*[@id='price_band_1']/div/p[@class='band_price']";
     private static final String SEAT_ECONOM_BUTTON_XPATH = "//*[@data-priceband='3']/td/div[@class='available']";
     private static final String SEAT_STANDARD_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
     private static final String SEAT_XL_BUTTON_XPATH = "//*[@data-priceband='1']/td/div[@class='available']";
     private static final String HELP_WINDOW_XPATH = "//div[@class='cabinbagclose']/a";
     private static final String INSURANCE_PRICE_XPATH = "(//div[@class='optionAdd']/p)[1]";
-
     private static final String INSURANCE_PRICE_ATTRIBUTE = "data-totaldebitcharge";
     private static final String INSURANCE_TYPE_ATTRIBUTE = "data-travelinsurancename";
 
     private static final String DISABLER_ATTRIBUTE_FOR_CONTINUE_BUTTON = "aria-disabled";
     private static final String DISABLER_VALUE_FOR_CONTINUE_BUTTON = "false";
 
-    private static final String LUGGAGE_CONTAINER_CSS = "div.holdOptionBusyIconContainer";
+    private static final String LUGGAGE_CONTAINER_CSS = "div.holdListAddItem";
+    private static final String BUSY_ICON_CONTAINER_CSS = "div.holdOptionBusyIconContainer";
     private static final String RECENTLY_ADDED_FORM = "div.detail.recentlySelected.contain";
-
     private static final String CONTAINER_ADDED_SEATS = "//*[@class='seatsinbasket detail done contain']";
+
+    private static final String CONTAIN_INSURANCE_CSS = "div.detail.recentlySelected.contain>div#Insurance";
 
     public FlightOptionsPage(WebDriver driver) {
         super(driver);
@@ -77,16 +79,15 @@ public class FlightOptionsPage extends AbstractPage {
 
     public void addLuggageButton() {
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
-                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
+                By.cssSelector(BUSY_ICON_CONTAINER_CSS)));
         luggageButton.click();
     }
 
     public ArrayList<Luggage> getDataLuggage(int count) {
-        driverWait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
+        driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
+                By.cssSelector(BUSY_ICON_CONTAINER_CSS)));
 
-        double price = PriceConverter.convertStringPrice(luggagePrice.getText());
-
+        double price = PriceConverter.converterStringWithX(luggagePrice.getText());
         ArrayList<Luggage> luggages = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Luggage luggage = new Luggage();
@@ -126,7 +127,7 @@ public class FlightOptionsPage extends AbstractPage {
         Insurance insurance = new Insurance();
 
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
-                By.cssSelector(LUGGAGE_CONTAINER_CSS)));
+                By.cssSelector(BUSY_ICON_CONTAINER_CSS)));
 
         WebElement insurancePrice = driver.findElement(By.xpath(INSURANCE_PRICE_XPATH));
 
@@ -140,6 +141,7 @@ public class FlightOptionsPage extends AbstractPage {
 
     public void pickInsurance() {
         buttonInsurance.click();
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(CONTAIN_INSURANCE_CSS)));
     }
 
     public void submitPage() {
