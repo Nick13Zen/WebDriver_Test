@@ -41,7 +41,6 @@ public class MainPageSteps {
 
     public void setClientCount(Flight flight) {
         mainPage.setAdultCount(0);
-
         addAdults(flight.getAdultCount());
         addInfants(flight.getInfantCount());
         addChildren(flight.getChildCount());
