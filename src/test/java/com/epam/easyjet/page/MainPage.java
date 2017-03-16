@@ -103,21 +103,21 @@ public class MainPage extends AbstractPage {
     public void setAdultCount(int count) {
         addAdultInput.clear();
         addAdultInput.sendKeys(String.valueOf(count));
-        addAdultInput.sendKeys(Keys.ENTER);
     }
 
     public void setChildCount(int count) {
         addChildInput.clear();
         addChildInput.sendKeys(String.valueOf(count));
-        addChildInput.sendKeys(Keys.ENTER);
     }
 
     public void setInfantCount(int count) {
         addInfantInput.clear();
         addInfantInput.sendKeys(String.valueOf(count));
-        addInfantInput.sendKeys(Keys.ENTER);
     }
 
+    public void clickSubmit() {
+        addAdultInput.sendKeys(Keys.ENTER);
+    }
     public void submitPage() {
         driverWait.until(ExpectedConditions.visibilityOf(submitButton));
         Actions actions = new Actions(driver);
@@ -151,19 +151,16 @@ public class MainPage extends AbstractPage {
     public void addAdult() {
         Actions actions = new Actions(driver);
         actions.moveToElement(addAdultButton).click().perform();
-        addAdultButton.click();
     }
 
     public void addChild() {
         Actions actions = new Actions(driver);
         actions.moveToElement(addChildButton).click().perform();
-        addChildButton.click();
     }
 
     public void addInfant() {
         Actions actions = new Actions(driver);
         actions.moveToElement(addInfantButton).click().perform();
-        addInfantButton.click();
     }
 
     private boolean isWarningPresents() {

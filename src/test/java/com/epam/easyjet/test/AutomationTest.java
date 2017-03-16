@@ -61,29 +61,35 @@ public class AutomationTest {
     @DataProvider(name = "valid client count")
     public Object[][] getValidData() throws Exception {
         return new Object[][]{
-                {39, 0, 0},
-                {19, 20, 0},
-                {0, 39, 0}
+                {40, 0, 0},
+                {20, 20, 0},
+                {0, 40, 0}
         };
     }
 
     @Test(dataProvider = "invalid client count")
     public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        Flight flight = new Flight();
+        Flight flight = order.getFlights().get(FIRST_FLIGHT);
         flight.setAdultCount(adultCount);
         flight.setChildCount(childCount);
         flight.setInfantCount(infantCount);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.setRoutePlace(flight);
+        mainPageSteps.setRouteDate(order.getFlights());
+        mainPageSteps.typeClientCount(flight);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
     @Test(dataProvider = "valid client count")
     public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        Flight flight = new Flight();
+        Flight flight = order.getFlights().get(FIRST_FLIGHT);
         flight.setAdultCount(adultCount);
         flight.setChildCount(childCount);
         flight.setInfantCount(infantCount);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.setRoutePlace(flight);
+        mainPageSteps.setRouteDate(order.getFlights());
+        mainPageSteps.typeClientCount(flight);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(!mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 

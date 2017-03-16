@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  */
 public class CheckoutPage extends AbstractPage {
 
-    @FindBy(xpath = "//*[@class='formatedPrice cellPrice']/strong")
+    @FindBy(xpath = "//div[@class='amount subtotal']")
     private WebElement finalPrice;
 
     @FindBy(id = "new-signin")

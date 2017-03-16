@@ -6,7 +6,6 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Seats;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.FlightOptionsPage;
-import org.apache.xpath.operations.Or;
 import org.openqa.selenium.WebDriver;
 
 import java.util.ArrayList;
