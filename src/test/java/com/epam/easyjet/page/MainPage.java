@@ -1,12 +1,13 @@
 package com.epam.easyjet.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -44,14 +45,18 @@ public class MainPage extends AbstractPage {
     @FindBy(css = "a[title='Click to choose a return date']")
     private WebElement destinationDateButton;
 
-    @FindBy(css = "div.search-passengers-adults.search-row>button.passenger-button-add")
+    @FindBy(xpath = "//div[@class='search-passengers-adults search-row']//button[contains(@class,'passenger-button-add')]")
     private WebElement addAdultButton;
 
-    @FindBy(css = "div.search-passengers-infants.search-row>button.passenger-button-add")
+    @FindBy(xpath = "//div[@class='search-passengers-infants search-row']//button[contains(@class,'passenger-button-add')]")
     private WebElement addInfantButton;
 
-    @FindBy(css = "div.search-passengers-children.search-row>button.passenger-button-add")
+    @FindBy(xpath = "//div[@class='search-passengers-children search-row']//button[contains(@class,'passenger-button-add')]")
     private WebElement addChildButton;
+
+    @FindBy(xpath = " //div[@class='search-passengers-adults search-row']//button[contains(@class,'passenger-button-remove')]")
+    private WebElement removeAdultButton;
+
 
     private static final String WARNING_FORM_CLOSE_BUTTON_XPATH = "close-drawer-link";
     private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
@@ -101,7 +106,8 @@ public class MainPage extends AbstractPage {
 
     public void setAdultCount(int count) {
         addAdultInput.clear();
-        addAdultInput.sendKeys(String.valueOf(count));
+//        addAdultInput.sendKeys(String.valueOf(count));
+//        addChildInput.sendKeys(Keys.ENTER);
     }
 
     public void setChildCount(int count) {
@@ -145,15 +151,35 @@ public class MainPage extends AbstractPage {
     }
 
     public void addAdult() {
-        addAdultButton.click();
+        driverWait.until(ExpectedConditions.elementToBeClickable(addAdultButton));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(addAdultButton).click().perform();
+//        driverWait.until(ExpectedConditions.elementToBeClickable(addAdultButton));
+//        addAdultButton.click();
+    }
+
+    public void removeAdult() {
+        driverWait.until(ExpectedConditions.elementToBeClickable(addAdultButton));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(removeAdultButton).click().perform();
+//        driverWait.until(ExpectedConditions.elementToBeClickable(addAdultButton));
+//        addAdultButton.click();
     }
 
     public void addChild() {
-        addChildButton.click();
+        driverWait.until(ExpectedConditions.elementToBeClickable(addChildButton));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(addChildButton).click().perform();
+//        addChildButton.click();
     }
 
     public void addInfant() {
-        addInfantButton.click();
+        driverWait.until(ExpectedConditions.elementToBeClickable(addInfantButton));
+//        JavascriptExecutor jse = (JavascriptExecutor)driver;
+//        jse.executeScript("scroll(250, 0)");
+        Actions actions = new Actions(driver);
+        actions.moveToElement(addInfantButton).click().perform();
+//        addInfantButton.click();
     }
 
     private boolean isWarningPresents() {

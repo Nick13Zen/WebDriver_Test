@@ -7,6 +7,10 @@ import com.epam.easyjet.page.MainPage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -40,11 +44,12 @@ public class MainPageSteps {
     }
 
     public void setClientCount(Flight flight) {
-        mainPage.setAdultCount(0);
+//        mainPage.setAdultCount(0);
 
         addAdults(flight.getAdultCount());
-        addInfants(flight.getInfantCount());
-        addChildren(flight.getChildCount());
+        addChildren(flight.getChildCount()-1);
+        addInfants(flight.getInfantCount()-1);
+
     }
 
     public boolean isWarningMaxPassengersDisplayed() {
@@ -58,6 +63,7 @@ public class MainPageSteps {
     public void fillMainPage(Order order) {
         setRoutePlace(order.getFlights().get(0));
         setRouteDate(order.getFlights());
+
         setClientCount(order.getFlights().get(0));
         try {
             mainPage.submitPage();
@@ -66,21 +72,25 @@ public class MainPageSteps {
         }
     }
 
-    private void addAdults(int count) {
-        for (int i = 0; i < count; i++) {
+    public void addAdults(int count) {
+        for (int i = 0; i < count-1; i++) {
             mainPage.addAdult();
         }
     }
 
-    private void addInfants(int count) {
+    public void addInfants(int count) {
         for (int i = 0; i < count; i++) {
             mainPage.addInfant();
         }
     }
 
-    private void addChildren(int count) {
+    public void addChildren(int count) {
         for (int i = 0; i < count; i++) {
             mainPage.addChild();
         }
+    }
+
+    public void removeAdult() {
+        mainPage.removeAdult();
     }
 }

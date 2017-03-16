@@ -3,6 +3,7 @@ package com.epam.easyjet.page;
 import com.epam.easyjet.bean.*;
 import com.epam.easyjet.util.PriceConverter;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -160,11 +161,13 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     private Seats chooseSeats(String type, String buttonXpath, String priceXpath) {
+        double price = 0;
         WebElement priceBand = driver.findElement(
                 By.xpath(priceXpath));
-
-        double price = PriceConverter.convertStringPrice(priceBand.getText());
-
+        try {
+            price = PriceConverter.convertStringPrice(priceBand.getText());
+        } catch (StaleElementReferenceException e) {
+        }
         WebElement seatButton = driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
         seatButton.click();
 

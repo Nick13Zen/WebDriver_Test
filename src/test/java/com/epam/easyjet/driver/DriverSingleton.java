@@ -22,7 +22,7 @@ public class DriverSingleton {
         if (null == driver) {
             System.setProperty(WEBDRIVER_GECKO_DRIVER, GECKODRIVER_GECKODRIVER_EXE_PATH);
             driver = new FirefoxDriver();
-            driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+            driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.manage().window().maximize();
         }
