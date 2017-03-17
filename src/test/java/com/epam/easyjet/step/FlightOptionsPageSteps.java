@@ -17,7 +17,6 @@ import java.util.List;
 public class FlightOptionsPageSteps {
     private FlightOptionsPage flightOptionsPage;
 
-    private static final int TWO_WAYS_COUNT = 2;
     private static final int FIRST_FLIGHT = 0;
 
     public FlightOptionsPageSteps() {
@@ -29,7 +28,7 @@ public class FlightOptionsPageSteps {
     public void setLuggage(Order order) {
         flightOptionsPage.addLuggageButton();
         Flight flight = order.getFlights().get(FIRST_FLIGHT);
-        int generalCount = flight.getAdultCount() + flight.getChildCount() + flight.getChildCount();
+        int generalCount = flight.getAdultCount() + flight.getChildCount() + flight.getInfantCount();
         order.setLuggage(flightOptionsPage.getDataLuggage(generalCount));
         for (Luggage luggage : order.getLuggage()) {
             order.addPrice(luggage.getPrice());
@@ -67,6 +66,13 @@ public class FlightOptionsPageSteps {
         flightOptionsPage.saveSeats();
     }
 
+    public void takeInsurance(Order order) {
+
+        order.setInsurance(flightOptionsPage.takeInsurance());
+        order.addPrice(order.getInsurance().getPrice());
+        flightOptionsPage.pickInsurance();
+    }
+
     public void fillFlightOptions(Order order) {
         setSeats();
         List<Flight> flights = order.getFlights();
@@ -79,8 +85,9 @@ public class FlightOptionsPageSteps {
                 setEconomSeats(flight, order, allNumberSeats);
             }
         }
+        setLuggage(order);
+        takeInsurance(order);
         flightOptionsPage.submitPage();
-        flightOptionsPage.goNext();
     }
 
     private void setEconomSeats(Flight flight, Order order, int allNumberSeats) {
