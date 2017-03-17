@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class AutomationTest {
 
     private static final int FIRST_FLIGHT = 0;
-    private static final int VALID_INFANT_ADULT_COUNT = 2;
+    private static final int VALID_INFANT_ADULT_COUNT = 3;
+    private static final int INVALID_INFANT_ADULT_COUNT = 2;
     private static final int DEFAULT_COUNT = 1;
 
     private static final double INFANT_PRICE = 28.0;
@@ -96,7 +97,16 @@ public class AutomationTest {
     }
 
     @Test
-    public void testInfantPrice() throws Exception {
+    public void testInvalidInfantCount() {
+        Flight flight = new Flight();
+        flight.setInfantCount(INVALID_INFANT_ADULT_COUNT);
+        mainPageSteps.typeInfantCount(flight.getInfantCount());
+        mainPageSteps.clickSubmitPage();
+        Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
+    }
+
+    @Test
+    public void testInfantPrice() {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         order.getFlights().get(FIRST_FLIGHT).setChildCount(DEFAULT_COUNT);
         order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
