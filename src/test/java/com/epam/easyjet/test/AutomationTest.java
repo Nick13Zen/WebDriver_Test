@@ -98,7 +98,8 @@ public class AutomationTest {
         Flight flight = new Flight();
         flight.setAdultCount(VALID_INFANT_ADULT_COUNT);
         flight.setInfantCount(VALID_INFANT_ADULT_COUNT);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.typeClientCount(flight);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(!mainPageSteps.isWarningInfantDisplayed());
     }
 

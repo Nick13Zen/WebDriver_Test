@@ -2,7 +2,10 @@ package com.epam.easyjet.page;
 
 import com.epam.easyjet.bean.*;
 import com.epam.easyjet.util.PriceConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightOptionsPage extends AbstractPage {
+
+    private final Logger logger = LogManager.getRootLogger();
 
     @FindBy(id = "addDefaultHoldBaggage")
     private WebElement luggageButton;
@@ -162,17 +167,18 @@ public class FlightOptionsPage extends AbstractPage {
     }
 
     private Seats chooseSeats(String type, String buttonXpath, String priceXpath) {
-        WebElement priceBand = driver.findElement(
-                By.xpath(priceXpath));
-
-        double price = PriceConverter.convertStringPrice(priceBand.getText());
-
-        WebElement seatButton = driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
-        seatButton.click();
-
         Seats seats = new Seats();
-        seats.setPrice(price);
-        seats.setType(type);
+        try {
+            WebElement seatButton = driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(buttonXpath)));
+            seatButton.click();
+            WebElement priceBand = driver.findElement(
+                    By.xpath(priceXpath));
+            double price = PriceConverter.convertStringPrice(priceBand.getText());
+            seats.setPrice(price);
+            seats.setType(type);
+        } catch (StaleElementReferenceException e) {
+            logger.error(e);
+        }
         return seats;
     }
 }

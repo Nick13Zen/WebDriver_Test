@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -120,9 +119,8 @@ public class MainPage extends AbstractPage {
     }
     public void submitPage() {
         driverWait.until(ExpectedConditions.visibilityOf(submitButton));
-        Actions actions = new Actions(driver);
 
-        actions.moveToElement(submitButton).click().perform();
+        submitButton.click();
 
         if (isWarningPresents()) {
             infoSubmitButton.click();
@@ -149,21 +147,21 @@ public class MainPage extends AbstractPage {
     }
 
     public void addAdult() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(addAdultButton).click().perform();
+        addAdultButton.click();
     }
 
     public void addChild() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(addChildButton).click().perform();
+        addChildButton.click();
     }
 
     public void addInfant() {
-        Actions actions = new Actions(driver);
-        actions.moveToElement(addInfantButton).click().perform();
+        addInfantButton.click();
     }
 
     private boolean isWarningPresents() {
-        return driver.findElement(By.id(DIALOG_FORM_ID)).isDisplayed();
+//        return driver.findElement(By.id(DIALOG_FORM_ID)).isDisplayed();
+        List<WebElement> list = driver.
+                findElements(By.id(DIALOG_FORM_ID));
+        return list.size() > 0;
     }
 }
