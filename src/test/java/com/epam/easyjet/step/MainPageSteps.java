@@ -46,6 +46,28 @@ public class MainPageSteps {
         addChildren(flight.getChildCount());
     }
 
+    public void typeClientCount(Flight flight) {
+        typeChildCount(flight.getChildCount());
+        typeAdultCount(flight.getAdultCount());
+        typeInfantCount(flight.getInfantCount());
+    }
+
+    public void typeInfantCount(int count) {
+        mainPage.setInfantCount(count);
+    }
+
+    public void typeChildCount(int count) {
+        mainPage.setChildCount(count);
+    }
+
+    public void typeAdultCount(int count) {
+        mainPage.setAdultCount(count);
+    }
+
+    public void clickSubmitPage() {
+        mainPage.clickSubmit();
+    }
+
     public boolean isWarningMaxPassengersDisplayed() {
         return mainPage.isWarningMaxPassengersPresents();
     }
@@ -57,7 +79,7 @@ public class MainPageSteps {
     public void fillMainPage(Order order) {
         setRoutePlace(order.getFlights().get(0));
         setRouteDate(order.getFlights());
-        setClientCount(order.getFlights().get(0));
+        typeClientCount(order.getFlights().get(0));
         try {
             mainPage.submitPage();
         } catch (StaleElementReferenceException e) {

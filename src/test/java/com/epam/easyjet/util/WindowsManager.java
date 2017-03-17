@@ -14,12 +14,12 @@ public final class WindowsManager {
         WebDriver driver = DriverSingleton.getDriver();
         String parentWindow = driver.getWindowHandle();
         Set<String> handles = driver.getWindowHandles();
-        for (String windowHandle : handles) {
-            if (!windowHandle.equals(parentWindow)) {
-                driver.switchTo().window(windowHandle);
-                driver.close();
-            }
-        }
+//        for (String windowHandle : handles) {
+//            if (!windowHandle.equals(parentWindow)) {
+//                driver.switchTo().window(windowHandle);
+//                driver.close();
+//            }
+//        }
         driver.switchTo().window(parentWindow);
     }
 }
