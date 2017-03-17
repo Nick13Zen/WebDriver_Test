@@ -16,7 +16,8 @@ import java.util.ArrayList;
 public class AutomationTest {
 
     private static final int FIRST_FLIGHT = 0;
-    private static final int VALID_INFANT_ADULT_COUNT = 2;
+    private static final int VALID_INFANT_ADULT_COUNT = 3;
+    private static final int INVALID_INFANT_ADULT_COUNT = 2;
     private static final int DEFAULT_COUNT = 1;
 
     private static final double INFANT_PRICE = 28.0;
@@ -61,29 +62,27 @@ public class AutomationTest {
     @DataProvider(name = "valid client count")
     public Object[][] getValidData() throws Exception {
         return new Object[][]{
-                {39, 0, 0},
-                {19, 20, 0},
-                {0, 39, 0}
+                {40, 0, 0},
+                {20, 20, 0},
+                {0, 40, 0}
         };
     }
 
     @Test(dataProvider = "invalid client count")
     public void testInvalidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        Flight flight = new Flight();
-        flight.setAdultCount(adultCount);
-        flight.setChildCount(childCount);
-        flight.setInfantCount(infantCount);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.typeChildCount(childCount);
+        mainPageSteps.typeAdultCount(adultCount);
+        mainPageSteps.typeInfantCount(infantCount);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
     @Test(dataProvider = "valid client count")
     public void testValidCountOfClients(int adultCount, int childCount, int infantCount) throws Exception {
-        Flight flight = new Flight();
-        flight.setAdultCount(adultCount);
-        flight.setChildCount(childCount);
-        flight.setInfantCount(infantCount);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.typeAdultCount(adultCount);
+        mainPageSteps.typeChildCount(childCount);
+        mainPageSteps.typeInfantCount(infantCount);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(!mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
@@ -92,12 +91,22 @@ public class AutomationTest {
         Flight flight = new Flight();
         flight.setAdultCount(VALID_INFANT_ADULT_COUNT);
         flight.setInfantCount(VALID_INFANT_ADULT_COUNT);
-        mainPageSteps.setClientCount(flight);
+        mainPageSteps.typeClientCount(flight);
+        mainPageSteps.clickSubmitPage();
         Assert.assertTrue(!mainPageSteps.isWarningInfantDisplayed());
     }
 
     @Test
-    public void testInfantPrice() throws Exception {
+    public void testInvalidInfantCount() {
+        Flight flight = new Flight();
+        flight.setInfantCount(INVALID_INFANT_ADULT_COUNT);
+        mainPageSteps.typeInfantCount(flight.getInfantCount());
+        mainPageSteps.clickSubmitPage();
+        Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
+    }
+
+    @Test
+    public void testInfantPrice() {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         order.getFlights().get(FIRST_FLIGHT).setChildCount(DEFAULT_COUNT);
         order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
