@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -16,10 +17,8 @@ import java.util.List;
 public class MainPage extends AbstractPage {
 
     private final String PAGE_URL = "https://www.easyjet.com/en";
-
     @FindBy(xpath = "//input[contains(@aria-label, 'To:')]")
     private WebElement destinationInput;
-
     @FindBy(css = "button.ej-button.rounded-corners.arrow-button.search-submit")
     private WebElement submitButton;
 
@@ -54,11 +53,15 @@ public class MainPage extends AbstractPage {
     private WebElement addChildButton;
 
     private static final String WARNING_FORM_CLOSE_BUTTON_XPATH = "close-drawer-link";
+
+    private static final String DRAWER_SECTION_NO_PASSENGERS_XPATH = "//div[@class='drawer-section no-passengers']";
+
     private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
     private static final String SELECTABLE_DAY_BUTTON_XPATH = "a.selectable";
     private static final String DIALOG_FORM_ID = "drawer-dialog";
     private static final String WARNING_MAX_PASSENGER_FORM_XPATH = "div.drawer-section.max-passengers";
     private static final String WARNING_INFANT_FORM_XPATH = "div.drawer-section.more-infants-than-adults";
+    private static final String DRAWER_BUTTON_XPATH = "//div[@class='drawer-button']/button";
 
 
     public MainPage(WebDriver driver) {
@@ -101,16 +104,25 @@ public class MainPage extends AbstractPage {
 
     public void setAdultCount(int count) {
         addAdultInput.clear();
+        if (isWarningNoPassengersPresents()) {
+            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
+        }
         addAdultInput.sendKeys(String.valueOf(count));
     }
 
     public void setChildCount(int count) {
         addChildInput.clear();
+        if (isWarningNoPassengersPresents()) {
+            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
+        }
         addChildInput.sendKeys(String.valueOf(count));
     }
 
     public void setInfantCount(int count) {
         addInfantInput.clear();
+        if (isWarningNoPassengersPresents()) {
+            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
+        }
         addInfantInput.sendKeys(String.valueOf(count));
     }
 
@@ -136,6 +148,14 @@ public class MainPage extends AbstractPage {
     public boolean isWarningInfantsPresents() {
         List<WebElement> list = driver.
                 findElements(By.cssSelector(WARNING_INFANT_FORM_XPATH));
+        return list.size() > 0;
+    }
+
+    public boolean isWarningNoPassengersPresents() {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        List<WebElement> list = driver.
+                findElements(By.xpath(DRAWER_SECTION_NO_PASSENGERS_XPATH));
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
         return list.size() > 0;
     }
 

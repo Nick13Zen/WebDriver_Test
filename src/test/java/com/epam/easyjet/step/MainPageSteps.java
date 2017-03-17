@@ -47,9 +47,21 @@ public class MainPageSteps {
     }
 
     public void typeClientCount(Flight flight) {
-        mainPage.setAdultCount(flight.getAdultCount());
-        mainPage.setInfantCount(flight.getInfantCount());
-        mainPage.setChildCount(flight.getChildCount());
+        typeChildCount(flight.getChildCount());
+        typeAdultCount(flight.getAdultCount());
+        typeInfantCount(flight.getInfantCount());
+    }
+
+    public void typeInfantCount(int count) {
+        mainPage.setInfantCount(count);
+    }
+
+    public void typeChildCount(int count) {
+        mainPage.setChildCount(count);
+    }
+
+    public void typeAdultCount(int count) {
+        mainPage.setAdultCount(count);
     }
 
     public void clickSubmitPage() {
