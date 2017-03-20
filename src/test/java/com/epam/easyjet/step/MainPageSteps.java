@@ -16,7 +16,9 @@ import java.util.List;
 public class MainPageSteps {
     private final Logger logger = LogManager.getRootLogger();
 
-    private MainPage mainPage;
+    private static final int FIRST_FLIGHT = 0;
+
+    private final MainPage mainPage;
 
     public MainPageSteps() {
         mainPage = new MainPage(DriverSingleton.getDriver());
@@ -39,33 +41,20 @@ public class MainPageSteps {
         }
     }
 
-    public void setClientCount(Flight flight) {
-        mainPage.setAdultCount(0);
-        addAdults(flight.getAdultCount());
-        addInfants(flight.getInfantCount());
-        addChildren(flight.getChildCount());
-    }
-
-    public void typeClientCount(Flight flight) {
-        typeChildCount(flight.getChildCount());
-        typeAdultCount(flight.getAdultCount());
-        typeInfantCount(flight.getInfantCount());
-    }
-
     public void typeInfantCount(int count) {
-        mainPage.setInfantCount(count);
+        mainPage.typeInfantCount(count);
     }
 
     public void typeChildCount(int count) {
-        mainPage.setChildCount(count);
+        mainPage.typeChildCount(count);
     }
 
     public void typeAdultCount(int count) {
-        mainPage.setAdultCount(count);
+        mainPage.typeAdultCount(count);
     }
 
-    public void clickSubmitPage() {
-        mainPage.clickSubmit();
+    public void clickEnter() {
+        mainPage.clickEnter();
     }
 
     public boolean isWarningMaxPassengersDisplayed() {
@@ -77,9 +66,9 @@ public class MainPageSteps {
     }
 
     public void fillMainPage(Order order) {
-        setRoutePlace(order.getFlights().get(0));
+        setRoutePlace(order.getFlights().get(FIRST_FLIGHT));
         setRouteDate(order.getFlights());
-        typeClientCount(order.getFlights().get(0));
+        typeClientCount(order.getFlights().get(FIRST_FLIGHT));
         try {
             mainPage.submitPage();
         } catch (StaleElementReferenceException e) {
@@ -87,21 +76,27 @@ public class MainPageSteps {
         }
     }
 
-    private void addAdults(int count) {
+    public void addAdults(int count) {
         for (int i = 0; i < count; i++) {
             mainPage.addAdult();
         }
     }
 
-    private void addInfants(int count) {
+    public void addInfants(int count) {
         for (int i = 0; i < count; i++) {
             mainPage.addInfant();
         }
     }
 
-    private void addChildren(int count) {
+    public void addChildren(int count) {
         for (int i = 0; i < count; i++) {
             mainPage.addChild();
         }
+    }
+
+    private void typeClientCount(Flight flight) {
+        typeChildCount(flight.getChildCount());
+        typeAdultCount(flight.getAdultCount());
+        typeInfantCount(flight.getInfantCount());
     }
 }

@@ -14,20 +14,19 @@ import java.util.List;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class HotelPage extends AbstractPage {
+    private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
 
     @FindBy(xpath = "//input[contains(@name,'b_booknow1')]")
     private WebElement addRoomButton;
 
     @FindBy(id = "btnContinue")
-    private WebElement continueButton;
+    private WebElement btnContinue;
 
     @FindBy(id = "bookingp_iframe")
     private WebElement frameElement;
 
     @FindBy(xpath = "//div[contains(@class, 'detail recentlySelected contain')]/div[contains(@class, 'content')]/h4")
     private WebElement hotelName;
-
-    private static final String ADDED_HOTEL_FORM = "div#bookingDotComHotel";
 
     public HotelPage(WebDriver driver) {
         super(driver);
@@ -49,8 +48,8 @@ public class HotelPage extends AbstractPage {
     }
 
     public void submitPage() {
-        driverWait.until(ExpectedConditions.visibilityOf(continueButton));
-        continueButton.click();
+        driverWait.until(ExpectedConditions.visibilityOf(btnContinue));
+        btnContinue.click();
     }
 
     public boolean isHotelAdded() {

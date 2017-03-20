@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Raman_Darasinets on 3/7/2017.
  */
 public class FlightOptionsPageSteps {
-    private FlightOptionsPage flightOptionsPage;
+    private final FlightOptionsPage flightOptionsPage;
 
     private static final int FIRST_FLIGHT = 0;
 
@@ -26,7 +26,7 @@ public class FlightOptionsPageSteps {
     }
 
     public void setLuggage(Order order) {
-        flightOptionsPage.addLuggageButton();
+        flightOptionsPage.clickLuggageButton();
         Flight flight = order.getFlights().get(FIRST_FLIGHT);
         int generalCount = flight.getAdultCount() + flight.getChildCount() + flight.getInfantCount();
         order.setLuggage(flightOptionsPage.getDataLuggage(generalCount));
@@ -35,69 +35,77 @@ public class FlightOptionsPageSteps {
         }
     }
 
-    public void setSeats() {
-        flightOptionsPage.pickSeat();
+    public void pickSeats() {
+        flightOptionsPage.clickPickSeatsButton();
     }
 
     public void setEconomSeat(Flight flight, Order order) {
         if (flight.getSeatsList() == null) {
-            flight.setSeatsList(new ArrayList<Seats>());
+            flight.setSeatsList(new ArrayList<>());
         }
         Seats seats = flightOptionsPage.chooseEconomSeat();
         flight.getSeatsList().add(seats);
         order.addPrice(seats.getPrice());
     }
 
-    public void setStandardSeat(Flight flight) {
+    public void setStandardSeat(Flight flight, Order order) {
         if (flight.getSeatsList() == null) {
-            flight.setSeatsList(new ArrayList<Seats>());
+            flight.setSeatsList(new ArrayList<>());
         }
-        flight.getSeatsList().add(flightOptionsPage.chooseStandardSeat());
+        Seats seats = flightOptionsPage.chooseStandardSeat();
+        flight.getSeatsList().add(seats);
+        order.addPrice(seats.getPrice());
     }
 
-    public void setXLSeat(Flight flight) {
+    public void setXLSeat(Flight flight, Order order) {
         if (flight.getSeatsList() == null) {
-            flight.setSeatsList(new ArrayList<Seats>());
+            flight.setSeatsList(new ArrayList<>());
         }
-        flight.getSeatsList().add(flightOptionsPage.chooseXLSeat());
+        Seats seats = flightOptionsPage.chooseXLSeat();
+        flight.getSeatsList().add(seats);
+        order.addPrice(seats.getPrice());
     }
 
-    public void setSaveSeats() {
+    public void saveSeats() {
         flightOptionsPage.saveSeats();
     }
 
-    public void takeInsurance(Order order) {
-
-        order.setInsurance(flightOptionsPage.takeInsurance());
+    public void setInsurance(Order order) {
+        order.setInsurance(flightOptionsPage.getInsurance());
         order.addPrice(order.getInsurance().getPrice());
-        flightOptionsPage.pickInsurance();
+        flightOptionsPage.clickInsuranceButton();
     }
 
     public void fillFlightOptions(Order order) {
-        setSeats();
+        pickSeats();
         List<Flight> flights = order.getFlights();
         for (Flight flight : flights) {
-            int allNumberSeats = flight.getChildCount() + flight.getAdultCount();
+            int allSeatsCount = flight.getChildCount() + flight.getAdultCount();
             if (flight.isOneWay()) {
-                setEconomSeats(flight, order, allNumberSeats);
+                setEconomSeats(flight, order, allSeatsCount);
             } else {
-                setEconomSeats(flight, order, allNumberSeats);
-                setEconomSeats(flight, order, allNumberSeats);
+                setEconomSeats(flight, order, allSeatsCount);
+                setEconomSeats(flight, order, allSeatsCount);
             }
         }
         setLuggage(order);
-        takeInsurance(order);
+        setInsurance(order);
         flightOptionsPage.submitPage();
     }
 
-    private void setEconomSeats(Flight flight, Order order, int allNumberSeats) {
-        for (int i = 0; i < allNumberSeats; i++) {
-            setEconomSeat(flight, order);
-        }
-        setSaveSeats();
+    public void submitPageWithoutfilling() {
+        flightOptionsPage.submitPage();
+        flightOptionsPage.closeHelpWindow();
     }
 
     public boolean isItemAdded() {
         return flightOptionsPage.isItemAdded();
+    }
+
+    private void setEconomSeats(Flight flight, Order order, int allSeatsCount) {
+        for (int i = 0; i < allSeatsCount; i++) {
+            setEconomSeat(flight, order);
+        }
+        saveSeats();
     }
 }

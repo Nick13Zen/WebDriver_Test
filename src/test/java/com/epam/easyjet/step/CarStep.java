@@ -9,29 +9,29 @@ import com.epam.easyjet.page.CarRentalPage;
  * Created by Maria on 06.03.2017.
  */
 public class CarStep {
-    private CarRentalPage carRentalPage;
+    private final CarRentalPage carRentalPage;
 
     public CarStep() {
         carRentalPage = new CarRentalPage(DriverSingleton.getDriver());
         carRentalPage.openPage();
     }
 
-    private Car setCarInfo() {
-        return carRentalPage.selectCarParameters();
-    }
-
     public void addCar(Order order) {
-        Car car = setCarInfo();
+        Car car = getCarInfo();
         order.setCar(car);
         order.addPrice(car.getPrice());
         carRentalPage.addCarClick();
+    }
+
+    public boolean isCarAdded() {
+        return carRentalPage.isCarAdded();
     }
 
     public void submitCarPage() {
         carRentalPage.submitPage();
     }
 
-    public boolean isCarAdded() {
-        return carRentalPage.isCarAdded();
+    private Car getCarInfo() {
+        return carRentalPage.selectCarParameters();
     }
 }

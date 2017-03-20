@@ -1,7 +1,6 @@
 package com.epam.easyjet.util;
 
 public class PriceConverter {
-
     private static final String EXCESS_PART_REGEX = "[^0-9.]";
     private static final String EXCESS_PART_WITH_X_REGEX = "[^0-9.x]";
     private static final String PRICE_SEPARATOR = "x";
