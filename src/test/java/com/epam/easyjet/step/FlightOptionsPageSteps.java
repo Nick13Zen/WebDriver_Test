@@ -59,9 +59,10 @@ public class FlightOptionsPageSteps {
 
     public void setXLSeat(Flight flight, Order order) {
         if (flight.getSeatsList() == null) {
-            flight.setSeatsList(new ArrayList<>());
+            flight.setSeatsList(new ArrayList<Seats>());
         }
         Seats seats = flightOptionsPage.chooseXLSeat();
+        flightOptionsPage.continuousXLSeats();
         flight.getSeatsList().add(seats);
         order.addPrice(seats.getPrice());
     }
@@ -107,5 +108,9 @@ public class FlightOptionsPageSteps {
             setEconomSeat(flight, order);
         }
         saveSeats();
+    }
+
+    public double getPriceSeats() {
+        return flightOptionsPage.getPriceSeats();
     }
 }

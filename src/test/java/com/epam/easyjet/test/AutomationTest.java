@@ -2,6 +2,7 @@ package com.epam.easyjet.test;
 
 import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.bean.Flight;
+import com.epam.easyjet.bean.Seats;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.step.*;
 import org.testng.Assert;
@@ -154,6 +155,66 @@ public class AutomationTest {
         hotelStep.submitHotelPage();
         carStep.submitCarPage();
         Assert.assertEquals(checkoutStep.getFinalPrice(), order.getPrice(), ASSERTION_PRICE_DELTA);
+    }
+
+    @Test
+    public void testTakeEconomSeat() {
+        order.getFlights()
+                .get(FIRST_FLIGHT)
+                .setAdultCount(DEFAULT_COUNT);
+        mainPageSteps.fillMainPage(order);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.pickSeats();
+        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(0), order);
+
+        double price = 0;
+        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+            price += seats.getPrice();
+        }
+
+        flightOptionsPageSteps.saveSeats();
+        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.saveSeats();
+
+        Assert.assertEquals(price, flightOptionsPageSteps.getPriceSeats());
+    }
+
+    @Test
+    public void testTakeStandardSeat() {
+        order.getFlights()
+                .get(FIRST_FLIGHT)
+                .setAdultCount(DEFAULT_COUNT);
+        mainPageSteps.fillMainPage(order);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.pickSeats();
+        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(0), order);
+
+        double price = 0;
+        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+            price += seats.getPrice();
+        }
+
+        flightOptionsPageSteps.saveSeats();
+        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.saveSeats();
+
+        Assert.assertEquals(price, flightOptionsPageSteps.getPriceSeats());
+    }
+
+    @Test
+    public void testTakeXLSeat() {
+        order.getFlights()
+                .get(FIRST_FLIGHT)
+                .setAdultCount(DEFAULT_COUNT);
+        mainPageSteps.fillMainPage(order);
+        flightStep.fillFlightsPage(order);
+        flightOptionsPageSteps.pickSeats();
+        flightOptionsPageSteps.setXLSeat(order.getFlights().get(0), order);
+
+        double price = 0;
+        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+            price += seats.getPrice();
+        }
     }
 
     @AfterMethod

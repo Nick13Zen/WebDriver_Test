@@ -25,6 +25,7 @@ public class FlightOptionsPage extends AbstractPage {
     private static final String PRICE_ECONOM_XPATH = "//*[@id='price_band_3']/div/p[@class='band_price']";
     private static final String PRICE_STANDARD_XPATH = "//*[@id='price_band_2']/div/p[@class='band_price']";
     private static final String PRICE_XL_XPATH = "//*[@id='price_band_1']/div/p[@class='band_price']";
+    private static final String PRICE_SEATS = "//div[@class='seating_details_block']/span[@class='amount']";
 
     private static final String SEAT_ECONOM_BUTTON_XPATH = "//*[@data-priceband='3']/td/div[@class='available']";
     private static final String SEAT_STANDARD_BUTTON_XPATH = "//*[@data-priceband='2']/td/div[@class='available']";
@@ -44,6 +45,8 @@ public class FlightOptionsPage extends AbstractPage {
     private static final String BUSY_ICON_CONTAINER_CSS = "div.holdOptionBusyIconContainer";
     private static final String RECENTLY_ADDED_FORM_CSS = "div.detail.recentlySelected.contain";
     private static final String CONTAIN_INSURANCE_CSS = "div.detail.recentlySelected.contain>div#Insurance";
+
+    private static final String CONTINUOUS_XL_SEATS = "//div[@id='restrictedSeatsDialog']//a[@id='acceptSeatRestriction']";
 
     @FindBy(id = "addDefaultHoldBaggage")
     private WebElement btnLuggage;
@@ -182,5 +185,19 @@ public class FlightOptionsPage extends AbstractPage {
             logger.error(e);
         }
         return seats;
+    }
+
+    public void continuousXLSeats() {
+        WebElement buttonContinuous = driver.findElement(By.xpath(CONTINUOUS_XL_SEATS));
+        buttonContinuous.click();
+    }
+
+    public double getPriceSeats() {
+        double price = 0;
+        List<WebElement> priceSeats = driver.findElements(By.xpath(PRICE_SEATS));
+        for (WebElement element : priceSeats) {
+            price += PriceConverter.convertStringPrice(element.getText());
+        }
+        return price;
     }
 }
