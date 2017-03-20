@@ -17,9 +17,10 @@ import java.util.List;
  */
 public class FlightStep {
     private static final Logger logger = LogManager.getRootLogger();
+
     private static final String PRICE_NOT_INITIALIZED = "Price not initialized";
 
-    private FlightsPage flightsPage;
+    private final FlightsPage flightsPage;
 
     public FlightStep() {
         flightsPage = new FlightsPage(DriverSingleton.getDriver());
@@ -41,7 +42,7 @@ public class FlightStep {
         order.addPrice(flightsPage.getFinalPrice());
     }
 
-    public void clickOfPrice(List<Flight> flights) {
+    public void setFlights(List<Flight> flights) {
         for (Flight flight : flights) {
             if (flight.isOneWay()) {
                 flightsPage.clickDepartureFlight();
@@ -65,7 +66,7 @@ public class FlightStep {
     }
 
     public void fillFlightsPage(Order order) {
-        clickOfPrice(order.getFlights());
+        setFlights(order.getFlights());
         setRoutePrice(order.getFlights());
         setFinalPrice(order);
         try {
@@ -73,6 +74,6 @@ public class FlightStep {
         } catch (StaleElementReferenceException e) {
             logger.error(e);
         }
-        WindowsManager.closeAllChildWindows();
+        WindowsManager.switchToMainWindow();
     }
 }

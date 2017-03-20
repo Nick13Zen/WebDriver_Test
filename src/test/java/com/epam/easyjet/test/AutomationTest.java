@@ -6,7 +6,6 @@ import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.step.*;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
@@ -16,6 +15,7 @@ import java.util.ArrayList;
 public class AutomationTest {
 
     private static final int FIRST_FLIGHT = 0;
+
     private static final int VALID_INFANT_ADULT_COUNT = 3;
     private static final int INVALID_INFANT_ADULT_COUNT = 2;
     private static final int DEFAULT_COUNT = 1;
@@ -73,7 +73,7 @@ public class AutomationTest {
         mainPageSteps.typeChildCount(childCount);
         mainPageSteps.typeAdultCount(adultCount);
         mainPageSteps.typeInfantCount(infantCount);
-        mainPageSteps.clickSubmitPage();
+        mainPageSteps.clickEnter();
         Assert.assertTrue(mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
@@ -82,26 +82,22 @@ public class AutomationTest {
         mainPageSteps.typeAdultCount(adultCount);
         mainPageSteps.typeChildCount(childCount);
         mainPageSteps.typeInfantCount(infantCount);
-        mainPageSteps.clickSubmitPage();
+        mainPageSteps.clickEnter();
         Assert.assertTrue(!mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
     @Test
     public void testValidInfantCount() {
-        Flight flight = new Flight();
-        flight.setAdultCount(VALID_INFANT_ADULT_COUNT);
-        flight.setInfantCount(VALID_INFANT_ADULT_COUNT);
-        mainPageSteps.typeClientCount(flight);
-        mainPageSteps.clickSubmitPage();
+        mainPageSteps.typeAdultCount(VALID_INFANT_ADULT_COUNT);
+        mainPageSteps.typeInfantCount(VALID_INFANT_ADULT_COUNT);
+        mainPageSteps.clickEnter();
         Assert.assertTrue(!mainPageSteps.isWarningInfantDisplayed());
     }
 
     @Test
     public void testInvalidInfantCount() {
-        Flight flight = new Flight();
-        flight.setInfantCount(INVALID_INFANT_ADULT_COUNT);
-        mainPageSteps.typeInfantCount(flight.getInfantCount());
-        mainPageSteps.clickSubmitPage();
+        mainPageSteps.typeInfantCount(INVALID_INFANT_ADULT_COUNT);
+        mainPageSteps.clickEnter();
         Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
     }
 
@@ -112,7 +108,7 @@ public class AutomationTest {
         order.getFlights().get(FIRST_FLIGHT).setInfantCount(DEFAULT_COUNT);
 
         mainPageSteps.fillMainPage(order);
-        flightStep.clickOfPrice(flights);
+        flightStep.setFlights(flights);
         Assert.assertEquals(flightStep.getInfantsPrice(), INFANT_PRICE);
     }
 
@@ -120,10 +116,10 @@ public class AutomationTest {
     public void testIsHotelAdded() {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
-        flightStep.clickOfPrice(flights);
+        flightStep.setFlights(flights);
         flightStep.fillFlightsPage(order);
-        flightOptionsPageSteps.fillFlightOptions(order);
-        hotelStep.addHotel(order);
+        flightOptionsPageSteps.submitPageWithoutfilling();
+        hotelStep.setHotel(order);
         Assert.assertTrue(hotelStep.isHotelAdded());
     }
 
@@ -132,7 +128,7 @@ public class AutomationTest {
         order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
-        flightOptionsPageSteps.fillFlightOptions(order);
+        flightOptionsPageSteps.submitPageWithoutfilling();
         hotelStep.submitHotelPage();
         carStep.addCar(order);
         Assert.assertTrue(carStep.isCarAdded());
@@ -157,8 +153,7 @@ public class AutomationTest {
         flightOptionsPageSteps.fillFlightOptions(order);
         hotelStep.submitHotelPage();
         carStep.submitCarPage();
-        double finalPriceExpexted = checkoutStep.getFinalPrice();
-        Assert.assertEquals(finalPriceExpexted, order.getPrice());
+        Assert.assertEquals(checkoutStep.getFinalPrice(), order.getPrice());
     }
 
     @AfterMethod

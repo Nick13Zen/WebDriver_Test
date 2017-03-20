@@ -12,7 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class FlightsPage extends AbstractPage {
-
     private static final String SPAN_CLASS_AMOUNT = "//span[@class='amount ']";
 
     @FindBy(xpath = "//div[@class='OutboundDaySlider']//div[@class='day selected']//a[1]")

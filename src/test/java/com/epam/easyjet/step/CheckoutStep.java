@@ -7,7 +7,7 @@ import com.epam.easyjet.page.CheckoutPage;
  * Created by Nikita_Zenchyk on 3/7/2017.
  */
 public class CheckoutStep {
-    private CheckoutPage checkoutPage;
+    private final CheckoutPage checkoutPage;
 
     public CheckoutStep() {
         checkoutPage = new CheckoutPage(DriverSingleton.getDriver());

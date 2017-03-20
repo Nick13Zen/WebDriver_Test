@@ -13,20 +13,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class CarRentalPage extends AbstractPage {
+    private static final String ADDED_CAR_FORM = "div.detail.recentlySelected.contain";
 
     @FindBy(id = "btnAddCar1")
     private WebElement addCar;
 
     @FindBy(id = "btnContinue")
-    private WebElement continueButton;
+    private WebElement btnContinue;
 
     @FindBy(xpath = "//div[1][@class='CarContainer']//span[@class='targetPrice']")
     private WebElement priceOfCar;
 
     @FindBy(xpath = "//div[1][@class='CarContainer']//*[@class='CarDetails']//h2")
     private WebElement carName;
-
-    private static final String ADDED_CAR_FORM = "div.detail.recentlySelected.contain";
 
     public CarRentalPage(WebDriver driver) {
         super(driver);
@@ -41,8 +40,8 @@ public class CarRentalPage extends AbstractPage {
     }
 
     public void submitPage() {
-        driverWait.until(ExpectedConditions.visibilityOf(continueButton));
-        continueButton.click();
+        driverWait.until(ExpectedConditions.visibilityOf(btnContinue));
+        btnContinue.click();
     }
 
     public Car selectCarParameters() {

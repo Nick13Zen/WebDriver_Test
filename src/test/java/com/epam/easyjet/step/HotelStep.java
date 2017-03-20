@@ -10,14 +10,14 @@ import com.epam.easyjet.page.HotelPage;
  */
 public class HotelStep {
 
-    private HotelPage hotelPage;
+    private final HotelPage hotelPage;
 
     public HotelStep() {
         hotelPage = new HotelPage(DriverSingleton.getDriver());
         hotelPage.openPage();
     }
 
-    public void addHotel(Order order) {
+    public void setHotel(Order order) {
         hotelPage.addHotel();
         Hotel hotel = new Hotel();
         hotelPage.setHotelParameters(hotel);
