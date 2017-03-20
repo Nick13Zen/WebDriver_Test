@@ -92,12 +92,12 @@ public class FlightOptionsPage extends AbstractPage {
         btnLuggage.click();
     }
 
-    public ArrayList<Luggage> getDataLuggage(int count) {
+    public List<Luggage> getDataLuggage(int count) {
         driverWait.until(ExpectedConditions.invisibilityOfElementLocated(
                 By.cssSelector(BUSY_ICON_CONTAINER_CSS)));
 
         double price = PriceConverter.converterStringWithX(luggagePrice.getText());
-        ArrayList<Luggage> luggages = new ArrayList<>();
+        List<Luggage> luggages = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Luggage luggage = new Luggage();
             luggage.setPrice(price);

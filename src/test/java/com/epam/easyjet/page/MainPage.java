@@ -137,7 +137,7 @@ public class MainPage extends AbstractPage {
         btnAddInfant.click();
     }
 
-    public void clickEnter() {
+    public void submitByEnter() {
         inputAddAdult.sendKeys(Keys.ENTER);
     }
 
@@ -189,7 +189,7 @@ public class MainPage extends AbstractPage {
     private void checkNoPassengerWarning() {
         if (isWarningNoPassengersPresents()) {
             try {
-                driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
+                driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DRAWER_BUTTON_XPATH))).click();
             } catch (StaleElementReferenceException e) {
                 logger.error(e);
             }
