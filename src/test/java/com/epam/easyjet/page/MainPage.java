@@ -1,9 +1,8 @@
 package com.epam.easyjet.page;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,6 +14,8 @@ import java.util.concurrent.TimeUnit;
  * Created by Yauheni_Borbut on 2/28/2017.
  */
 public class MainPage extends AbstractPage {
+    private final Logger logger = LogManager.getRootLogger();
+
     private final String PAGE_URL = "https://www.easyjet.com/en";
 
     private static final String DIALOG_FORM_ID = "drawer-dialog";
@@ -108,25 +109,19 @@ public class MainPage extends AbstractPage {
 
     public void typeAdultCount(int count) {
         inputAddAdult.clear();
-        if (isWarningNoPassengersPresents()) {
-            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
-        }
+        checkNoPassengerWarning();
         inputAddAdult.sendKeys(String.valueOf(count));
     }
 
     public void typeChildCount(int count) {
         inputAddChild.clear();
-        if (isWarningNoPassengersPresents()) {
-            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
-        }
+        checkNoPassengerWarning();
         inputAddChild.sendKeys(String.valueOf(count));
     }
 
     public void typeInfantCount(int count) {
         inputAddInfant.clear();
-        if (isWarningNoPassengersPresents()) {
-            driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
-        }
+        checkNoPassengerWarning();
         inputAddInfant.sendKeys(String.valueOf(count));
     }
 
@@ -169,10 +164,10 @@ public class MainPage extends AbstractPage {
     }
 
     public boolean isWarningNoPassengersPresents() {
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(WARNING_TIMEOUT, TimeUnit.SECONDS);
         List<WebElement> list = driver.
                 findElements(By.xpath(DRAWER_SECTION_NO_PASSENGERS_XPATH));
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
         return list.size() > 0;
     }
 
@@ -189,5 +184,15 @@ public class MainPage extends AbstractPage {
                 findElement(By.cssSelector(CALENDAR_DAY_BUTTON_XPATH + date + "'")).
                 findElement(By.cssSelector(SELECTABLE_DAY_BUTTON_XPATH));
         departureDateValue.click();
+    }
+
+    private void checkNoPassengerWarning() {
+        if (isWarningNoPassengersPresents()) {
+            try {
+                driver.findElement(By.xpath(DRAWER_BUTTON_XPATH)).click();
+            } catch (StaleElementReferenceException e) {
+                logger.error(e);
+            }
+        }
     }
 }

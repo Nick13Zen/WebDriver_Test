@@ -21,6 +21,7 @@ public class AutomationTest {
     private static final int DEFAULT_COUNT = 1;
 
     private static final double INFANT_PRICE = 28.0;
+    private static final double ASSERTION_PRICE_DELTA = 0.01;
 
     private MainPageSteps mainPageSteps;
     private FlightStep flightStep;
@@ -152,7 +153,7 @@ public class AutomationTest {
         flightOptionsPageSteps.fillFlightOptions(order);
         hotelStep.submitHotelPage();
         carStep.submitCarPage();
-        Assert.assertEquals(checkoutStep.getFinalPrice(), order.getPrice());
+        Assert.assertEquals(checkoutStep.getFinalPrice(), order.getPrice(), ASSERTION_PRICE_DELTA);
     }
 
     @AfterMethod
