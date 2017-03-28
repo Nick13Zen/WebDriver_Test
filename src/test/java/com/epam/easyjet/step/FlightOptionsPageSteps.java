@@ -11,9 +11,7 @@ import org.openqa.selenium.WebDriver;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Raman_Darasinets on 3/7/2017.
- */
+
 public class FlightOptionsPageSteps {
     private final FlightOptionsPage flightOptionsPage;
 

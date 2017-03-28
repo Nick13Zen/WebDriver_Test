@@ -5,9 +5,6 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.CarRentalPage;
 
-/**
- * Created by Maria on 06.03.2017.
- */
 public class CarStep {
     private final CarRentalPage carRentalPage;
 

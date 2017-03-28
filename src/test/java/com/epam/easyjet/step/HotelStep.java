@@ -5,9 +5,7 @@ import com.epam.easyjet.bean.Order;
 import com.epam.easyjet.driver.DriverSingleton;
 import com.epam.easyjet.page.HotelPage;
 
-/**
- * Created by Maria on 06.03.2017.
- */
+
 public class HotelStep {
 
     private final HotelPage hotelPage;

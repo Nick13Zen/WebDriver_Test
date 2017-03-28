@@ -15,23 +15,39 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainPage extends AbstractPage {
     private final Logger logger = LogManager.getRootLogger();
-
     private final String PAGE_URL = "https://www.easyjet.com/en";
-
     private static final String DIALOG_FORM_ID = "drawer-dialog";
-
     private static final String DRAWER_SECTION_NO_PASSENGERS_XPATH = "//div[@class='drawer-section no-passengers']";
     private static final String DRAWER_BUTTON_XPATH = "//div[@class='drawer-button']/button";
-
     private static final String WARNING_FORM_CLOSE_BUTTON_XPATH = "close-drawer-link";
-    private static final String WARNING_MAX_PASSENGER_FORM_XPATH = "div.drawer-section.max-passengers";
-    private static final String WARNING_INFANT_FORM_XPATH = "div.drawer-section.more-infants-than-adults";
 
+    private static final String WARNING_COOKIES_CSS = "div.drawer-section.cookie-policy-drawer";
+
+    private static final String WARNING_FLYING_WITH_INFANTS_CSS = "div.drawer-section.search-with-infants";
+    private static final String WARNING_MAX_PASSENGER_FORM_CSS = "div.drawer-section.max-passengers";
+    private static final String WARNING_INFANT_FORM_CSS = "div.drawer-section.more-infants-than-adults";
     private static final String SELECTABLE_DAY_BUTTON_XPATH = "a.selectable";
     private static final String CALENDAR_DAY_BUTTON_XPATH = "div[data-date='";
 
+    private static final String WARNING_FLYING_WITH_INFANTS_TEXT = "Flying with infants?";
+    private static final String WARNING_COOKIES_TEXT = "Cookies help us give you a better experience on easyJet.com. " +
+            "By continuing to use our site, you are agreeing to the use of cookies as set in our Cookie Policy.";
+    private static final String MAXIMUM_NUMBER_TEXT = "The maximum number of adults and children per booking is 40.";
+    private static final String INFANT_PRESENTS_TEXT = "You can only book one infant per adult online. " +
+            "Please visit the Contact Us section for further information.";
+    private static final String NO_PASSENGER_TEXT = "Please select at least one passenger!";
+
     private static final int DEFAULT_TIMEOUT = 10;
     private static final int WARNING_TIMEOUT = 2;
+
+    @FindBy(xpath = "//div[@class='message-drawer-content']/p")
+    private WebElement lineWarningInvalidCount;
+
+    @FindBy(xpath = "//div[@class='field-row']/p")
+    private WebElement lineWarningCookies;
+
+    @FindBy(xpath = "//div[@class='message-summary']")
+    private WebElement lineWarningFlyingWithInfants;
 
     @FindBy(xpath = "//input[contains(@aria-label, 'To:')]")
     private WebElement inputDestination;
@@ -76,7 +92,7 @@ public class MainPage extends AbstractPage {
     public void openPage() {
         driver.navigate().to(PAGE_URL);
         PageFactory.initElements(this.driver, this);
-        if (isWarningPresents()) {
+        if (isWarningCookiesPresents()) {
             WebElement closeButton = driver.findElement(By.id(WARNING_FORM_CLOSE_BUTTON_XPATH));
             closeButton.click();
         }
@@ -146,21 +162,21 @@ public class MainPage extends AbstractPage {
 
         btnSubmit.click();
 
-        if (isWarningPresents()) {
+        if (isWarningFlyingWithInfantsPresents()) {
             btnInfoSubmit.click();
         }
     }
 
     public boolean isWarningInfantsPresents() {
         List<WebElement> list = driver.
-                findElements(By.cssSelector(WARNING_INFANT_FORM_XPATH));
-        return list.size() > 0;
+                findElements(By.cssSelector(WARNING_INFANT_FORM_CSS));
+        return list.size() > 0 && lineWarningInvalidCount.getText().equals(INFANT_PRESENTS_TEXT);
     }
 
     public boolean isWarningMaxPassengersPresents() {
         List<WebElement> list = driver.
-                findElements(By.cssSelector(WARNING_MAX_PASSENGER_FORM_XPATH));
-        return list.size() > 0;
+                findElements(By.cssSelector(WARNING_MAX_PASSENGER_FORM_CSS));
+        return list.size() > 0 && lineWarningInvalidCount.getText().equals(MAXIMUM_NUMBER_TEXT);
     }
 
     public boolean isWarningNoPassengersPresents() {
@@ -168,15 +184,23 @@ public class MainPage extends AbstractPage {
         List<WebElement> list = driver.
                 findElements(By.xpath(DRAWER_SECTION_NO_PASSENGERS_XPATH));
         driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        return list.size() > 0;
+        return list.size() > 0 && lineWarningInvalidCount.getText().equals(NO_PASSENGER_TEXT);
     }
 
-    private boolean isWarningPresents() {
+    private boolean isWarningCookiesPresents() {
         driver.manage().timeouts().implicitlyWait(WARNING_TIMEOUT, TimeUnit.SECONDS);
         List<WebElement> list = driver.
-                findElements(By.id(DIALOG_FORM_ID));
+                findElements(By.cssSelector(WARNING_COOKIES_CSS));
         driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        return list.size() > 0;
+        return list.size() > 0 && lineWarningCookies.getText().equals(WARNING_COOKIES_TEXT);
+    }
+
+    private boolean isWarningFlyingWithInfantsPresents() {
+        driver.manage().timeouts().implicitlyWait(WARNING_TIMEOUT, TimeUnit.SECONDS);
+        List<WebElement> list = driver.
+                findElements(By.cssSelector(WARNING_FLYING_WITH_INFANTS_CSS));
+        driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+        return list.size() > 0 && lineWarningFlyingWithInfants.getText().equals(WARNING_FLYING_WITH_INFANTS_TEXT);
     }
 
     private void pickDate(String date) {

@@ -44,8 +44,8 @@ public class AutomationTest {
         Flight flight = new Flight();
         flight.setDeparturePlace("Madrid");
         flight.setDestinationPlace("Lisbon");
-        flight.setDepartureDate("2017-04-10");
-        flight.setReturnDate("2017-04-20");
+        flight.setDepartureDate("2017-04-20");
+        flight.setReturnDate("2017-04-25");
         order = new Order();
         flights = new ArrayList<>();
         flights.add(flight);

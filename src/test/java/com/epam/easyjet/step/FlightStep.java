@@ -12,9 +12,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 
 import java.util.List;
 
-/**
- * Created by Mark_Harbunou on 3/6/2017.
- */
+
 public class FlightStep {
     private static final Logger logger = LogManager.getRootLogger();
 
