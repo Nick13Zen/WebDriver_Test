@@ -53,8 +53,8 @@ public class MainPageSteps {
         mainPage.typeAdultCount(count);
     }
 
-    public void clickEnter() {
-        mainPage.clickEnter();
+    public void submitPage() {
+        mainPage.submitByEnter();
     }
 
     public boolean isWarningMaxPassengersDisplayed() {

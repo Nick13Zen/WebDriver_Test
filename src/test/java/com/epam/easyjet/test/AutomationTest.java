@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Yauheni_Borbut on 2/28/2017.
@@ -31,7 +32,7 @@ public class AutomationTest {
     private CarStep carStep;
     private CheckoutStep checkoutStep;
     private Order order;
-    private ArrayList<Flight> flights;
+    private List<Flight> flights;
 
     @BeforeMethod
     public void setUp() {
@@ -75,7 +76,7 @@ public class AutomationTest {
         mainPageSteps.typeChildCount(childCount);
         mainPageSteps.typeAdultCount(adultCount);
         mainPageSteps.typeInfantCount(infantCount);
-        mainPageSteps.clickEnter();
+        mainPageSteps.submitPage();
         Assert.assertTrue(mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
@@ -84,7 +85,7 @@ public class AutomationTest {
         mainPageSteps.typeAdultCount(adultCount);
         mainPageSteps.typeChildCount(childCount);
         mainPageSteps.typeInfantCount(infantCount);
-        mainPageSteps.clickEnter();
+        mainPageSteps.submitPage();
         Assert.assertTrue(!mainPageSteps.isWarningMaxPassengersDisplayed());
     }
 
@@ -92,14 +93,14 @@ public class AutomationTest {
     public void testValidInfantCount() {
         mainPageSteps.typeAdultCount(VALID_INFANT_ADULT_COUNT);
         mainPageSteps.typeInfantCount(VALID_INFANT_ADULT_COUNT);
-        mainPageSteps.clickEnter();
+        mainPageSteps.submitPage();
         Assert.assertTrue(!mainPageSteps.isWarningInfantDisplayed());
     }
 
     @Test
     public void testInvalidInfantCount() {
         mainPageSteps.typeInfantCount(INVALID_INFANT_ADULT_COUNT);
-        mainPageSteps.clickEnter();
+        mainPageSteps.submitPage();
         Assert.assertTrue(mainPageSteps.isWarningInfantDisplayed());
     }
 
@@ -159,21 +160,19 @@ public class AutomationTest {
 
     @Test
     public void testTakeEconomSeat() {
-        order.getFlights()
-                .get(FIRST_FLIGHT)
-                .setAdultCount(DEFAULT_COUNT);
+        order.getFlights().get(FIRST_FLIGHT).setAdultCount(DEFAULT_COUNT);
         mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
         flightOptionsPageSteps.pickSeats();
-        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(FIRST_FLIGHT), order);
 
         double price = 0;
-        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+        for (Seats seats : order.getFlights().get(FIRST_FLIGHT).getSeatsList()) {
             price += seats.getPrice();
         }
 
         flightOptionsPageSteps.saveSeats();
-        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.setEconomSeat(order.getFlights().get(FIRST_FLIGHT), order);
         flightOptionsPageSteps.saveSeats();
 
         Assert.assertEquals(price, flightOptionsPageSteps.getPriceSeats());
@@ -187,15 +186,15 @@ public class AutomationTest {
         mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
         flightOptionsPageSteps.pickSeats();
-        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(FIRST_FLIGHT), order);
 
         double price = 0;
-        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+        for (Seats seats : order.getFlights().get(FIRST_FLIGHT).getSeatsList()) {
             price += seats.getPrice();
         }
 
         flightOptionsPageSteps.saveSeats();
-        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.setStandardSeat(order.getFlights().get(FIRST_FLIGHT), order);
         flightOptionsPageSteps.saveSeats();
 
         Assert.assertEquals(price, flightOptionsPageSteps.getPriceSeats());
@@ -209,12 +208,18 @@ public class AutomationTest {
         mainPageSteps.fillMainPage(order);
         flightStep.fillFlightsPage(order);
         flightOptionsPageSteps.pickSeats();
-        flightOptionsPageSteps.setXLSeat(order.getFlights().get(0), order);
+        flightOptionsPageSteps.setXLSeat(order.getFlights().get(FIRST_FLIGHT), order);
 
         double price = 0;
-        for (Seats seats : order.getFlights().get(0).getSeatsList()) {
+        for (Seats seats : order.getFlights().get(FIRST_FLIGHT).getSeatsList()) {
             price += seats.getPrice();
         }
+
+        flightOptionsPageSteps.saveSeats();
+        flightOptionsPageSteps.setXLSeat(order.getFlights().get(FIRST_FLIGHT), order);
+        flightOptionsPageSteps.saveSeats();
+
+        Assert.assertEquals(price, flightOptionsPageSteps.getPriceSeats());
     }
 
     @AfterMethod
