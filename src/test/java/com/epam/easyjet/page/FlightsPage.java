@@ -57,7 +57,7 @@ public class FlightsPage extends AbstractPage {
     }
 
     public void clickDepartureFlight() {
-        driverWait.until(ExpectedConditions.elementToBeClickable(selectOutBoundDate));
+        driverWait.until(ExpectedConditions.visibilityOf(selectOutBoundDate));
         selectOutBoundDate.click();
     }
 

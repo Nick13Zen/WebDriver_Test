@@ -179,12 +179,27 @@ public class MainPage extends AbstractPage {
         return list.size() > 0 && lineWarningInvalidCount.getText().equals(MAXIMUM_NUMBER_TEXT);
     }
 
-    public boolean isWarningNoPassengersPresents() {
+    private boolean isWarningNoPassengersPresents() {
         driver.manage().timeouts().implicitlyWait(WARNING_TIMEOUT, TimeUnit.SECONDS);
         List<WebElement> list = driver.
                 findElements(By.xpath(DRAWER_SECTION_NO_PASSENGERS_XPATH));
         driver.manage().timeouts().implicitlyWait(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-        return list.size() > 0 && lineWarningInvalidCount.getText().equals(NO_PASSENGER_TEXT);
+        if (list.size() == 0) {
+            return false;
+        }
+
+        String line = null;
+        boolean flag;
+        do {
+            try {
+                line = lineWarningInvalidCount.getText();
+                flag = true;
+            } catch (StaleElementReferenceException e) {
+                flag = false;
+            }
+        } while (!flag);
+
+        return line.equals(NO_PASSENGER_TEXT);
     }
 
     private boolean isWarningCookiesPresents() {
